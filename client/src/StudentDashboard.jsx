@@ -17,9 +17,9 @@ const StudentDashboard = () => {
     const [activeTab, setActiveTab] = useState('home');
 
     const [notifications] = useState([
-        { id: 1, title: 'New Event Added', message: 'Tech Symposium 2024 registrations are now open!', time: '2 hours ago', icon: 'fa-bullhorn', color: '#3b82f6' },
-        { id: 2, title: 'Profile Complete', message: 'Your student profile is 100% complete.', time: '1 day ago', icon: 'fa-check-circle', color: '#10b981' },
-        { id: 3, title: 'Workshop Alert', message: 'AI/ML Workshop starts in 3 days.', time: '2 days ago', icon: 'fa-clock', color: '#f59e0b' }
+        { id: 1, title: 'New Event Added', message: 'Tech Symposium 2024 registrations are now open!', time: '2 hours ago', icon: 'fa-bullhorn', color: 'var(--info)' },
+        { id: 2, title: 'Profile Complete', message: 'Your student profile is 100% complete.', time: '1 day ago', icon: 'fa-check-circle', color: 'var(--success)' },
+        { id: 3, title: 'Workshop Alert', message: 'AI/ML Workshop starts in 3 days.', time: '2 days ago', icon: 'fa-clock', color: 'var(--warning)' }
     ]);
 
     // Mock certificates data (since no API endpoint exists yet)
@@ -70,8 +70,10 @@ const StudentDashboard = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('currentUser');
-        navigate('/');
+        if (window.confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('currentUser');
+            navigate('/');
+        }
     };
 
     const filteredEvents = events.filter(event =>
@@ -88,10 +90,10 @@ const StudentDashboard = () => {
     return (
         <div style={{ paddingBottom: '50px' }}> {/* Main wrapper inheriting body gradient */}
             {/* Dashboard Navigation */}
-            <nav className="dashboard-nav" style={{ padding: '20px 40px', background: '#ffffff', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
+            <nav className="dashboard-nav" style={{ padding: '20px 40px', background: 'var(--surface-glass)', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
                 <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <img src="/aditya.jpg" alt="Logo" style={{ height: '36px', borderRadius: '4px' }} />
-                    <span style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', letterSpacing: '-0.3px', fontFamily: "'Outfit', sans-serif" }}>
+                    <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', letterSpacing: '-0.3px', fontFamily: "'Outfit', sans-serif" }}>
                         Aditya University
                     </span>
                 </div>
@@ -100,7 +102,7 @@ const StudentDashboard = () => {
                         onClick={() => handleTabChange('home')}
                         style={{
                             background: activeTab === 'home' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'home' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'home' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -119,7 +121,7 @@ const StudentDashboard = () => {
                         onClick={() => handleTabChange('events')}
                         style={{
                             background: activeTab === 'events' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'events' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'events' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -138,7 +140,7 @@ const StudentDashboard = () => {
                         onClick={() => handleTabChange('certificates')}
                         style={{
                             background: activeTab === 'certificates' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'certificates' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'certificates' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -156,18 +158,18 @@ const StudentDashboard = () => {
                 </div>
 
                 <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-                    <div className="search-bar" style={{ width: '280px', height: '44px', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '100px', padding: '0 20px', display: 'flex', alignItems: 'center', gap: '10px', transition: 'all 0.2s' }}
-                        onFocus={(e) => { e.currentTarget.style.borderColor = '#94a3b8'; e.currentTarget.style.background = 'white'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
-                        onBlur={(e) => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.boxShadow = 'none'; }}
+                    <div className="search-bar" style={{ width: '280px', height: '44px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '100px', padding: '0 20px', display: 'flex', alignItems: 'center', gap: '10px', transition: 'all 0.2s' }}
+                        onFocus={(e) => { e.currentTarget.style.borderColor = 'var(--text-light)'; e.currentTarget.style.background = 'white'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
+                        onBlur={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.boxShadow = 'none'; }}
                     >
-                        <i className="fa-solid fa-magnifying-glass" style={{ fontSize: '14px', color: '#94a3b8' }}></i>
+                        <i className="fa-solid fa-magnifying-glass" style={{ fontSize: '14px', color: 'var(--text-light)' }}></i>
                         <input
                             type="text"
                             placeholder="Search events..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            onFocus={(e) => { handleTabChange('events'); e.target.parentElement.style.borderColor = '#94a3b8'; e.target.parentElement.style.background = 'white'; e.target.parentElement.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
-                            onBlur={(e) => { e.target.parentElement.style.borderColor = '#e2e8f0'; e.target.parentElement.style.background = '#f8fafc'; e.target.parentElement.style.boxShadow = 'none'; }}
+                            onFocus={(e) => { handleTabChange('events'); e.target.parentElement.style.borderColor = 'var(--text-light)'; e.target.parentElement.style.background = 'white'; e.target.parentElement.style.boxShadow = '0 4px 12px rgba(0,0,0,0.05)'; }}
+                            onBlur={(e) => { e.target.parentElement.style.borderColor = 'var(--border)'; e.target.parentElement.style.background = 'var(--surface)'; e.target.parentElement.style.boxShadow = 'none'; }}
                             style={{ fontSize: '14px', background: 'transparent', height: '100%', width: '100%', border: 'none', outline: 'none', color: '#334155' }}
                         />
                     </div>
@@ -182,7 +184,7 @@ const StudentDashboard = () => {
                                 padding: '6px',
                                 paddingRight: '16px',
                                 background: 'white',
-                                border: '1px solid #e2e8f0',
+                                border: '1px solid var(--border)',
                                 borderRadius: '100px',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -211,8 +213,8 @@ const StudentDashboard = () => {
                                 height: '48px',
                                 borderRadius: '50%',
                                 background: 'white',
-                                border: '1px solid #e2e8f0',
-                                color: '#ef4444',
+                                border: '1px solid var(--border)',
+                                color: 'var(--danger)',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -251,13 +253,13 @@ const StudentDashboard = () => {
                             <div style={{ position: 'absolute', bottom: '-20%', left: '10%', width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(99,102,241,0.3) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', filter: 'blur(40px)', opacity: 0.6 }}></div>
 
                             <div style={{ position: 'relative', zIndex: 1 }}>
-                                <div style={{ fontSize: '14px', fontWeight: '600', color: '#94a3b8', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-light)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '1px' }}>
                                     {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
                                 </div>
-                                <h1 style={{ fontSize: '36px', fontWeight: '800', margin: '0 0 12px 0', letterSpacing: '-1px', background: 'linear-gradient(to right, #fff, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                                <h1 style={{ fontSize: '36px', fontWeight: '800', margin: '0 0 12px 0', letterSpacing: '-1px', background: 'linear-gradient(to right, var(--surface-glass), var(--text-light))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                                     Welcome back, {currentUser.name.split(' ')[0]}!
                                 </h1>
-                                <p style={{ fontSize: '16px', color: '#cbd5e1', maxWidth: '500px', lineHeight: '1.6', margin: 0 }}>
+                                <p style={{ fontSize: '16px', color: 'var(--text-light)', maxWidth: '500px', lineHeight: '1.6', margin: 0 }}>
                                     You have <span style={{ color: 'white', fontWeight: '700' }}>{events.length} upcoming events</span> to explore this week. Ready to boost your skills?
                                 </p>
 
@@ -301,24 +303,24 @@ const StudentDashboard = () => {
 
                         <div className="stats-grid" style={{ animation: 'fadeInUp 0.6s ease-out', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-regular fa-calendar-check"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--info)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-regular fa-calendar-check"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.registeredCount || registeredEvents.length}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Registered Events</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.registeredCount || registeredEvents.length}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Registered Events</h4>
                                 </div>
                             </div>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-user-check"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-user-check"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.attendedCount || 0}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Events Attended</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.attendedCount || 0}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Events Attended</h4>
                                 </div>
                             </div>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-award"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-award"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.certificatesCount || 0}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Certificates Earned</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.certificatesCount || 0}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Certificates Earned</h4>
                                 </div>
                             </div>
                         </div>
@@ -329,27 +331,27 @@ const StudentDashboard = () => {
                             {/* Recent Registrations Panel */}
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.7s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                         My Recent Registrations
                                     </div>
-                                    <button onClick={() => setActiveTab('events')} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}>View All <i className="fa-solid fa-arrow-right"></i></button>
+                                    <button onClick={() => setActiveTab('events')} style={{ background: 'none', border: 'none', color: 'var(--info)', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}>View All <i className="fa-solid fa-arrow-right"></i></button>
                                 </div>
                                 {registeredEvents.length === 0 ? (
                                     <div style={{ textAlign: 'center', padding: '40px 20px', flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                                        <div style={{ width: '60px', height: '60px', background: '#f8fafc', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: '#cbd5e1', fontSize: '24px' }}>
+                                        <div style={{ width: '60px', height: '60px', background: 'var(--surface)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px', color: 'var(--text-light)', fontSize: '24px' }}>
                                             <i className="fa-regular fa-calendar-plus"></i>
                                         </div>
                                         <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#334155', marginBottom: '6px' }}>No Registrations Yet</h3>
-                                        <p style={{ color: '#64748b', fontSize: '13px', maxWidth: '250px', margin: '0 0 20px' }}>Explore upcoming events and register to participate.</p>
-                                        <button onClick={() => setActiveTab('events')} className="btn" style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '10px 24px', borderRadius: '10px', fontWeight: '600', fontSize: '13px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.25)' }}>Browse Events</button>
+                                        <p style={{ color: 'var(--text-muted)', fontSize: '13px', maxWidth: '250px', margin: '0 0 20px' }}>Explore upcoming events and register to participate.</p>
+                                        <button onClick={() => setActiveTab('events')} className="btn" style={{ background: 'var(--info)', color: 'white', border: 'none', padding: '10px 24px', borderRadius: '10px', fontWeight: '600', fontSize: '13px', cursor: 'pointer', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.25)' }}>Browse Events</button>
                                     </div>
                                 ) : (
                                     <div className="events-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                         {registeredEvents.slice(0, 3).map(event => (
-                                            <div className="event-card" key={event._id} style={{ borderRadius: '16px', display: 'flex', alignItems: 'center', padding: '14px', gap: '16px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}
-                                                onMouseOver={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)'; e.currentTarget.style.borderColor = '#cbd5e1'; }}
-                                                onMouseOut={(e) => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
+                                            <div className="event-card" key={event._id} style={{ borderRadius: '16px', display: 'flex', alignItems: 'center', padding: '14px', gap: '16px', background: 'var(--surface)', border: '1px solid var(--border)', transition: 'all 0.2s' }}
+                                                onMouseOver={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)'; e.currentTarget.style.borderColor = 'var(--text-light)'; }}
+                                                onMouseOut={(e) => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                                             >
                                                 <div style={{ width: '60px', height: '60px', borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
                                                     <img
@@ -366,10 +368,10 @@ const StudentDashboard = () => {
                                                     />
                                                 </div>
                                                 <div className="event-details" style={{ padding: '0', flex: 1, minWidth: 0 }}>
-                                                    <div className="event-title" style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b', marginBottom: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.title}</div>
-                                                    <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: '#64748b' }}>
-                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-regular fa-calendar" style={{ color: '#3b82f6', fontSize: '10px' }}></i> {event.date}</span>
-                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-solid fa-location-dot" style={{ color: '#f59e0b', fontSize: '10px' }}></i> {event.location || 'TBA'}</span>
+                                                    <div className="event-title" style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '6px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.title}</div>
+                                                    <div style={{ display: 'flex', gap: '12px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-regular fa-calendar" style={{ color: 'var(--info)', fontSize: '10px' }}></i> {event.date}</span>
+                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-solid fa-location-dot" style={{ color: 'var(--warning)', fontSize: '10px' }}></i> {event.location || 'TBA'}</span>
                                                     </div>
                                                 </div>
                                                 <div style={{ background: '#ecfdf5', color: '#059669', padding: '6px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: '700', border: '1px solid #d1fae5', whiteSpace: 'nowrap' }}>
@@ -384,8 +386,8 @@ const StudentDashboard = () => {
                             {/* Notifications Panel */}
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.8s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#f59e0b', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--warning)', borderRadius: '4px', display: 'block' }}></span>
                                         Notifications
                                     </div>
                                 </div>
@@ -396,16 +398,16 @@ const StudentDashboard = () => {
                                                 <i className={`fa-solid ${notif.icon}`}></i>
                                             </div>
                                             <div>
-                                                <h4 style={{ fontSize: '13px', fontWeight: '700', color: '#1e293b', marginBottom: '4px', lineHeight: '1.4' }}>{notif.title}</h4>
-                                                <p style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px', lineHeight: '1.5' }}>{notif.message}</p>
-                                                <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: '500', background: '#f8fafc', padding: '2px 8px', borderRadius: '6px' }}>{notif.time}</span>
+                                                <h4 style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '4px', lineHeight: '1.4' }}>{notif.title}</h4>
+                                                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '8px', lineHeight: '1.5' }}>{notif.message}</p>
+                                                <span style={{ fontSize: '10px', color: 'var(--text-light)', fontWeight: '500', background: 'var(--surface)', padding: '2px 8px', borderRadius: '6px' }}>{notif.time}</span>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                <button style={{ width: '100%', marginTop: 'auto', paddingTop: '20px', background: 'none', border: 'none', borderTop: '1px dashed #e2e8f0', color: '#64748b', fontSize: '12px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
-                                    onMouseOver={(e) => { e.currentTarget.style.color = '#3b82f6'; }}
-                                    onMouseOut={(e) => { e.currentTarget.style.color = '#64748b'; }}
+                                <button style={{ width: '100%', marginTop: 'auto', paddingTop: '20px', background: 'none', border: 'none', borderTop: '1px dashed var(--border)', color: 'var(--text-muted)', fontSize: '12px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                                    onMouseOver={(e) => { e.currentTarget.style.color = 'var(--info)'; }}
+                                    onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; }}
                                 >
                                     View All Notifications <i className="fa-solid fa-chevron-right" style={{ fontSize: '10px' }}></i>
                                 </button>
@@ -417,8 +419,8 @@ const StudentDashboard = () => {
                 {activeTab === 'events' && (
                     <div className="events-column" style={{ animation: 'fadeInUp 0.4s ease-out' }}>
                         <div className="section-header" style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                 Upcoming Events
                             </div>
 
@@ -429,9 +431,9 @@ const StudentDashboard = () => {
                                     style={{
                                         padding: '8px 20px',
                                         borderRadius: '100px',
-                                        border: searchTerm === '' ? 'none' : '1px solid #e2e8f0',
-                                        background: searchTerm === '' ? '#3b82f6' : 'white',
-                                        color: searchTerm === '' ? 'white' : '#64748b',
+                                        border: searchTerm === '' ? 'none' : '1px solid var(--border)',
+                                        background: searchTerm === '' ? 'var(--info)' : 'white',
+                                        color: searchTerm === '' ? 'white' : 'var(--text-muted)',
                                         fontWeight: '600',
                                         fontSize: '14px',
                                         cursor: 'pointer',
@@ -449,9 +451,9 @@ const StudentDashboard = () => {
                                         style={{
                                             padding: '8px 20px',
                                             borderRadius: '100px',
-                                            border: searchTerm === cat ? 'none' : '1px solid #e2e8f0',
-                                            background: searchTerm === cat ? '#3b82f6' : 'white',
-                                            color: searchTerm === cat ? 'white' : '#64748b',
+                                            border: searchTerm === cat ? 'none' : '1px solid var(--border)',
+                                            background: searchTerm === cat ? 'var(--info)' : 'white',
+                                            color: searchTerm === cat ? 'white' : 'var(--text-muted)',
                                             fontWeight: '600',
                                             fontSize: '14px',
                                             cursor: 'pointer',
@@ -473,8 +475,8 @@ const StudentDashboard = () => {
                         <div className="events-grid">
                             {filteredEvents.length === 0 ? (
                                 <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', background: 'rgba(255,255,255,0.8)', borderRadius: '20px', boxShadow: 'var(--shadow-sm)' }}>
-                                    <i className="fa-regular fa-calendar-xmark" style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}></i>
-                                    <p style={{ color: '#64748b' }}>No events found matching "{searchTerm}".</p>
+                                    <i className="fa-regular fa-calendar-xmark" style={{ fontSize: '48px', color: 'var(--text-light)', marginBottom: '16px' }}></i>
+                                    <p style={{ color: 'var(--text-muted)' }}>No events found matching "{searchTerm}".</p>
                                 </div>
                             ) : (
                                 filteredEvents.map(event => (
@@ -529,11 +531,11 @@ const StudentDashboard = () => {
 
                         {certificates.length === 0 ? (
                             <div style={{ textAlign: 'center', padding: '60px', background: 'rgba(255,255,255,0.6)', borderRadius: '20px', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.5)' }}>
-                                <div style={{ width: '100px', height: '100px', background: '#fff7ed', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: '#ea580c', fontSize: '40px', boxShadow: '0 10px 25px rgba(234, 88, 12, 0.2)' }}>
+                                <div style={{ width: '100px', height: '100px', background: 'var(--surface-glass)7ed', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: '#ea580c', fontSize: '40px', boxShadow: '0 10px 25px rgba(234, 88, 12, 0.2)' }}>
                                     <i className="fa-solid fa-award"></i>
                                 </div>
                                 <h3 style={{ fontSize: '22px', marginBottom: '10px', color: '#334155', fontWeight: 'bold' }}>No Certificates Yet</h3>
-                                <p style={{ color: '#64748b', fontSize: '16px', maxWidth: '400px', margin: '0 auto' }}>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '16px', maxWidth: '400px', margin: '0 auto' }}>
                                     Participate in events and workshops to earn verified certificates for your portfolio.
                                 </p>
                                 <button onClick={() => setActiveTab('events')} className="btn" style={{ width: 'auto', marginTop: '25px', padding: '12px 30px' }}>Browse Events</button>
@@ -552,7 +554,7 @@ const StudentDashboard = () => {
                     <div className="modal-content" style={{ width: '750px', background: 'white', borderRadius: '40px', padding: '8px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'fadeInUp 0.3s ease-out', display: 'flex' }}>
 
                         {/* Left Side - Profile Summary */}
-                        <div style={{ width: '280px', borderRadius: '32px', background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)', padding: '40px 30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', textAlign: 'center', boxShadow: '0 10px 40px -10px rgba(37, 99, 235, 0.4)' }}>
+                        <div style={{ width: '280px', borderRadius: '32px', background: 'linear-gradient(135deg, #1e3a8a 0%, var(--info) 100%)', padding: '40px 30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', textAlign: 'center', boxShadow: '0 10px 40px -10px rgba(37, 99, 235, 0.4)' }}>
                             <div style={{ width: '110px', height: '110px', borderRadius: '50%', border: '4px solid rgba(255,255,255,0.3)', marginBottom: '20px', overflow: 'hidden', boxShadow: '0 8px 16px rgba(0,0,0,0.2)' }}>
                                 <img src={`https://ui-avatars.com/api/?name=${currentUser.name}&size=200&background=fff&color=1e3a8a`} alt="Profile" style={{ width: '100%', height: '100%' }} />
                             </div>
@@ -562,28 +564,28 @@ const StudentDashboard = () => {
 
                         {/* Right Side - Details */}
                         <div style={{ flex: 1, padding: '40px', position: 'relative' }}>
-                            <button onClick={() => setIsIdModalOpen(false)} style={{ position: 'absolute', top: '25px', right: '25px', background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', transition: 'all 0.2s' }}
-                                onMouseOver={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#334155' }}
-                                onMouseOut={(e) => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = '#64748b' }}>
+                            <button onClick={() => setIsIdModalOpen(false)} style={{ position: 'absolute', top: '25px', right: '25px', background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', transition: 'all 0.2s' }}
+                                onMouseOver={(e) => { e.currentTarget.style.background = 'var(--border)'; e.currentTarget.style.color = '#334155' }}
+                                onMouseOut={(e) => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = 'var(--text-muted)' }}>
                                 <i className="fa-solid fa-xmark"></i>
                             </button>
 
-                            <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', marginBottom: '25px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span style={{ width: '4px', height: '20px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                            <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '25px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '20px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                 Academic Details
                             </h3>
 
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                                <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
-                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Student ID</label>
+                                <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Student ID</label>
                                     <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155' }}>{currentUser.id}</div>
                                 </div>
-                                <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
-                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Branch</label>
+                                <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Branch</label>
                                     <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155' }}>{currentUser.branch || 'N/A'}</div>
                                 </div>
-                                <div style={{ gridColumn: 'span 2', background: '#f8fafc', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
-                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Email Address</label>
+                                <div style={{ gridColumn: 'span 2', background: 'var(--surface)', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Email Address</label>
                                     <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155' }}>{currentUser.email}</div>
                                 </div>
                             </div>

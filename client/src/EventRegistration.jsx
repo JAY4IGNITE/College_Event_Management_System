@@ -86,7 +86,7 @@ const EventRegistration = () => {
             <div className="container" style={{ width: '100%', maxWidth: '800px', background: 'rgba(255, 255, 255, 0.95)', borderRadius: '24px', boxShadow: '0 20px 40px -10px rgba(0, 0, 0, 0.15)', padding: '0', display: 'grid', gridTemplateColumns: '1fr 1.4fr', overflow: 'hidden', backdropFilter: 'blur(12px)' }}>
 
                 {/* Left Side - Event Info */}
-                <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)', padding: '40px', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ background: 'linear-gradient(135deg, #1e3a8a 0%, var(--info) 100%)', padding: '40px', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
                     {/* Decorative Elements */}
                     <div style={{ position: 'absolute', top: '-20px', right: '-20px', width: '150px', height: '150px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%' }}></div>
                     <div style={{ position: 'absolute', bottom: '-40px', left: '-40px', width: '200px', height: '200px', background: 'rgba(255,255,255,0.05)', borderRadius: '50%' }}></div>
@@ -97,7 +97,7 @@ const EventRegistration = () => {
                         </div>
 
                         <h2 style={{ fontSize: '42px', fontWeight: '800', marginBottom: '8px', lineHeight: '1.1', textShadow: '0 4px 6px rgba(0,0,0,0.2)', letterSpacing: '-1px', color: 'white' }}>Event<br />Registration</h2>
-                        <p style={{ color: '#e2e8f0', fontSize: '16px', marginBottom: '40px', lineHeight: '1.6', fontWeight: '500' }}>Complete your registration for <br /><span style={{ fontWeight: '700', color: '#60a5fa', fontSize: '18px' }}>{eventDetails.title}</span></p>
+                        <p style={{ color: 'var(--border)', fontSize: '16px', marginBottom: '40px', lineHeight: '1.6', fontWeight: '500' }}>Complete your registration for <br /><span style={{ fontWeight: '700', color: '#60a5fa', fontSize: '18px' }}>{eventDetails.title}</span></p>
 
                         <div style={{ background: 'rgba(255,255,255,0.15)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.25)' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -129,62 +129,62 @@ const EventRegistration = () => {
 
                 {/* Right Side - Form */}
                 <div style={{ padding: '40px', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-                    <Link to="/student-dashboard" style={{ position: 'absolute', top: '25px', right: '25px', width: '32px', height: '32px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', transition: 'all 0.2s', border: 'none', cursor: 'pointer', textDecoration: 'none', fontSize: '14px', zIndex: 10 }}
-                        onMouseOver={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#334155'; }}
-                        onMouseOut={(e) => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = '#64748b'; }}
+                    <Link to="/student-dashboard" style={{ position: 'absolute', top: '25px', right: '25px', width: '32px', height: '32px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', transition: 'all 0.2s', border: 'none', cursor: 'pointer', textDecoration: 'none', fontSize: '14px', zIndex: 10 }}
+                        onMouseOver={(e) => { e.currentTarget.style.background = 'var(--border)'; e.currentTarget.style.color = '#334155'; }}
+                        onMouseOut={(e) => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = 'var(--text-muted)'; }}
                     >
                         <i className="fa-solid fa-xmark"></i>
                     </Link>
 
                     <div style={{ marginBottom: '25px', marginTop: '5px' }}>
-                        <h3 style={{ fontSize: '26px', fontWeight: '800', color: '#1e293b', marginBottom: '6px' }}>Confirm Details</h3>
-                        <p style={{ color: '#64748b', fontSize: '14px' }}>Please provide your details below.</p>
+                        <h3 style={{ fontSize: '26px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '6px' }}>Confirm Details</h3>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Please provide your details below.</p>
                     </div>
 
                     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                         <div className="form-group">
-                            <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Full Name</label>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Full Name</label>
                             <input
                                 type="text"
                                 defaultValue={currentUser?.name || ''}
                                 required
                                 placeholder="Full Name"
-                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
-                                onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                onBlur={(e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; }}
+                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
+                                onFocus={(e) => { e.target.style.borderColor = 'var(--info)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                onBlur={(e) => { e.target.style.borderColor = 'var(--text-light)'; e.target.style.boxShadow = 'none'; }}
                             />
                         </div>
                         <div className="form-group">
-                            <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Email</label>
+                            <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Email</label>
                             <input
                                 type="email"
                                 defaultValue={currentUser?.email || ''}
                                 required
                                 placeholder="Email Address"
-                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
-                                onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                onBlur={(e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; }}
+                                style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
+                                onFocus={(e) => { e.target.style.borderColor = 'var(--info)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                onBlur={(e) => { e.target.style.borderColor = 'var(--text-light)'; e.target.style.boxShadow = 'none'; }}
                             />
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                             <div className="form-group">
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>ID</label>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>ID</label>
                                 <input
                                     type="text"
                                     defaultValue={currentUser?.id || ''}
                                     required
                                     placeholder="Student ID"
-                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
-                                    onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                    onBlur={(e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; }}
+                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
+                                    onFocus={(e) => { e.target.style.borderColor = 'var(--info)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                    onBlur={(e) => { e.target.style.borderColor = 'var(--text-light)'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
                             <div className="form-group">
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Year</label>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Year</label>
                                 <select
-                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
-                                    onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                    onBlur={(e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; }}
+                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
+                                    onFocus={(e) => { e.target.style.borderColor = 'var(--info)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                    onBlur={(e) => { e.target.style.borderColor = 'var(--text-light)'; e.target.style.boxShadow = 'none'; }}
                                 >
                                     <option>1st Year</option>
                                     <option>2nd Year</option>
@@ -195,11 +195,11 @@ const EventRegistration = () => {
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                             <div className="form-group">
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Department</label>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Department</label>
                                 <select
-                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
-                                    onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                    onBlur={(e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; }}
+                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
+                                    onFocus={(e) => { e.target.style.borderColor = 'var(--info)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                    onBlur={(e) => { e.target.style.borderColor = 'var(--text-light)'; e.target.style.boxShadow = 'none'; }}
                                 >
                                     <option>CSE</option>
                                     <option>ECE</option>
@@ -210,7 +210,7 @@ const EventRegistration = () => {
                                 </select>
                             </div>
                             <div className="form-group">
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: '#64748b', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Mobile</label>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Mobile</label>
                                 <input
                                     type="tel"
                                     placeholder="10-digit Mobile Number"
@@ -219,9 +219,9 @@ const EventRegistration = () => {
                                     title="Please enter exactly 10 digits"
                                     required
                                     onInput={(e) => e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10)}
-                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
-                                    onFocus={(e) => { e.target.style.borderColor = '#3b82f6'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
-                                    onBlur={(e) => { e.target.style.borderColor = '#cbd5e1'; e.target.style.boxShadow = 'none'; }}
+                                    style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', color: '#334155', transition: 'all 0.2s', fontWeight: '500', outline: 'none' }}
+                                    onFocus={(e) => { e.target.style.borderColor = 'var(--info)'; e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)'; }}
+                                    onBlur={(e) => { e.target.style.borderColor = 'var(--text-light)'; e.target.style.boxShadow = 'none'; }}
                                 />
                             </div>
                         </div>
@@ -232,7 +232,7 @@ const EventRegistration = () => {
                             type="submit"
                             className="btn"
                             style={{
-                                background: '#3b82f6',
+                                background: 'var(--info)',
                                 color: 'white',
                                 width: '100%',
                                 padding: '12px',
@@ -249,8 +249,8 @@ const EventRegistration = () => {
                                 gap: '8px',
                                 letterSpacing: '0.3px'
                             }}
-                            onMouseOver={(e) => { e.currentTarget.style.background = '#2563eb'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
-                            onMouseOut={(e) => { e.currentTarget.style.background = '#3b82f6'; e.currentTarget.style.transform = 'none'; }}
+                            onMouseOver={(e) => { e.currentTarget.style.background = 'var(--primary)'; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.background = 'var(--info)'; e.currentTarget.style.transform = 'none'; }}
                         >
                             {eventDetails.price > 0 ? (
                                 <>
@@ -270,9 +270,9 @@ const EventRegistration = () => {
                 <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(5px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, animation: 'fadeIn 0.2s' }}>
                     <div className="modal-content" style={{ background: 'white', width: '90%', maxWidth: '380px', borderRadius: '20px', padding: '0', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'slideIn 0.2s', overflow: 'hidden' }}>
 
-                        <div style={{ padding: '16px 24px', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <h3 style={{ fontSize: '16px', fontWeight: '700', color: '#1e293b', margin: 0 }}>Checkout</h3>
-                            <button onClick={() => setPaymentModalOpen(false)} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer', fontSize: '16px', padding: '4px' }}><i className="fa-solid fa-xmark"></i></button>
+                        <div style={{ padding: '16px 24px', background: 'var(--surface)', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <h3 style={{ fontSize: '16px', fontWeight: '700', color: 'var(--text-main)', margin: 0 }}>Checkout</h3>
+                            <button onClick={() => setPaymentModalOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-light)', cursor: 'pointer', fontSize: '16px', padding: '4px' }}><i className="fa-solid fa-xmark"></i></button>
                         </div>
 
                         <div style={{ padding: '24px' }}>
@@ -289,13 +289,13 @@ const EventRegistration = () => {
                                         style={{
                                             padding: '10px',
                                             borderRadius: '8px',
-                                            border: paymentMethod === 'upi' ? '2px solid #3b82f6' : '1px solid #cbd5e1',
+                                            border: paymentMethod === 'upi' ? '2px solid var(--info)' : '1px solid var(--text-light)',
                                             background: paymentMethod === 'upi' ? '#eff6ff' : 'white',
                                             cursor: 'pointer',
                                             textAlign: 'center',
                                             fontSize: '12px',
                                             fontWeight: '600',
-                                            color: paymentMethod === 'upi' ? '#1d4ed8' : '#64748b'
+                                            color: paymentMethod === 'upi' ? '#1d4ed8' : 'var(--text-muted)'
                                         }}
                                     >
                                         UPI
@@ -305,13 +305,13 @@ const EventRegistration = () => {
                                         style={{
                                             padding: '10px',
                                             borderRadius: '8px',
-                                            border: paymentMethod === 'card' ? '2px solid #3b82f6' : '1px solid #cbd5e1',
+                                            border: paymentMethod === 'card' ? '2px solid var(--info)' : '1px solid var(--text-light)',
                                             background: paymentMethod === 'card' ? '#eff6ff' : 'white',
                                             cursor: 'pointer',
                                             textAlign: 'center',
                                             fontSize: '12px',
                                             fontWeight: '600',
-                                            color: paymentMethod === 'card' ? '#1d4ed8' : '#64748b'
+                                            color: paymentMethod === 'card' ? '#1d4ed8' : 'var(--text-muted)'
                                         }}
                                     >
                                         Card
@@ -326,13 +326,13 @@ const EventRegistration = () => {
                                         placeholder="Enter UPI ID (e.g. user@bank)"
                                         value={upiId}
                                         onChange={(e) => setUpiId(e.target.value)}
-                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '13px', background: 'white', outline: 'none' }}
-                                        onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                        onBlur={(e) => e.target.style.borderColor = '#cbd5e1'}
+                                        style={{ width: '100%', padding: '10px 14px', borderRadius: '8px', border: '1px solid var(--text-light)', fontSize: '13px', background: 'white', outline: 'none' }}
+                                        onFocus={(e) => e.target.style.borderColor = 'var(--info)'}
+                                        onBlur={(e) => e.target.style.borderColor = 'var(--text-light)'}
                                     />
                                 </div>
                             ) : (
-                                <div style={{ padding: '10px', background: '#fef2f2', borderRadius: '8px', color: '#ef4444', fontSize: '12px', textAlign: 'center', marginBottom: '20px' }}>
+                                <div style={{ padding: '10px', background: '#fef2f2', borderRadius: '8px', color: 'var(--danger)', fontSize: '12px', textAlign: 'center', marginBottom: '20px' }}>
                                     Unavailable
                                 </div>
                             )}
@@ -342,7 +342,7 @@ const EventRegistration = () => {
                                 onClick={handleRegister}
                                 disabled={isProcessing || (paymentMethod === 'card')}
                                 style={{
-                                    background: '#10b981',
+                                    background: 'var(--success)',
                                     color: 'white',
                                     width: '100%',
                                     padding: '12px',

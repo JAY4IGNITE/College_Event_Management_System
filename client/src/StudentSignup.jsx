@@ -168,7 +168,7 @@ const StudentSignup = () => {
                     </div>
 
                     <div className="form-group" style={{ gridColumn: 'span 2' }}>
-                        <small style={{ color: '#64748b', fontSize: '12px', display: 'block', marginTop: '-10px', marginBottom: '10px' }}>
+                        <small style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginTop: '-10px', marginBottom: '10px' }}>
                             Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.
                         </small>
                     </div>

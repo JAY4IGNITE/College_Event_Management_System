@@ -9,11 +9,19 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoggingIn, setIsLoggingIn] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
 
     const [showSupport, setShowSupport] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setErrorMsg('');
+
+        if (!userId.trim() || !password.trim()) {
+            setErrorMsg('Please enter your User ID and Password.');
+            return;
+        }
+
         setIsLoggingIn(true);
         try {
             // No role sent, backend determines it
@@ -34,11 +42,11 @@ const Login = () => {
                 else if (data.role === 'organizer') navigate('/organizer-dashboard');
                 else navigate('/student-dashboard');
             } else {
-                alert(data.message || 'Login failed');
+                setErrorMsg(data.message || 'Invalid credentials. Please try again.');
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('Server error. Ensure backend is running.');
+            setErrorMsg('Server error. Ensure backend is running.');
         } finally {
             setIsLoggingIn(false);
         }
@@ -46,14 +54,14 @@ const Login = () => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100%' }}>
-            <div className="container" style={{ width: '500px', padding: '48px', position: 'relative' }}>
-                <div className="login-header" style={{ marginBottom: '40px' }}>
-                    <div className="login-brand" style={{ gap: '12px', marginBottom: '16px' }}>
+            <div className="container" style={{ width: '400px', padding: '32px', position: 'relative' }}>
+                <div className="login-header" style={{ marginBottom: '24px' }}>
+                    <div className="login-brand" style={{ gap: '12px', marginBottom: '12px' }}>
                         <img src="/aditya.jpg" alt="Logo" style={{ height: '45px', width: 'auto', borderRadius: '10px' }} />
                         <h2 style={{
                             fontSize: '18px',
                             fontWeight: '700',
-                            color: '#1e293b',
+                            color: 'var(--text-main)',
                             letterSpacing: '-0.3px',
                             fontFamily: "'Outfit', sans-serif",
                             margin: 0
@@ -61,7 +69,7 @@ const Login = () => {
                             Aditya University
                         </h2>
                     </div>
-                    <p className="subtitle" style={{ fontSize: '14px', color: '#64748b', fontWeight: '500', marginTop: '0' }}>Welcome back! Please login to your account.</p>
+                    <p className="subtitle" style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500', marginTop: '0' }}>Welcome, please enter your login credentials.</p>
                 </div>
 
                 <form onSubmit={handleLogin}>
@@ -69,9 +77,9 @@ const Login = () => {
                         <input
                             type="text"
                             placeholder="User ID or Email"
-                            required
+                            className={errorMsg ? 'input-error' : ''}
                             value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
+                            onChange={(e) => { setUserId(e.target.value); setErrorMsg(''); }}
                         />
                         <i className="fa-solid fa-user input-icon"></i>
                     </div>
@@ -80,9 +88,9 @@ const Login = () => {
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Password"
-                            required
+                            className={errorMsg ? 'input-error' : ''}
                             value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => { setPassword(e.target.value); setErrorMsg(''); }}
                             style={{ paddingRight: '40px' }}
                         />
                         <i className="fa-solid fa-lock input-icon"></i>
@@ -100,11 +108,18 @@ const Login = () => {
                         ></i>
                     </div>
 
-                    <div style={{ textAlign: 'right', marginBottom: '24px' }}>
+                    <div style={{ textAlign: 'right', marginBottom: errorMsg ? '16px' : '24px' }}>
                         <Link to="/forgot-password" className="forgot-pass-link">Forgot Password?</Link>
                     </div>
 
-                    <button type="submit" className="btn" disabled={isLoggingIn}>
+                    {errorMsg && (
+                        <div className="error-text">
+                            <i className="fa-solid fa-circle-exclamation"></i>
+                            {errorMsg}
+                        </div>
+                    )}
+
+                    <button type="submit" className="btn" disabled={isLoggingIn} style={{ opacity: isLoggingIn ? 0.8 : 1 }}>
                         {isLoggingIn ? <span><i className="fa-solid fa-circle-notch fa-spin"></i> Signing In...</span> : 'Sign In'}
                     </button>
                 </form>
@@ -121,39 +136,39 @@ const Login = () => {
                     </div>
                 </div>
 
-                <div style={{ marginTop: '32px', textAlign: 'center', borderTop: '1px solid #f1f5f9', paddingTop: '24px' }}>
-                    <p style={{ fontSize: '11px', color: '#cbd5e1', fontWeight: '600', letterSpacing: '0.5px', textTransform: 'uppercase' }}>College Event Management Portal</p>
+                <div style={{ marginTop: '24px', textAlign: 'center', borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
+                    <p style={{ fontSize: '11px', color: 'var(--text-light)', fontWeight: '600', letterSpacing: '0.5px', textTransform: 'uppercase' }}>College Event Management Portal</p>
                 </div>
-
-                {/* Support Popup Modal */}
-                {showSupport && (
-                    <div className="modal" onClick={() => setShowSupport(false)}>
-                        <div className="modal-content" style={{ width: '350px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
-                            <span className="close" onClick={() => setShowSupport(false)}>&times;</span>
-                            <div style={{ color: 'var(--primary)', fontSize: '48px', marginBottom: '16px' }}>
-                                <i className="fa-solid fa-headset"></i>
-                            </div>
-                            <h3 style={{ marginBottom: '16px', color: 'var(--text-main)' }}>Contact Support</h3>
-                            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
-                                Having trouble logging in? Contact our admin team for assistance.
-                            </p>
-
-                            <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', marginBottom: '12px', textAlign: 'left' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
-                                    <i className="fa-solid fa-envelope" style={{ color: 'var(--primary)', width: '24px' }}></i>
-                                    <span style={{ fontWeight: 500, color: 'var(--text-main)' }}>admin@aditya.edu</span>
-                                </div>
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <i className="fa-solid fa-phone" style={{ color: 'var(--success)', width: '24px' }}></i>
-                                    <span style={{ fontWeight: 500, color: 'var(--text-main)' }}>+91 98765 43210</span>
-                                </div>
-                            </div>
-
-                            <button className="btn" onClick={() => setShowSupport(false)} style={{ marginTop: '10px' }}>Close</button>
-                        </div>
-                    </div>
-                )}
             </div>
+
+            {/* Support Popup Modal - Rendered outside container to avoid being clipped or constrained by parent relative context */}
+            {showSupport && (
+                <div className="modal" onClick={() => setShowSupport(false)}>
+                    <div className="modal-content" style={{ width: '350px', textAlign: 'center' }} onClick={e => e.stopPropagation()}>
+                        <span className="close" onClick={() => setShowSupport(false)}>&times;</span>
+                        <div style={{ color: 'var(--primary)', fontSize: '48px', marginBottom: '16px' }}>
+                            <i className="fa-solid fa-headset"></i>
+                        </div>
+                        <h3 style={{ marginBottom: '16px', color: 'var(--text-main)' }}>Contact Support</h3>
+                        <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+                            Having trouble logging in? Contact our admin team for assistance.
+                        </p>
+
+                        <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px', marginBottom: '12px', textAlign: 'left', border: '1px solid var(--border)' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '12px' }}>
+                                <i className="fa-solid fa-envelope" style={{ color: 'var(--primary)', width: '24px' }}></i>
+                                <span style={{ fontWeight: 500, color: 'var(--text-main)' }}>admin@aditya.edu</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <i className="fa-solid fa-phone" style={{ color: 'var(--success)', width: '24px' }}></i>
+                                <span style={{ fontWeight: 500, color: 'var(--text-main)' }}>+91 98765 43210</span>
+                            </div>
+                        </div>
+
+                        <button className="btn" onClick={() => setShowSupport(false)} style={{ marginTop: '10px' }}>Close</button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

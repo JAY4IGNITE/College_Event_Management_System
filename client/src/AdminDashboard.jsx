@@ -112,7 +112,7 @@ const AdminDashboard = () => {
                     message: `${student.name} registered as a student`,
                     timestamp: new Date(Date.now() - Math.random() * 86400000 * 7),
                     icon: 'fa-user-plus',
-                    color: '#3b82f6'
+                    color: 'var(--info)'
                 });
             });
 
@@ -190,8 +190,10 @@ const AdminDashboard = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('currentUser');
-        navigate('/');
+        if (window.confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('currentUser');
+            navigate('/');
+        }
     };
 
     const handleTabChange = (tab) => {
@@ -370,10 +372,10 @@ const AdminDashboard = () => {
     return (
         <div style={{ paddingBottom: '50px' }}>
             {/* Navbar */}
-            <nav className="dashboard-nav" style={{ padding: '20px 40px', background: '#ffffff', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
+            <nav className="dashboard-nav" style={{ padding: '20px 40px', background: 'var(--surface-glass)', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
                 <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <img src="/aditya.jpg" alt="Logo" style={{ height: '36px', borderRadius: '4px', mixBlendMode: 'multiply' }} />
-                    <span style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', letterSpacing: '-0.3px', fontFamily: "'Outfit', sans-serif" }}>
+                    <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', letterSpacing: '-0.3px', fontFamily: "'Outfit', sans-serif" }}>
                         Aditya University
                     </span>
 
@@ -384,7 +386,7 @@ const AdminDashboard = () => {
                         onClick={() => handleTabChange('home')}
                         style={{
                             background: activeTab === 'home' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'home' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'home' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -403,7 +405,7 @@ const AdminDashboard = () => {
                         onClick={() => handleTabChange('approvals')}
                         style={{
                             background: activeTab === 'approvals' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'approvals' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'approvals' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -418,14 +420,14 @@ const AdminDashboard = () => {
                     >
                         <i className="fa-solid fa-check-double" style={{ fontSize: '13px' }}></i> Approvals
                         {pendingEvents.length > 0 && (
-                            <span style={{ background: '#ef4444', color: 'white', fontSize: '10px', padding: '2px 6px', borderRadius: '10px', marginLeft: '4px' }}>{pendingEvents.length}</span>
+                            <span style={{ background: 'var(--danger)', color: 'white', fontSize: '10px', padding: '2px 6px', borderRadius: '10px', marginLeft: '4px' }}>{pendingEvents.length}</span>
                         )}
                     </button>
                     <button
                         onClick={() => handleTabChange('users')}
                         style={{
                             background: activeTab === 'users' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'users' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'users' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -444,7 +446,7 @@ const AdminDashboard = () => {
                         onClick={() => handleTabChange('events')}
                         style={{
                             background: activeTab === 'events' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'events' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'events' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -463,7 +465,7 @@ const AdminDashboard = () => {
                         onClick={() => handleTabChange('analytics')}
                         style={{
                             background: activeTab === 'analytics' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'analytics' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'analytics' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -489,7 +491,7 @@ const AdminDashboard = () => {
                                 padding: '6px',
                                 paddingRight: '16px',
                                 background: 'white',
-                                border: '1px solid #e2e8f0',
+                                border: '1px solid var(--border)',
                                 borderRadius: '100px',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -514,8 +516,8 @@ const AdminDashboard = () => {
                                 height: '48px',
                                 borderRadius: '50%',
                                 background: 'white',
-                                border: '1px solid #e2e8f0',
-                                color: '#ef4444',
+                                border: '1px solid var(--border)',
+                                color: 'var(--danger)',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -538,7 +540,7 @@ const AdminDashboard = () => {
                         <div className="welcome-banner" style={{
                             position: 'relative',
                             borderRadius: '24px',
-                            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                            background: 'linear-gradient(135deg, var(--info) 0%, var(--primary) 100%)',
                             overflow: 'hidden',
                             padding: '40px',
                             color: 'white',
@@ -569,7 +571,7 @@ const AdminDashboard = () => {
                                     onClick={() => setActiveTab('approvals')}
                                     style={{
                                         background: 'white',
-                                        color: '#2563eb',
+                                        color: 'var(--primary)',
                                         border: 'none',
                                         padding: '12px 24px',
                                         borderRadius: '12px',
@@ -592,24 +594,24 @@ const AdminDashboard = () => {
 
                         <div className="stats-grid" style={{ animation: 'fadeInUp 0.6s ease-out', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-users"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--info)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-users"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.students}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Total Students</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.students}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Total Students</h4>
                                 </div>
                             </div>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
                                 <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(249, 115, 22, 0.1)', color: '#f97316', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-user-tie"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.organizers}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Total Organizers</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.organizers}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Total Organizers</h4>
                                 </div>
                             </div>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-calendar-check"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-calendar-check"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.events}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Total Events</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.events}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Total Events</h4>
                                 </div>
                             </div>
                         </div>
@@ -617,22 +619,22 @@ const AdminDashboard = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '24px', alignItems: 'stretch', marginBottom: '24px' }}>
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.7s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                         <span style={{ width: '4px', height: '24px', background: '#8b5cf6', borderRadius: '4px', display: 'block' }}></span>
                                         Activity Timeline
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '400px', overflowY: 'auto', paddingRight: '8px' }}>
                                     {activityLog.map(activity => (
-                                        <div key={activity.id} style={{ display: 'flex', alignItems: 'start', gap: '16px', padding: '12px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', transition: 'all 0.2s' }}
+                                        <div key={activity.id} style={{ display: 'flex', alignItems: 'start', gap: '16px', padding: '12px', borderRadius: '12px', background: 'var(--surface)', border: '1px solid var(--border)', transition: 'all 0.2s' }}
                                             onMouseOver={(e) => e.currentTarget.style.background = '#f1f5f9'}
-                                            onMouseOut={(e) => e.currentTarget.style.background = '#f8fafc'}>
+                                            onMouseOut={(e) => e.currentTarget.style.background = 'var(--surface)'}>
                                             <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: `${activity.color}15`, color: activity.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>
                                                 <i className={`fa-solid ${activity.icon}`}></i>
                                             </div>
                                             <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '14px', fontWeight: '600', color: '#1e293b', marginBottom: '4px' }}>{activity.message}</div>
-                                                <div style={{ fontSize: '12px', color: '#94a3b8' }}>
+                                                <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-main)', marginBottom: '4px' }}>{activity.message}</div>
+                                                <div style={{ fontSize: '12px', color: 'var(--text-light)' }}>
                                                     <i className="fa-regular fa-clock" style={{ marginRight: '4px' }}></i>
                                                     {activity.timestamp.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
                                                 </div>
@@ -640,7 +642,7 @@ const AdminDashboard = () => {
                                         </div>
                                     ))}
                                     {activityLog.length === 0 && (
-                                        <div style={{ textAlign: 'center', padding: '40px', color: '#94a3b8' }}>
+                                        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-light)' }}>
                                             <i className="fa-solid fa-inbox" style={{ fontSize: '32px', marginBottom: '12px', display: 'block' }}></i>
                                             No recent activities
                                         </div>
@@ -650,8 +652,8 @@ const AdminDashboard = () => {
 
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.8s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#10b981', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--success)', borderRadius: '4px', display: 'block' }}></span>
                                         Quick Actions
                                     </div>
                                 </div>
@@ -661,7 +663,7 @@ const AdminDashboard = () => {
                                             fetchAllData();
                                         }}
                                         style={{
-                                            background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                                            background: 'linear-gradient(135deg, var(--info) 0%, var(--primary) 100%)',
                                             color: 'white',
                                             border: 'none',
                                             padding: '16px',
@@ -686,7 +688,7 @@ const AdminDashboard = () => {
                                     <button
                                         onClick={() => setActiveTab('approvals')}
                                         style={{
-                                            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                                            background: 'linear-gradient(135deg, var(--warning) 0%, #d97706 100%)',
                                             color: 'white',
                                             border: 'none',
                                             padding: '16px',
@@ -750,7 +752,7 @@ const AdminDashboard = () => {
                                     <button
                                         onClick={() => setActiveTab('analytics')}
                                         style={{
-                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                            background: 'linear-gradient(135deg, var(--success) 0%, #059669 100%)',
                                             color: 'white',
                                             border: 'none',
                                             padding: '16px',
@@ -828,26 +830,26 @@ const AdminDashboard = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.7s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                         Recent Students
                                     </div>
-                                    <button onClick={() => setActiveTab('users')} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}>View All <i className="fa-solid fa-arrow-right"></i></button>
+                                    <button onClick={() => setActiveTab('users')} style={{ background: 'none', border: 'none', color: 'var(--info)', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}>View All <i className="fa-solid fa-arrow-right"></i></button>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {students.slice(0, 5).map(student => (
-                                        <div key={student.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        <div key={student.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', borderRadius: '12px', background: 'var(--surface)', border: '1px solid var(--border)', cursor: 'pointer', transition: 'all 0.2s' }}
                                             onClick={() => handleViewUserDetails(student, 'student')}
                                             onMouseOver={(e) => e.currentTarget.style.background = '#eff6ff'}
-                                            onMouseOut={(e) => e.currentTarget.style.background = '#f8fafc'}>
-                                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#3b82f6', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '600' }}>
+                                            onMouseOut={(e) => e.currentTarget.style.background = 'var(--surface)'}>
+                                            <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--info)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '600' }}>
                                                 {student.name.charAt(0)}
                                             </div>
                                             <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b' }}>{student.name}</div>
-                                                <div style={{ fontSize: '12px', color: '#64748b' }}>{student.branch || 'Student'} • {student.email}</div>
+                                                <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-main)' }}>{student.name}</div>
+                                                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{student.branch || 'Student'} • {student.email}</div>
                                             </div>
-                                            <i className="fa-solid fa-chevron-right" style={{ color: '#cbd5e1', fontSize: '12px' }}></i>
+                                            <i className="fa-solid fa-chevron-right" style={{ color: 'var(--text-light)', fontSize: '12px' }}></i>
                                         </div>
                                     ))}
                                 </div>
@@ -855,25 +857,25 @@ const AdminDashboard = () => {
 
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.8s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                         Recent Organizers
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                                     {organizers.slice(0, 5).map(organizer => (
-                                        <div key={organizer.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        <div key={organizer.id} style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px', borderRadius: '12px', background: 'var(--surface)', border: '1px solid var(--border)', cursor: 'pointer', transition: 'all 0.2s' }}
                                             onClick={() => handleViewUserDetails(organizer, 'organizer')}
-                                            onMouseOver={(e) => e.currentTarget.style.background = '#fff7ed'}
-                                            onMouseOut={(e) => e.currentTarget.style.background = '#f8fafc'}>
+                                            onMouseOver={(e) => e.currentTarget.style.background = 'var(--surface-glass)7ed'}
+                                            onMouseOut={(e) => e.currentTarget.style.background = 'var(--surface)'}>
                                             <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#f97316', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: '600' }}>
                                                 {organizer.name.charAt(0)}
                                             </div>
                                             <div style={{ flex: 1 }}>
-                                                <div style={{ fontSize: '14px', fontWeight: '700', color: '#1e293b' }}>{organizer.name}</div>
-                                                <div style={{ fontSize: '12px', color: '#64748b' }}>{organizer.dept || 'Organizer'} • {organizer.email}</div>
+                                                <div style={{ fontSize: '14px', fontWeight: '700', color: 'var(--text-main)' }}>{organizer.name}</div>
+                                                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{organizer.dept || 'Organizer'} • {organizer.email}</div>
                                             </div>
-                                            <i className="fa-solid fa-chevron-right" style={{ color: '#cbd5e1', fontSize: '12px' }}></i>
+                                            <i className="fa-solid fa-chevron-right" style={{ color: 'var(--text-light)', fontSize: '12px' }}></i>
                                         </div>
                                     ))}
                                 </div>
@@ -885,8 +887,8 @@ const AdminDashboard = () => {
                 {activeTab === 'approvals' && (
                     <div style={{ animation: 'fadeInUp 0.4s ease-out' }}>
                         <div className="section-header" style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                 Pending Approvals
                             </div>
                         </div>
@@ -894,9 +896,9 @@ const AdminDashboard = () => {
                         <div className="events-grid">
                             {pendingEvents.length === 0 ? (
                                 <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', background: 'rgba(255,255,255,0.8)', borderRadius: '20px', boxShadow: 'var(--shadow-sm)' }}>
-                                    <i className="fa-solid fa-check-double" style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}></i>
-                                    <h3 style={{ fontSize: '18px', color: '#64748b', marginBottom: '8px' }}>All caught up!</h3>
-                                    <p style={{ color: '#94a3b8' }}>No pending events to approve.</p>
+                                    <i className="fa-solid fa-check-double" style={{ fontSize: '48px', color: 'var(--text-light)', marginBottom: '16px' }}></i>
+                                    <h3 style={{ fontSize: '18px', color: 'var(--text-muted)', marginBottom: '8px' }}>All caught up!</h3>
+                                    <p style={{ color: 'var(--text-light)' }}>No pending events to approve.</p>
                                 </div>
                             ) : (
                                 pendingEvents.map(event => (
@@ -923,7 +925,7 @@ const AdminDashboard = () => {
                                                 <i className="fa-solid fa-location-dot"></i> {event.location || 'TBA'}
                                             </div>
                                             <div className="event-description">{event.description}</div>
-                                            <div style={{ marginTop: '10px', fontSize: '12px', color: '#64748b' }}>
+                                            <div style={{ marginTop: '10px', fontSize: '12px', color: 'var(--text-muted)' }}>
                                                 <strong>Organizer ID:</strong> {event.organizerId}
                                             </div>
 
@@ -952,7 +954,7 @@ const AdminDashboard = () => {
                                                     onClick={() => handleRejectEvent(event._id)}
                                                     style={{
                                                         background: '#fee2e2',
-                                                        color: '#ef4444',
+                                                        color: 'var(--danger)',
                                                         border: '1px solid #fecaca',
                                                         padding: '10px',
                                                         borderRadius: '8px',
@@ -983,7 +985,7 @@ const AdminDashboard = () => {
                         <div style={{ background: 'white', borderRadius: '20px', padding: '24px', marginBottom: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: '16px', alignItems: 'center' }}>
                                 <div style={{ position: 'relative' }}>
-                                    <i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8', fontSize: '14px' }}></i>
+                                    <i className="fa-solid fa-magnifying-glass" style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-light)', fontSize: '14px' }}></i>
                                     <input
                                         type="text"
                                         placeholder="Search by name, email, or department..."
@@ -993,13 +995,13 @@ const AdminDashboard = () => {
                                             width: '100%',
                                             padding: '12px 16px 12px 44px',
                                             borderRadius: '12px',
-                                            border: '2px solid #e2e8f0',
+                                            border: '2px solid var(--border)',
                                             fontSize: '14px',
                                             outline: 'none',
                                             transition: 'all 0.2s'
                                         }}
-                                        onFocus={(e) => e.target.style.borderColor = '#3b82f6'}
-                                        onBlur={(e) => e.target.style.borderColor = '#e2e8f0'}
+                                        onFocus={(e) => e.target.style.borderColor = 'var(--info)'}
+                                        onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
                                     />
                                 </div>
 
@@ -1009,10 +1011,10 @@ const AdminDashboard = () => {
                                     style={{
                                         padding: '12px 40px 12px 16px',
                                         borderRadius: '12px',
-                                        border: '2px solid #e2e8f0',
+                                        border: '2px solid var(--border)',
                                         fontSize: '14px',
                                         fontWeight: '600',
-                                        color: '#1e293b',
+                                        color: 'var(--text-main)',
                                         cursor: 'pointer',
                                         outline: 'none',
                                         background: 'white',
@@ -1033,10 +1035,10 @@ const AdminDashboard = () => {
                                     style={{
                                         padding: '12px 40px 12px 16px',
                                         borderRadius: '12px',
-                                        border: '2px solid #e2e8f0',
+                                        border: '2px solid var(--border)',
                                         fontSize: '14px',
                                         fontWeight: '600',
-                                        color: '#1e293b',
+                                        color: 'var(--text-main)',
                                         cursor: 'pointer',
                                         outline: 'none',
                                         background: 'white',
@@ -1064,7 +1066,7 @@ const AdminDashboard = () => {
                                     border: '2px solid #bfdbfe'
                                 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                                        <i className="fa-solid fa-circle-check" style={{ color: '#3b82f6', fontSize: '20px' }}></i>
+                                        <i className="fa-solid fa-circle-check" style={{ color: 'var(--info)', fontSize: '20px' }}></i>
                                         <span style={{ fontSize: '14px', fontWeight: '700', color: '#1e40af' }}>
                                             {selectedUsers.length} user(s) selected
                                         </span>
@@ -1075,9 +1077,9 @@ const AdminDashboard = () => {
                                             style={{
                                                 padding: '8px 16px',
                                                 borderRadius: '8px',
-                                                border: '2px solid #3b82f6',
+                                                border: '2px solid var(--info)',
                                                 background: 'white',
-                                                color: '#3b82f6',
+                                                color: 'var(--info)',
                                                 fontSize: '13px',
                                                 fontWeight: '600',
                                                 cursor: 'pointer',
@@ -1094,7 +1096,7 @@ const AdminDashboard = () => {
                                                 padding: '8px 16px',
                                                 borderRadius: '8px',
                                                 border: 'none',
-                                                background: '#ef4444',
+                                                background: 'var(--danger)',
                                                 color: 'white',
                                                 fontSize: '13px',
                                                 fontWeight: '600',
@@ -1105,7 +1107,7 @@ const AdminDashboard = () => {
                                                 transition: 'all 0.2s'
                                             }}
                                             onMouseOver={(e) => e.currentTarget.style.background = '#dc2626'}
-                                            onMouseOut={(e) => e.currentTarget.style.background = '#ef4444'}
+                                            onMouseOut={(e) => e.currentTarget.style.background = 'var(--danger)'}
                                         >
                                             <i className="fa-solid fa-trash-can"></i>
                                             Delete Selected
@@ -1117,10 +1119,10 @@ const AdminDashboard = () => {
 
                         {/* User Directory Header */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                 User Directory
-                                <span style={{ fontSize: '14px', fontWeight: '600', color: '#64748b', marginLeft: '8px' }}>
+                                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-muted)', marginLeft: '8px' }}>
                                     ({getFilteredUsers().length} {filterRole === 'all' ? 'users' : filterRole + 's'})
                                 </span>
                             </div>
@@ -1130,9 +1132,9 @@ const AdminDashboard = () => {
                                     style={{
                                         padding: '10px 20px',
                                         borderRadius: '10px',
-                                        border: '2px solid #e2e8f0',
+                                        border: '2px solid var(--border)',
                                         background: 'white',
-                                        color: '#64748b',
+                                        color: 'var(--text-muted)',
                                         fontSize: '13px',
                                         fontWeight: '600',
                                         cursor: 'pointer',
@@ -1141,8 +1143,8 @@ const AdminDashboard = () => {
                                         alignItems: 'center',
                                         gap: '8px'
                                     }}
-                                    onMouseOver={(e) => { e.currentTarget.style.borderColor = '#3b82f6'; e.currentTarget.style.color = '#3b82f6'; }}
-                                    onMouseOut={(e) => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.color = '#64748b'; }}
+                                    onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--info)'; e.currentTarget.style.color = 'var(--info)'; }}
+                                    onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
                                 >
                                     <i className={`fa-${selectedUsers.length === getFilteredUsers().length && getFilteredUsers().length > 0 ? 'solid' : 'regular'} fa-square-check`}></i>
                                     {selectedUsers.length === getFilteredUsers().length && getFilteredUsers().length > 0 ? 'Deselect All' : 'Select All'}
@@ -1153,7 +1155,7 @@ const AdminDashboard = () => {
                                         padding: '10px 20px',
                                         borderRadius: '10px',
                                         border: 'none',
-                                        background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                                        background: 'linear-gradient(135deg, var(--info) 0%, var(--primary) 100%)',
                                         color: 'white',
                                         fontSize: '13px',
                                         fontWeight: '600',
@@ -1177,16 +1179,16 @@ const AdminDashboard = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))', gap: '16px' }}>
                             {getFilteredUsers().length === 0 ? (
                                 <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', background: 'white', borderRadius: '20px', border: '1px solid #f1f5f9' }}>
-                                    <i className="fa-solid fa-users-slash" style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}></i>
-                                    <h3 style={{ fontSize: '18px', color: '#64748b', marginBottom: '8px' }}>No users found</h3>
-                                    <p style={{ color: '#94a3b8' }}>Try adjusting your search or filter criteria</p>
+                                    <i className="fa-solid fa-users-slash" style={{ fontSize: '48px', color: 'var(--text-light)', marginBottom: '16px' }}></i>
+                                    <h3 style={{ fontSize: '18px', color: 'var(--text-muted)', marginBottom: '8px' }}>No users found</h3>
+                                    <p style={{ color: 'var(--text-light)' }}>Try adjusting your search or filter criteria</p>
                                 </div>
                             ) : (
                                 getFilteredUsers().map(user => {
                                     const userKey = `${user.role}-${user.id}`;
                                     const isSelected = selectedUsers.includes(userKey);
-                                    const roleColor = user.role === 'student' ? '#3b82f6' : '#f97316';
-                                    const roleBg = user.role === 'student' ? '#eff6ff' : '#fff7ed';
+                                    const roleColor = user.role === 'student' ? 'var(--info)' : '#f97316';
+                                    const roleBg = user.role === 'student' ? '#eff6ff' : 'var(--surface-glass)7ed';
 
                                     return (
                                         <div
@@ -1209,7 +1211,7 @@ const AdminDashboard = () => {
                                                 width: '20px',
                                                 height: '20px',
                                                 borderRadius: '6px',
-                                                border: `2px solid ${isSelected ? roleColor : '#cbd5e1'}`,
+                                                border: `2px solid ${isSelected ? roleColor : 'var(--text-light)'}`,
                                                 background: isSelected ? roleColor : 'white',
                                                 display: 'flex',
                                                 alignItems: 'center',
@@ -1225,8 +1227,8 @@ const AdminDashboard = () => {
                                             </div>
 
                                             <div style={{ flex: 1, minWidth: 0 }}>
-                                                <div style={{ fontSize: '15px', fontWeight: '700', color: '#1e293b', marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</div>
-                                                <div style={{ fontSize: '13px', color: '#64748b', marginBottom: '2px' }}>
+                                                <div style={{ fontSize: '15px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.name}</div>
+                                                <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '2px' }}>
                                                     <span style={{
                                                         display: 'inline-block',
                                                         padding: '2px 8px',
@@ -1242,7 +1244,7 @@ const AdminDashboard = () => {
                                                     </span>
                                                     {user.branch || user.dept || 'N/A'}
                                                 </div>
-                                                <div style={{ fontSize: '12px', color: '#94a3b8', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                <div style={{ fontSize: '12px', color: 'var(--text-light)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                                     <i className="fa-regular fa-envelope" style={{ marginRight: '4px' }}></i>
                                                     {user.email}
                                                 </div>
@@ -1274,7 +1276,7 @@ const AdminDashboard = () => {
                                                     onClick={() => handleDeleteUser(user.role, user.id)}
                                                     style={{
                                                         background: '#fee2e2',
-                                                        color: '#ef4444',
+                                                        color: 'var(--danger)',
                                                         border: 'none',
                                                         width: '36px',
                                                         height: '36px',
@@ -1303,7 +1305,7 @@ const AdminDashboard = () => {
                 {activeTab === 'analytics' && (
                     <div style={{ animation: 'fadeInUp 0.4s ease-out' }}>
                         <div className="section-header" style={{ marginBottom: '24px' }}>
-                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <span style={{ width: '4px', height: '24px', background: '#8b5cf6', borderRadius: '4px', display: 'block' }}></span>
                                 System Analytics & Insights
                             </div>
@@ -1368,7 +1370,7 @@ const AdminDashboard = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
                             {/* User Distribution */}
                             <div style={{ background: 'white', borderRadius: '20px', padding: '28px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
-                                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <i className="fa-solid fa-chart-pie" style={{ color: '#8b5cf6' }}></i>
                                     User Distribution
                                 </h3>
@@ -1376,16 +1378,16 @@ const AdminDashboard = () => {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                         <div style={{ flex: 1 }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                                <span style={{ fontSize: '14px', fontWeight: '600', color: '#1e293b' }}>Students</span>
-                                                <span style={{ fontSize: '14px', fontWeight: '700', color: '#3b82f6' }}>
+                                                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-main)' }}>Students</span>
+                                                <span style={{ fontSize: '14px', fontWeight: '700', color: 'var(--info)' }}>
                                                     {getAnalytics().totalStudents} ({getAnalytics().studentPercentage}%)
                                                 </span>
                                             </div>
-                                            <div style={{ height: '8px', background: '#e2e8f0', borderRadius: '10px', overflow: 'hidden' }}>
+                                            <div style={{ height: '8px', background: 'var(--border)', borderRadius: '10px', overflow: 'hidden' }}>
                                                 <div style={{
                                                     height: '100%',
                                                     width: `${getAnalytics().studentPercentage}%`,
-                                                    background: 'linear-gradient(90deg, #3b82f6 0%, #2563eb 100%)',
+                                                    background: 'linear-gradient(90deg, var(--info) 0%, var(--primary) 100%)',
                                                     borderRadius: '10px',
                                                     transition: 'width 0.5s ease'
                                                 }}></div>
@@ -1395,12 +1397,12 @@ const AdminDashboard = () => {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                                         <div style={{ flex: 1 }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                                                <span style={{ fontSize: '14px', fontWeight: '600', color: '#1e293b' }}>Organizers</span>
+                                                <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-main)' }}>Organizers</span>
                                                 <span style={{ fontSize: '14px', fontWeight: '700', color: '#f97316' }}>
                                                     {getAnalytics().totalOrganizers} ({getAnalytics().organizerPercentage}%)
                                                 </span>
                                             </div>
-                                            <div style={{ height: '8px', background: '#e2e8f0', borderRadius: '10px', overflow: 'hidden' }}>
+                                            <div style={{ height: '8px', background: 'var(--border)', borderRadius: '10px', overflow: 'hidden' }}>
                                                 <div style={{
                                                     height: '100%',
                                                     width: `${getAnalytics().organizerPercentage}%`,
@@ -1416,8 +1418,8 @@ const AdminDashboard = () => {
 
                             {/* Event Statistics */}
                             <div style={{ background: 'white', borderRadius: '20px', padding: '28px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)' }}>
-                                <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    <i className="fa-solid fa-calendar-days" style={{ color: '#10b981' }}></i>
+                                <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <i className="fa-solid fa-calendar-days" style={{ color: 'var(--success)' }}></i>
                                     Event Statistics
                                 </h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -1440,7 +1442,7 @@ const AdminDashboard = () => {
                                             <div style={{ fontSize: '13px', color: '#1e40af', fontWeight: '600', marginBottom: '4px' }}>Total Events</div>
                                             <div style={{ fontSize: '24px', fontWeight: '800', color: '#1d4ed8' }}>{stats.events}</div>
                                         </div>
-                                        <i className="fa-solid fa-calendar-check" style={{ fontSize: '32px', color: '#3b82f6' }}></i>
+                                        <i className="fa-solid fa-calendar-check" style={{ fontSize: '32px', color: 'var(--info)' }}></i>
                                     </div>
                                 </div>
                             </div>
@@ -1450,8 +1452,8 @@ const AdminDashboard = () => {
                 {activeTab === 'events' && (
                     <div style={{ animation: 'fadeInUp 0.4s ease-out' }}>
                         <div className="section-header" style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                 All Campus Events
                             </div>
                         </div>
@@ -1459,9 +1461,9 @@ const AdminDashboard = () => {
                         <div className="events-grid">
                             {allEvents.length === 0 ? (
                                 <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', background: 'rgba(255,255,255,0.8)', borderRadius: '20px', boxShadow: 'var(--shadow-sm)' }}>
-                                    <i className="fa-solid fa-calendar-xmark" style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}></i>
-                                    <h3 style={{ fontSize: '18px', color: '#64748b', marginBottom: '8px' }}>No Events Found</h3>
-                                    <p style={{ color: '#94a3b8' }}>There are currently no events registered in the system.</p>
+                                    <i className="fa-solid fa-calendar-xmark" style={{ fontSize: '48px', color: 'var(--text-light)', marginBottom: '16px' }}></i>
+                                    <h3 style={{ fontSize: '18px', color: 'var(--text-muted)', marginBottom: '8px' }}>No Events Found</h3>
+                                    <p style={{ color: 'var(--text-light)' }}>There are currently no events registered in the system.</p>
                                 </div>
                             ) : (
                                 allEvents.map(event => (
@@ -1478,7 +1480,7 @@ const AdminDashboard = () => {
                                                 )}
                                                 alt={event.title}
                                             />
-                                            <span className="event-tag" style={{ background: event.isApproved ? '#10b981' : '#f59e0b' }}>
+                                            <span className="event-tag" style={{ background: event.isApproved ? 'var(--success)' : 'var(--warning)' }}>
                                                 {event.isApproved ? 'Approved' : 'Pending'}
                                             </span>
                                         </div>
@@ -1492,7 +1494,7 @@ const AdminDashboard = () => {
                                                     style={{
                                                         flex: 1,
                                                         background: '#fee2e2',
-                                                        color: '#ef4444',
+                                                        color: 'var(--danger)',
                                                         border: '1px solid #fecaca',
                                                         padding: '10px',
                                                         borderRadius: '8px',
@@ -1557,15 +1559,15 @@ const AdminDashboard = () => {
                                 borderRadius: '50%',
                                 border: 'none',
                                 background: '#f1f5f9',
-                                color: '#64748b',
+                                color: 'var(--text-muted)',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 transition: 'all 0.2s'
                             }}
-                            onMouseOver={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#1e293b'; }}
-                            onMouseOut={(e) => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = '#64748b'; }}
+                            onMouseOver={(e) => { e.currentTarget.style.background = 'var(--border)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                            onMouseOut={(e) => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = 'var(--text-muted)'; }}
                         >
                             <i className="fa-solid fa-xmark" style={{ fontSize: '18px' }}></i>
                         </button>
@@ -1575,7 +1577,7 @@ const AdminDashboard = () => {
                                 width: '80px',
                                 height: '80px',
                                 borderRadius: '50%',
-                                background: selectedUser.role === 'student' ? 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)' : 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
+                                background: selectedUser.role === 'student' ? 'linear-gradient(135deg, var(--info) 0%, var(--primary) 100%)' : 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
                                 color: 'white',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -1587,13 +1589,13 @@ const AdminDashboard = () => {
                             }}>
                                 {selectedUser.name.charAt(0)}
                             </div>
-                            <h2 style={{ fontSize: '24px', fontWeight: '800', color: '#1e293b', marginBottom: '8px' }}>{selectedUser.name}</h2>
+                            <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '8px' }}>{selectedUser.name}</h2>
                             <div style={{
                                 display: 'inline-block',
                                 padding: '6px 16px',
                                 borderRadius: '20px',
-                                background: selectedUser.role === 'student' ? '#eff6ff' : '#fff7ed',
-                                color: selectedUser.role === 'student' ? '#2563eb' : '#ea580c',
+                                background: selectedUser.role === 'student' ? '#eff6ff' : 'var(--surface-glass)7ed',
+                                color: selectedUser.role === 'student' ? 'var(--primary)' : '#ea580c',
                                 fontSize: '13px',
                                 fontWeight: '700',
                                 textTransform: 'capitalize'
@@ -1604,28 +1606,28 @@ const AdminDashboard = () => {
                         </div>
 
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                            <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                <div style={{ fontSize: '12px', color: '#64748b', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email Address</div>
-                                <div style={{ fontSize: '15px', color: '#1e293b', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <i className="fa-regular fa-envelope" style={{ color: '#3b82f6' }}></i>
+                            <div style={{ padding: '16px', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Email Address</div>
+                                <div style={{ fontSize: '15px', color: 'var(--text-main)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <i className="fa-regular fa-envelope" style={{ color: 'var(--info)' }}></i>
                                     {selectedUser.email}
                                 </div>
                             </div>
 
-                            <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                <div style={{ fontSize: '12px', color: '#64748b', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            <div style={{ padding: '16px', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                                     {selectedUser.role === 'student' ? 'Branch' : 'Department'}
                                 </div>
-                                <div style={{ fontSize: '15px', color: '#1e293b', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <div style={{ fontSize: '15px', color: 'var(--text-main)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <i className="fa-solid fa-building" style={{ color: '#f97316' }}></i>
                                     {selectedUser.branch || selectedUser.dept || 'Not specified'}
                                 </div>
                             </div>
 
-                            <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                <div style={{ fontSize: '12px', color: '#64748b', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>User ID</div>
-                                <div style={{ fontSize: '15px', color: '#1e293b', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <i className="fa-solid fa-fingerprint" style={{ color: '#10b981' }}></i>
+                            <div style={{ padding: '16px', background: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: '600', marginBottom: '6px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>User ID</div>
+                                <div style={{ fontSize: '15px', color: 'var(--text-main)', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <i className="fa-solid fa-fingerprint" style={{ color: 'var(--success)' }}></i>
                                     {selectedUser.id}
                                 </div>
                             </div>
@@ -1638,16 +1640,16 @@ const AdminDashboard = () => {
                                     flex: 1,
                                     padding: '14px',
                                     borderRadius: '12px',
-                                    border: '2px solid #e2e8f0',
+                                    border: '2px solid var(--border)',
                                     background: 'white',
-                                    color: '#64748b',
+                                    color: 'var(--text-muted)',
                                     fontSize: '14px',
                                     fontWeight: '600',
                                     cursor: 'pointer',
                                     transition: 'all 0.2s'
                                 }}
-                                onMouseOver={(e) => { e.currentTarget.style.borderColor = '#cbd5e1'; e.currentTarget.style.background = '#f8fafc'; }}
-                                onMouseOut={(e) => { e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.background = 'white'; }}
+                                onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--text-light)'; e.currentTarget.style.background = 'var(--surface)'; }}
+                                onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.background = 'white'; }}
                             >
                                 Close
                             </button>
@@ -1661,7 +1663,7 @@ const AdminDashboard = () => {
                                     padding: '14px',
                                     borderRadius: '12px',
                                     border: 'none',
-                                    background: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
+                                    background: 'linear-gradient(135deg, var(--danger) 0%, #dc2626 100%)',
                                     color: 'white',
                                     fontSize: '14px',
                                     fontWeight: '600',

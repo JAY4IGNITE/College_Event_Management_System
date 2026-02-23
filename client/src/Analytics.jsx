@@ -6,7 +6,7 @@ const API_BASE_URL = 'http://localhost:5000'; // Adjust if needed
 // Add styles for Analytics page
 const styles = `
     .dashboard-body {
-        background: #f8fafc;
+        background: var(--surface);
         min-height: 100vh;
     }
     
@@ -29,7 +29,7 @@ const styles = `
         gap: 12px;
         font-size: 18px;
         font-weight: 700;
-        color: #1e293b;
+        color: var(--text-main);
     }
     
     .nav-brand img {
@@ -48,18 +48,18 @@ const styles = `
         font-size: 14px;
         font-weight: 600;
         text-decoration: none;
-        color: #64748b;
+        color: var(--text-muted);
         transition: all 0.3s;
     }
     
     .nav-links a:hover {
         background: #f1f5f9;
-        color: #2563eb;
+        color: var(--primary);
     }
     
     .nav-links a.active {
         background: #EFF6FF;
-        color: #2563eb;
+        color: var(--primary);
     }
     
     .nav-actions {
@@ -74,7 +74,7 @@ const styles = `
         gap: 10px;
         padding: 6px 16px 6px 6px;
         background: white;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border);
         border-radius: 100px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
@@ -104,13 +104,13 @@ const styles = `
     .welcome-section h1 {
         font-size: 32px;
         font-weight: 800;
-        color: #1e293b;
+        color: var(--text-main);
         margin-bottom: 8px;
     }
     
     .welcome-section p {
         font-size: 16px;
-        color: #64748b;
+        color: var(--text-muted);
     }
     
     .section-header {
@@ -120,7 +120,7 @@ const styles = `
     .section-header h2 {
         font-size: 20px;
         font-weight: 700;
-        color: #1e293b;
+        color: var(--text-main);
         display: flex;
         align-items: center;
         gap: 10px;
@@ -130,7 +130,7 @@ const styles = `
         content: '';
         width: 4px;
         height: 24px;
-        background: #3b82f6;
+        background: var(--info);
         border-radius: 4px;
     }
     
@@ -144,7 +144,7 @@ const styles = `
     }
     
     .admin-table thead {
-        background: #f8fafc;
+        background: var(--surface);
     }
     
     .admin-table th {
@@ -152,7 +152,7 @@ const styles = `
         text-align: left;
         font-size: 13px;
         font-weight: 700;
-        color: #64748b;
+        color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -169,7 +169,7 @@ const styles = `
     }
     
     .admin-table tbody tr:hover {
-        background: #f8fafc;
+        background: var(--surface);
     }
     
     .status-badge {
@@ -187,13 +187,13 @@ const styles = `
     }
     
     .status-pending {
-        background: #fff7ed;
+        background: var(--surface-glass)7ed;
         color: #ea580c;
         border: 1px solid #ffedd5;
     }
     
     .btn {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(135deg, var(--info) 0%, var(--primary) 100%);
         color: white;
         border: none;
         padding: 8px 16px;
@@ -260,7 +260,7 @@ const Analytics = () => {
             <nav className="navbar">
                 <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <img src="/aditya.jpg" alt="Logo" style={{ height: '36px', borderRadius: '4px', mixBlendMode: 'multiply' }} />
-                    <span style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', letterSpacing: '-0.3px' }}>
+                    <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', letterSpacing: '-0.3px' }}>
                         Aditya University
                     </span>
                 </div>

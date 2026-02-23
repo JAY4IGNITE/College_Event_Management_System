@@ -6,7 +6,7 @@ const API_BASE_URL = 'http://localhost:5000'; // Adjust if needed
 // Add styles for Create Event page
 const styles = `
     .dashboard-body {
-        background: #f8fafc;
+        background: var(--surface);
         min-height: 100vh;
     }
     
@@ -29,7 +29,7 @@ const styles = `
         gap: 12px;
         font-size: 18px;
         font-weight: 700;
-        color: #1e293b;
+        color: var(--text-main);
     }
     
     .nav-brand img {
@@ -48,18 +48,18 @@ const styles = `
         font-size: 14px;
         font-weight: 600;
         text-decoration: none;
-        color: #64748b;
+        color: var(--text-muted);
         transition: all 0.3s;
     }
     
     .nav-links a:hover {
         background: #f1f5f9;
-        color: #2563eb;
+        color: var(--primary);
     }
     
     .nav-links a.active {
         background: #EFF6FF;
-        color: #2563eb;
+        color: var(--primary);
     }
     
     .nav-actions {
@@ -73,7 +73,7 @@ const styles = `
         align-items: center;
         padding: 6px 16px 6px 6px;
         background: white;
-        border: 1px solid #e2e8f0;
+        border: 1px solid var(--border);
         border-radius: 100px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
@@ -114,7 +114,7 @@ const styles = `
         width: 100%;
         padding: 12px;
         border-radius: 10px;
-        border: 2px solid #e2e8f0;
+        border: 2px solid var(--border);
         font-family: inherit;
         font-size: 14px;
         transition: all 0.2s;
@@ -124,12 +124,12 @@ const styles = `
     .form-group select:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: #3b82f6;
+        border-color: var(--info);
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
     
     .btn {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        background: linear-gradient(135deg, var(--info) 0%, var(--primary) 100%);
         color: white;
         border: none;
         padding: 12px 24px;
@@ -249,7 +249,7 @@ const CreateEvent = () => {
             <nav className="navbar">
                 <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <img src="/aditya.jpg" alt="Logo" style={{ height: '36px', borderRadius: '4px', mixBlendMode: 'multiply' }} />
-                    <span style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', letterSpacing: '-0.3px' }}>
+                    <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', letterSpacing: '-0.3px' }}>
                         Aditya University
                     </span>
                 </div>
@@ -270,11 +270,11 @@ const CreateEvent = () => {
 
             <div className="dashboard-wrapper">
                 <div className="page-header" style={{ marginBottom: '30px' }}>
-                    <Link to="/organizer-dashboard" style={{ color: '#64748b', textDecoration: 'none', fontSize: '14px', fontWeight: '500', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                    <Link to="/organizer-dashboard" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '14px', fontWeight: '500', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
                         <i className="fa-solid fa-arrow-left"></i> Back to Dashboard
                     </Link>
                     <h1 style={{ marginTop: '16px', fontSize: '32px', fontWeight: '800' }}>Create New Event</h1>
-                    <p style={{ color: '#64748b', marginTop: '4px' }}>Fill in the details to publish a new event for students.</p>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '4px' }}>Fill in the details to publish a new event for students.</p>
                 </div>
 
                 <div className="container" style={{ width: '100%', maxWidth: '900px', background: 'white', padding: '40px' }}>
@@ -289,7 +289,7 @@ const CreateEvent = () => {
                                 <label>Description</label>
                                 <textarea
                                     id="eventDescription"
-                                    style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '2px solid #e2e8f0', fontFamily: 'inherit', minHeight: '100px', resize: 'vertical' }}
+                                    style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '2px solid var(--border)', fontFamily: 'inherit', minHeight: '100px', resize: 'vertical' }}
                                     placeholder="Provide a detailed description of the event..."
                                     required
                                     onChange={handleChange}
@@ -300,7 +300,7 @@ const CreateEvent = () => {
                                 <label>Rules & Guidelines</label>
                                 <textarea
                                     id="eventRules"
-                                    style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '2px solid #e2e8f0', fontFamily: 'inherit', minHeight: '80px', resize: 'vertical' }}
+                                    style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '2px solid var(--border)', fontFamily: 'inherit', minHeight: '80px', resize: 'vertical' }}
                                     placeholder="Participation rules, eligibility, etc."
                                     required
                                     onChange={handleChange}
@@ -370,8 +370,8 @@ const CreateEvent = () => {
                             </div>
                         </div>
 
-                        <div style={{ marginTop: '40px', display: 'flex', gap: '15px', justifyContent: 'flex-end', borderTop: '1px solid #e2e8f0', paddingTop: '20px' }}>
-                            <button type="button" className="btn" style={{ width: 'auto', padding: '12px 30px', background: '#f1f5f9', color: '#64748b', boxShadow: 'none' }} onClick={() => navigate('/organizer-dashboard')}>Cancel</button>
+                        <div style={{ marginTop: '40px', display: 'flex', gap: '15px', justifyContent: 'flex-end', borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
+                            <button type="button" className="btn" style={{ width: 'auto', padding: '12px 30px', background: '#f1f5f9', color: 'var(--text-muted)', boxShadow: 'none' }} onClick={() => navigate('/organizer-dashboard')}>Cancel</button>
                             <button type="submit" className="btn" style={{ width: 'auto', padding: '12px 40px' }}>Publish Event</button>
                         </div>
                     </form>

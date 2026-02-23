@@ -48,7 +48,7 @@ const styles = `
         width: 100%;
         height: 200px;
         overflow: hidden;
-        background: #f8fafc;
+        background: var(--surface);
     }
     
     .event-image img {
@@ -82,7 +82,7 @@ const styles = `
     .event-title {
         font-size: 16px;
         font-weight: 700;
-        color: #1e293b;
+        color: var(--text-main);
         margin-bottom: 12px;
         line-height: 1.4;
     }
@@ -92,18 +92,18 @@ const styles = `
         align-items: center;
         gap: 8px;
         font-size: 13px;
-        color: #64748b;
+        color: var(--text-muted);
         margin-bottom: 8px;
     }
     
     .event-info i {
-        color: #3b82f6;
+        color: var(--info);
         font-size: 12px;
     }
     
     .event-description {
         font-size: 13px;
-        color: #64748b;
+        color: var(--text-muted);
         line-height: 1.6;
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -171,8 +171,10 @@ const OrganizerDashboard = () => {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('currentUser');
-        navigate('/');
+        if (window.confirm("Are you sure you want to log out?")) {
+            localStorage.removeItem('currentUser');
+            navigate('/');
+        }
     };
 
     const handleTabChange = (tab) => {
@@ -190,10 +192,10 @@ const OrganizerDashboard = () => {
     return (
         <div style={{ paddingBottom: '50px' }}>
             {/* Dashboard Navigation */}
-            <nav className="dashboard-nav" style={{ padding: '20px 40px', background: '#ffffff', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
+            <nav className="dashboard-nav" style={{ padding: '20px 40px', background: 'var(--surface-glass)', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 100 }}>
                 <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <img src="/aditya.jpg" alt="Logo" style={{ height: '36px', borderRadius: '4px', mixBlendMode: 'multiply' }} />
-                    <span style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', letterSpacing: '-0.3px', fontFamily: "'Outfit', sans-serif" }}>
+                    <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', letterSpacing: '-0.3px', fontFamily: "'Outfit', sans-serif" }}>
                         Aditya University
                     </span>
                 </div>
@@ -202,7 +204,7 @@ const OrganizerDashboard = () => {
                         onClick={() => handleTabChange('home')}
                         style={{
                             background: activeTab === 'home' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'home' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'home' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -221,7 +223,7 @@ const OrganizerDashboard = () => {
                         onClick={() => handleTabChange('events')}
                         style={{
                             background: activeTab === 'events' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'events' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'events' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -240,7 +242,7 @@ const OrganizerDashboard = () => {
                         onClick={() => navigate('/analytics')}
                         style={{
                             background: activeTab === 'analytics' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'analytics' ? '#2563eb' : '#64748b',
+                            color: activeTab === 'analytics' ? 'var(--primary)' : 'var(--text-muted)',
                             padding: '10px 24px',
                             borderRadius: '100px',
                             fontSize: '14px',
@@ -255,25 +257,7 @@ const OrganizerDashboard = () => {
                     >
                         <i className="fa-solid fa-chart-line" style={{ fontSize: '13px' }}></i> Analytics
                     </button>
-                    <button
-                        onClick={() => navigate('/create-event')}
-                        style={{
-                            background: 'transparent',
-                            color: '#64748b',
-                            padding: '10px 24px',
-                            borderRadius: '100px',
-                            fontSize: '14px',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            border: 'none',
-                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        }}
-                    >
-                        <i className="fa-solid fa-plus" style={{ fontSize: '13px' }}></i> Create Event
-                    </button>
+
                 </div>
 
                 <div className="nav-actions" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
@@ -285,7 +269,7 @@ const OrganizerDashboard = () => {
                                 padding: '6px',
                                 paddingRight: '16px',
                                 background: 'white',
-                                border: '1px solid #e2e8f0',
+                                border: '1px solid var(--border)',
                                 borderRadius: '100px',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -311,8 +295,8 @@ const OrganizerDashboard = () => {
                                 height: '48px',
                                 borderRadius: '50%',
                                 background: 'white',
-                                border: '1px solid #e2e8f0',
-                                color: '#ef4444',
+                                border: '1px solid var(--border)',
+                                color: 'var(--danger)',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -335,7 +319,7 @@ const OrganizerDashboard = () => {
                         <div className="welcome-banner" style={{
                             position: 'relative',
                             borderRadius: '24px',
-                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                            background: 'linear-gradient(135deg, var(--success) 0%, #059669 100%)',
                             overflow: 'hidden',
                             padding: '40px',
                             color: 'white',
@@ -389,24 +373,24 @@ const OrganizerDashboard = () => {
 
                         <div className="stats-grid" style={{ animation: 'fadeInUp 0.6s ease-out', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-regular fa-calendar-check"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--info)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-regular fa-calendar-check"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.totalEvents}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>My Events</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.totalEvents}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>My Events</h4>
                                 </div>
                             </div>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-users"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-users"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>{stats.totalRegistrations}</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Total Registrations</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>{stats.totalRegistrations}</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Total Registrations</h4>
                                 </div>
                             </div>
                             <div className="stat-card" style={{ background: 'white', borderRadius: '20px', padding: '24px', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid #f1f5f9' }}>
-                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(245, 158, 11, 0.1)', color: '#f59e0b', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-star"></i></div>
+                                <div className="stat-icon" style={{ width: '60px', height: '60px', borderRadius: '16px', background: 'rgba(245, 158, 11, 0.1)', color: 'var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}><i className="fa-solid fa-star"></i></div>
                                 <div className="stat-info">
-                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: '#1e293b', lineHeight: '1' }}>4.8</div>
-                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: '#64748b', fontWeight: '500' }}>Average Rating</h4>
+                                    <div className="number" style={{ fontSize: '32px', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1' }}>4.8</div>
+                                    <h4 style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500' }}>Average Rating</h4>
                                 </div>
                             </div>
                         </div>
@@ -416,11 +400,11 @@ const OrganizerDashboard = () => {
                             {/* Recent Events Panel */}
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.7s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#3b82f6', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
                                         Organizer Event Hub
                                     </div>
-                                    <button onClick={() => setActiveTab('events')} style={{ background: 'none', border: 'none', color: '#3b82f6', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}>View All Events <i className="fa-solid fa-arrow-right"></i></button>
+                                    <button onClick={() => setActiveTab('events')} style={{ background: 'none', border: 'none', color: 'var(--info)', fontWeight: '600', cursor: 'pointer', fontSize: '14px' }}>View All Events <i className="fa-solid fa-arrow-right"></i></button>
                                 </div>
                                 {myEvents.length === 0 ? (
                                     <div style={{
@@ -431,9 +415,9 @@ const OrganizerDashboard = () => {
                                         flexDirection: 'column',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        background: '#f8fafc',
+                                        background: 'var(--surface)',
                                         borderRadius: '20px',
-                                        border: '2px dashed #e2e8f0',
+                                        border: '2px dashed var(--border)',
                                         margin: '10px 0'
                                     }}>
                                         <div style={{
@@ -445,20 +429,20 @@ const OrganizerDashboard = () => {
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             marginBottom: '20px',
-                                            color: '#3b82f6',
+                                            color: 'var(--info)',
                                             fontSize: '32px',
                                             boxShadow: '0 10px 25px -5px rgba(59, 130, 246, 0.1)'
                                         }}>
                                             <i className="fa-solid fa-plus-circle"></i>
                                         </div>
-                                        <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#1e293b', marginBottom: '8px' }}>No Active Events Found</h3>
-                                        <p style={{ color: '#64748b', fontSize: '14px', maxWidth: '280px', margin: '0 0 24px', lineHeight: '1.6' }}>
+                                        <h3 style={{ fontSize: '18px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '8px' }}>No Active Events Found</h3>
+                                        <p style={{ color: 'var(--text-muted)', fontSize: '14px', maxWidth: '280px', margin: '0 0 24px', lineHeight: '1.6' }}>
                                             You haven't launched any campus activities yet. Start building your first student event!
                                         </p>
                                         <button
                                             onClick={() => navigate('/create-event')}
                                             style={{
-                                                background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                                                background: 'linear-gradient(135deg, var(--info) 0%, var(--primary) 100%)',
                                                 color: 'white',
                                                 border: 'none',
                                                 padding: '14px 32px',
@@ -481,34 +465,34 @@ const OrganizerDashboard = () => {
                                 ) : (
                                     <div className="events-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                         {myEvents.slice(0, 3).map(event => (
-                                            <div className="event-card" key={event._id} style={{ borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '16px', gap: '20px', background: '#f8fafc', border: '1px solid #f1f5f9', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+                                            <div className="event-card" key={event._id} style={{ borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '16px', gap: '20px', background: 'var(--surface)', border: '1px solid #f1f5f9', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
                                                 {event.poster ? (
                                                     <div style={{ width: '80px', height: '80px', borderRadius: '14px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
                                                         <img src={event.poster} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                                     </div>
                                                 ) : (
-                                                    <div style={{ width: '80px', height: '80px', borderRadius: '14px', background: 'white', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', fontSize: '24px', flexShrink: 0 }}>
+                                                    <div style={{ width: '80px', height: '80px', borderRadius: '14px', background: 'white', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-light)', fontSize: '24px', flexShrink: 0 }}>
                                                         <i className="fa-regular fa-image"></i>
                                                     </div>
                                                 )}
                                                 <div className="event-details" style={{ padding: '0', flex: 1, minWidth: 0 }}>
                                                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
-                                                        <span style={{ background: event.isApproved ? '#ecfdf5' : '#fff7ed', color: event.isApproved ? '#059669' : '#ea580c', padding: '2px 8px', borderRadius: '6px', fontSize: '10px', fontWeight: '700', textTransform: 'uppercase' }}>
+                                                        <span style={{ background: event.isApproved ? '#ecfdf5' : 'var(--surface-glass)7ed', color: event.isApproved ? '#059669' : '#ea580c', padding: '2px 8px', borderRadius: '6px', fontSize: '10px', fontWeight: '700', textTransform: 'uppercase' }}>
                                                             {event.isApproved ? 'Approved' : 'Pending'}
                                                         </span>
-                                                        <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: '500' }}>• {event.category || 'General'}</span>
+                                                        <span style={{ fontSize: '11px', color: 'var(--text-light)', fontWeight: '500' }}>• {event.category || 'General'}</span>
                                                     </div>
-                                                    <div className="event-title" style={{ fontSize: '15px', fontWeight: '800', color: '#1e293b', marginBottom: '8px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.title}</div>
-                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: '#64748b' }}>
-                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-regular fa-calendar" style={{ color: '#3b82f6' }}></i> {event.date}</span>
-                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><i className="fa-solid fa-location-dot" style={{ color: '#f59e0b' }}></i> {event.location || 'TBA'}</span>
+                                                    <div className="event-title" style={{ fontSize: '15px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '8px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.title}</div>
+                                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-regular fa-calendar" style={{ color: 'var(--info)' }}></i> {event.date}</span>
+                                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', maxWidth: '150px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}><i className="fa-solid fa-location-dot" style={{ color: 'var(--warning)' }}></i> {event.location || 'TBA'}</span>
                                                     </div>
                                                 </div>
                                                 <button
                                                     onClick={() => setActiveTab('events')}
-                                                    style={{ background: 'white', border: '1px solid #e2e8f0', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b', cursor: 'pointer', transition: 'all 0.2s', flexShrink: 0 }}
-                                                    onMouseOver={(e) => { e.currentTarget.style.color = '#3b82f6'; e.currentTarget.style.borderColor = '#3b82f6'; }}
-                                                    onMouseOut={(e) => { e.currentTarget.style.color = '#64748b'; e.currentTarget.style.borderColor = '#e2e8f0'; }}
+                                                    style={{ background: 'white', border: '1px solid var(--border)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.2s', flexShrink: 0 }}
+                                                    onMouseOver={(e) => { e.currentTarget.style.color = 'var(--info)'; e.currentTarget.style.borderColor = 'var(--info)'; }}
+                                                    onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                                                 >
                                                     <i className="fa-solid fa-chevron-right"></i>
                                                 </button>
@@ -521,14 +505,14 @@ const OrganizerDashboard = () => {
                             {/* Upcoming Deadlines Panel */}
                             <div style={{ background: 'white', borderRadius: '24px', padding: '24px', border: '1px solid #f1f5f9', boxShadow: '0 4px 20px rgba(0,0,0,0.02)', animation: 'fadeInUp 0.8s ease-out', display: 'flex', flexDirection: 'column' }}>
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: '#1e293b', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ width: '4px', height: '24px', background: '#f59e0b', borderRadius: '4px', display: 'block' }}></span>
+                                    <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ width: '4px', height: '24px', background: 'var(--warning)', borderRadius: '4px', display: 'block' }}></span>
                                         Upcoming Deadlines
                                     </div>
                                 </div>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: 1 }}>
                                     {myEvents.filter(e => e.deadline).length === 0 ? (
-                                        <div style={{ textAlign: 'center', padding: '20px', color: '#64748b', fontSize: '13px' }}>
+                                        <div style={{ textAlign: 'center', padding: '20px', color: 'var(--text-muted)', fontSize: '13px' }}>
                                             <i className="fa-solid fa-calendar-check" style={{ fontSize: '24px', marginBottom: '12px', opacity: 0.5, display: 'block' }}></i>
                                             No upcoming registration deadlines.
                                         </div>
@@ -550,22 +534,22 @@ const OrganizerDashboard = () => {
                                                             width: '40px',
                                                             height: '40px',
                                                             borderRadius: '10px',
-                                                            background: isUrgent ? '#fee2e2' : '#f8fafc',
-                                                            color: isUrgent ? '#ef4444' : '#64748b',
+                                                            background: isUrgent ? '#fee2e2' : 'var(--surface)',
+                                                            color: isUrgent ? 'var(--danger)' : 'var(--text-muted)',
                                                             display: 'flex',
                                                             flexDirection: 'column',
                                                             alignItems: 'center',
                                                             justifyContent: 'center',
                                                             fontSize: '10px',
                                                             fontWeight: '700',
-                                                            border: `1px solid ${isUrgent ? '#fecaca' : '#e2e8f0'}`
+                                                            border: `1px solid ${isUrgent ? '#fecaca' : 'var(--border)'}`
                                                         }}>
                                                             <span>{deadlineDate.toLocaleDateString('en-US', { month: 'short' })}</span>
                                                             <span style={{ fontSize: '14px', lineHeight: '1' }}>{deadlineDate.getDate()}</span>
                                                         </div>
                                                         <div style={{ flex: 1, minWidth: 0 }}>
-                                                            <div style={{ fontSize: '13px', fontWeight: '700', color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.title}</div>
-                                                            <div style={{ fontSize: '11px', color: isUrgent ? '#ef4444' : '#64748b', fontWeight: isUrgent ? '600' : '400' }}>
+                                                            <div style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.title}</div>
+                                                            <div style={{ fontSize: '11px', color: isUrgent ? 'var(--danger)' : 'var(--text-muted)', fontWeight: isUrgent ? '600' : '400' }}>
                                                                 {diffDays < 0 ? 'Deadline passed' : diffDays === 0 ? 'Ends today!' : `Ends in ${diffDays} days`}
                                                             </div>
                                                         </div>
@@ -578,18 +562,18 @@ const OrganizerDashboard = () => {
                                     onClick={() => handleTabChange('events')}
                                     style={{
                                         marginTop: '20px',
-                                        background: '#f8fafc',
-                                        border: '1px solid #e2e8f0',
+                                        background: 'var(--surface)',
+                                        border: '1px solid var(--border)',
                                         padding: '10px',
                                         borderRadius: '10px',
                                         fontSize: '12px',
                                         fontWeight: '600',
-                                        color: '#64748b',
+                                        color: 'var(--text-muted)',
                                         cursor: 'pointer',
                                         transition: 'all 0.2s'
                                     }}
                                     onMouseOver={(e) => e.currentTarget.style.background = '#f1f5f9'}
-                                    onMouseOut={(e) => e.currentTarget.style.background = '#f8fafc'}
+                                    onMouseOut={(e) => e.currentTarget.style.background = 'var(--surface)'}
                                 >
                                     Manage All Events
                                 </button>
@@ -612,18 +596,18 @@ const OrganizerDashboard = () => {
                             boxShadow: '0 4px 20px rgba(0,0,0,0.02)'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                                <div style={{ width: '45px', height: '45px', background: '#eff6ff', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6' }}>
+                                <div style={{ width: '45px', height: '45px', background: '#eff6ff', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--info)' }}>
                                     <i className="fa-solid fa-briefcase" style={{ fontSize: '20px' }}></i>
                                 </div>
                                 <div>
-                                    <h2 style={{ fontSize: '20px', fontWeight: '800', color: '#1e293b', margin: 0 }}>Events Management Center</h2>
-                                    <p style={{ fontSize: '13px', color: '#64748b', margin: '4px 0 0' }}>Track, manage and analyze all your organized campus events</p>
+                                    <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text-main)', margin: 0 }}>Events Management Center</h2>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: '4px 0 0' }}>Track, manage and analyze all your organized campus events</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => navigate('/create-event')}
                                 style={{
-                                    background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+                                    background: 'linear-gradient(135deg, var(--info) 0%, var(--primary) 100%)',
                                     color: 'white',
                                     border: 'none',
                                     padding: '12px 24px',
@@ -647,9 +631,9 @@ const OrganizerDashboard = () => {
                         <div className="events-grid">
                             {myEvents.length === 0 ? (
                                 <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '60px', background: 'rgba(255,255,255,0.8)', borderRadius: '20px', boxShadow: 'var(--shadow-sm)' }}>
-                                    <i className="fa-regular fa-folder-open" style={{ fontSize: '48px', color: '#cbd5e1', marginBottom: '16px' }}></i>
-                                    <h3 style={{ fontSize: '18px', color: '#64748b', marginBottom: '8px' }}>Your Portfolio is Empty</h3>
-                                    <p style={{ color: '#94a3b8' }}>All your published campus events will be summarized here.</p>
+                                    <i className="fa-regular fa-folder-open" style={{ fontSize: '48px', color: 'var(--text-light)', marginBottom: '16px' }}></i>
+                                    <h3 style={{ fontSize: '18px', color: 'var(--text-muted)', marginBottom: '8px' }}>Your Portfolio is Empty</h3>
+                                    <p style={{ color: 'var(--text-light)' }}>All your published campus events will be summarized here.</p>
                                 </div>
                             ) : (
                                 myEvents.map(event => (
@@ -666,13 +650,13 @@ const OrganizerDashboard = () => {
                                                 )}
                                                 alt={event.title}
                                             />
-                                            <span className="event-tag" style={{ background: event.isApproved ? '#10b981' : '#f59e0b' }}>{event.isApproved ? 'Approved' : 'Pending'}</span>
+                                            <span className="event-tag" style={{ background: event.isApproved ? 'var(--success)' : 'var(--warning)' }}>{event.isApproved ? 'Approved' : 'Pending'}</span>
                                         </div>
                                         <div className="event-details" style={{ padding: '24px' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                                     <span style={{
-                                                        background: event.isApproved ? '#ecfdf5' : '#fff7ed',
+                                                        background: event.isApproved ? '#ecfdf5' : 'var(--surface-glass)7ed',
                                                         color: event.isApproved ? '#059669' : '#ea580c',
                                                         padding: '4px 10px',
                                                         borderRadius: '8px',
@@ -683,37 +667,37 @@ const OrganizerDashboard = () => {
                                                     }}>
                                                         {event.isApproved ? 'Approved' : 'Pending Approval'}
                                                     </span>
-                                                    <span style={{ background: '#f8fafc', color: '#64748b', padding: '4px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700', border: '1px solid #e2e8f0' }}>
+                                                    <span style={{ background: 'var(--surface)', color: 'var(--text-muted)', padding: '4px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '700', border: '1px solid var(--border)' }}>
                                                         {event.category || 'General'}
                                                     </span>
                                                 </div>
                                             </div>
 
-                                            <div className="event-title" style={{ fontSize: '18px', fontWeight: '800', color: '#1e293b', marginBottom: '16px' }}>{event.title}</div>
+                                            <div className="event-title" style={{ fontSize: '18px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '16px' }}>{event.title}</div>
 
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#64748b' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
                                                     <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#f0f9ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#0ea5e9' }}>
                                                         <i className="fa-regular fa-calendar"></i>
                                                     </div>
                                                     {event.date}
                                                 </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#64748b' }}>
-                                                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#fffbeb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f59e0b' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)' }}>
+                                                    <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'var(--surface-glass)beb', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--warning)' }}>
                                                         <i className="fa-solid fa-location-dot"></i>
                                                     </div>
                                                     <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{event.location || 'TBA'}</span>
                                                 </div>
                                             </div>
 
-                                            <div className="event-description" style={{ fontSize: '13px', color: '#64748b', lineHeight: '1.6', height: '42px', marginBottom: '20px' }}>{event.description}</div>
+                                            <div className="event-description" style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.6', height: '42px', marginBottom: '20px' }}>{event.description}</div>
 
                                             <div className="card-footer" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <div style={{ display: 'flex', fontSize: '13px', color: '#1e293b', fontWeight: '700', alignItems: 'center', gap: '6px' }}>
-                                                        <i className="fa-solid fa-users" style={{ color: '#3b82f6' }}></i>
+                                                    <div style={{ display: 'flex', fontSize: '13px', color: 'var(--text-main)', fontWeight: '700', alignItems: 'center', gap: '6px' }}>
+                                                        <i className="fa-solid fa-users" style={{ color: 'var(--info)' }}></i>
                                                         {event.registeredCount || 0}
-                                                        <span style={{ fontWeight: '500', color: '#94a3b8' }}>Registered</span>
+                                                        <span style={{ fontWeight: '500', color: 'var(--text-light)' }}>Registered</span>
                                                     </div>
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '8px' }}>
@@ -742,7 +726,7 @@ const OrganizerDashboard = () => {
                                                     <button
                                                         onClick={() => handleDeleteEvent(event._id)}
                                                         style={{
-                                                            background: '#fff1f2',
+                                                            background: 'var(--surface-glass)1f2',
                                                             color: '#e11d48',
                                                             border: 'none',
                                                             padding: '10px 16px',
@@ -756,7 +740,7 @@ const OrganizerDashboard = () => {
                                                             gap: '8px'
                                                         }}
                                                         onMouseOver={(e) => e.currentTarget.style.background = '#ffe4e6'}
-                                                        onMouseOut={(e) => e.currentTarget.style.background = '#fff1f2'}
+                                                        onMouseOut={(e) => e.currentTarget.style.background = 'var(--surface-glass)1f2'}
                                                     >
                                                         <i className="fa-regular fa-trash-can"></i> Delete
                                                     </button>
@@ -769,6 +753,8 @@ const OrganizerDashboard = () => {
                         </div>
                     </div>
                 )}
+
+
             </div>
         </div>
     );
