@@ -401,28 +401,7 @@ const AdminDashboard = () => {
                     >
                         <i className="fa-solid fa-house" style={{ fontSize: '13px' }}></i> Home
                     </button>
-                    <button
-                        onClick={() => handleTabChange('approvals')}
-                        style={{
-                            background: activeTab === 'approvals' ? '#EFF6FF' : 'transparent',
-                            color: activeTab === 'approvals' ? 'var(--primary)' : 'var(--text-muted)',
-                            padding: '10px 24px',
-                            borderRadius: '100px',
-                            fontSize: '14px',
-                            fontWeight: '600',
-                            cursor: 'pointer',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            border: 'none',
-                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        }}
-                    >
-                        <i className="fa-solid fa-check-double" style={{ fontSize: '13px' }}></i> Approvals
-                        {pendingEvents.length > 0 && (
-                            <span style={{ background: 'var(--danger)', color: 'white', fontSize: '10px', padding: '2px 6px', borderRadius: '10px', marginLeft: '4px' }}>{pendingEvents.length}</span>
-                        )}
-                    </button>
+
                     <button
                         onClick={() => handleTabChange('users')}
                         style={{
@@ -686,7 +665,7 @@ const AdminDashboard = () => {
                                     </button>
 
                                     <button
-                                        onClick={() => setActiveTab('approvals')}
+                                        onClick={() => setActiveTab('events')}
                                         style={{
                                             background: 'linear-gradient(135deg, var(--warning) 0%, #d97706 100%)',
                                             color: 'white',
