@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:5000'; // Adjust if needed
+const API_BASE_URL = ''; // Adjust if needed
 
 const Login = () => {
     const navigate = useNavigate();

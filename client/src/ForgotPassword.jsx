@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:5000'; // Adjust if needed
+const API_BASE_URL = ''; // Adjust if needed
 
 const ForgotPassword = () => {
     const navigate = useNavigate();
