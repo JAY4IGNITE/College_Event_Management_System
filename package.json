@@ -1,0 +1,9 @@
+{
+  "name": "college-event-system",
+  "version": "1.0.0",
+  "description": "College Event Management System",
+  "scripts": {
+    "build": "npm --prefix client install && npm --prefix client run build && npm --prefix Server install",
+    "start": "npm --prefix Server start"
+  }
+}
