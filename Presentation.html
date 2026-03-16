@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Project Review - II | College Event Management System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/simple.min.css"
+        id="theme">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* Cinematic & Professional Light Theme Palette */
+        :root {
+            --primary-blue: #0A2540;
+            /* Deep Navy for strong contrast */
+            --secondary-accent: #0284C7;
+            /* Vivid Cerulean */
+            --tertiary-accent: #059669;
+            /* Emerald */
+            --bg-light: #F8FAFC;
+            --text-main: #334155;
+            /* Slate 700 */
+            --text-muted: #64748B;
+            /* Slate 500 */
+            --card-glass: rgba(255, 255, 255, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.4);
+            --glow-color: rgba(2, 132, 199, 0.2);
+        }
+
+        @keyframes cinematicLightGradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes subtleFloat {
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            }
+
+            50% {
+                transform: translateY(-5px);
+                box-shadow: 0 20px 40px rgba(2, 132, 199, 0.15);
+            }
+
+            100% {
+                transform: translateY(0px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        body,
+        .reveal-viewport {
+            background: linear-gradient(120deg, #F0F4F8, #E0E7FF, #F8FAFC, #CCFBF1) !important;
+            background-size: 300% 300% !important;
+            animation: cinematicLightGradient 20s ease infinite !important;
+        }
+
+        /* Force transparency on Reveal.js layers */
+        .reveal,
+        .reveal .slide-background,
+        .reveal .slide-background-content {
+            background-color: transparent !important;
+            background: transparent !important;
+        }
+
+        /* Typography */
+        .reveal {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-blue);
+            text-transform: none;
+            letter-spacing: -0.5px;
+            font-weight: 700;
+        }
+
+        .reveal h1 {
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+            text-shadow: 2px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .reveal h2 {
+            font-size: 1.8em;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, var(--secondary-accent), var(--tertiary-accent)) 1;
+            padding-bottom: 12px;
+            margin-bottom: 30px;
+            display: inline-block;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .reveal p,
+        .reveal li {
+            font-size: 26px;
+            line-height: 1.6;
+            color: var(--text-main);
+        }
+
+        .reveal ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .reveal ul li {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .reveal ul li::before {
+            content: "✦";
+            color: var(--secondary-accent);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+            font-size: 1.1em;
+        }
+
+        .reveal .controls,
+        .reveal .progress {
+            color: var(--secondary-accent);
+        }
+
+        .reveal .progress span {
+            background: linear-gradient(90deg, var(--secondary-accent), var(--tertiary-accent));
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        /* Glassmorphism Components */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            padding: 8px 20px;
+            border-radius: 30px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .status-badge svg {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+        }
+
+        .card {
+            background: var(--card-glass);
+            border: 1px solid var(--border-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-left: 5px solid var(--secondary-accent);
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: left;
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 20px var(--glow-color);
+            border-left-color: var(--tertiary-accent);
+        }
+
+        .card-accent {
+            border-left-color: var(--tertiary-accent);
+        }
+
+        .card-secondary {
+            border-left-color: #F59E0B;
+        }
+
+        .title-container {
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .title-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.03) 0%, rgba(5, 150, 105, 0.03) 100%);
+            pointer-events: none;
+        }
+
+        /* Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            text-align: left;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .role-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .role-card:hover {
+            animation: subtleFloat 3s ease infinite;
+        }
+
+        .role-card h4 {
+            text-align: center;
+            font-size: 24px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .role-admin {
+            border-top: 4px solid #EF4444;
+        }
+
+        .role-org {
+            border-top: 4px solid #F59E0B;
+        }
+
+        .role-student {
+            border-top: 4px solid var(--secondary-accent);
+        }
+
+        /* Tables */
+        .elegant-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 22px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .elegant-table th {
+            background: var(--primary-blue);
+            color: #FFF;
+            padding: 18px 20px;
+            font-weight: 500;
+            text-align: left;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 18px;
+        }
+
+        .elegant-table th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .elegant-table th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        .elegant-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: var(--text-main);
+        }
+
+        .status-cell {
+            color: #059669;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .workflow-list {
+            counter-reset: workflow;
+            list-style-type: none !important;
+            padding-left: 0;
+        }
+
+        .workflow-list>li {
+            position: relative;
+            padding-left: 70px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
+
+        .workflow-list>li::before {
+            counter-increment: workflow;
+            content: counter(workflow);
+            position: absolute;
+            left: 0;
+            top: -5px;
+            width: 45px;
+            height: 45px;
+            background: #FFFFFF;
+            border: 2px solid var(--secondary-accent);
+            color: var(--secondary-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 5px 15px rgba(2, 132, 199, 0.15);
+        }
+
+        .architecture-box {
+            text-align: center;
+            margin-top: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            color: var(--text-muted);
+            font-size: 22px;
+            font-family: monospace;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.02), 0 5px 15px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- SLIDE 1: TITLE SLIDE -->
+            <section class="center">
+                <div class="title-container">
+                    <h2
+                        style="border: none; margin-bottom: 10px; font-size: 1.4em; color: var(--text-muted); font-family: 'Inter', sans-serif; font-weight: 500;">
+                        Project Review &ndash; II</h2>
+                    <h1>College Event Management System</h1>
+                    <div style="width: 60px; height: 4px; background: var(--accent-color); margin: 20px auto;"></div>
+                    <p style="font-size: 32px; font-weight: 600; color: var(--primary-blue); margin-top: 20px;">Aditya
+                        University</p>
+                    <div
+                        style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; font-size: 20px; color: var(--text-muted);">
+                        <span><strong style="color: var(--primary-blue);">Focus:</strong> Core Development</span>
+                        <span><strong style="color: var(--primary-blue);">Period:</strong> 20 &ndash; 28 February</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 2: PROJECT OVERVIEW -->
+            <section style="text-align: left;">
+                <h2>Project Overview</h2>
+                <div class="card">
+                    <p style="margin: 0; font-size: 26px;">A centralized web-based platform designed to digitally
+                        transform and streamline the management of college-level events.</p>
+                </div>
+                <ul style="margin-top: 30px;">
+                    <li>Eliminates manual event handling, approvals, and registrations.</li>
+                    <li>Provides dedicated, role-based interfaces for Admins, Organizers, and Students.</li>
+                    <li>Ensures efficient event lifecycle management from initial creation to final participation.</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 3: PROBLEM STATEMENT -->
+            <section style="text-align: left;">
+                <h2>Problem Statement</h2>
+                <div class="card card-accent">
+                    <p style="margin:0; font-weight: 600; color: var(--primary-blue);">Current challenges in the
+                        existing manual ecosystem:</p>
+                </div>
+                <ul style="margin-top: 30px;">
+                    <li>Manual event management causes significant delays, data inconsistency, and a lack of
+                        transparency.</li>
+                    <li>Absence of a unified platform specifically built for event approvals, centralized registrations,
+                        and data analytics.</li>
+                    <li>Administrative difficulty in tracking active participants, organizer efficiency, and overall
+                        event performance.</li>
+                </ul>
+            </section>
+
+            <!-- SLIDE 4: PROJECT OBJECTIVES -->
+            <section style="text-align: left;">
+                <h2>Project Objectives</h2>
+                <div class="grid-2" style="margin-top: 30px;">
+                    <div class="card">
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; margin-bottom: 15px; color: var(--accent-color);">
+                            1. Security</h4>
+                        <p style="font-size: 22px; margin: 0;">Implement robust, secure role-based authentication
+                            protocols.</p>
+                    </div>
+                    <div class="card">
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; margin-bottom: 15px; color: var(--accent-color);">
+                            2. Workflow Streamlining</h4>
+                        <p style="font-size: 22px; margin: 0;">Enable seamless event creation, hierarchical approval,
+                            and registration logic.</p>
+                    </div>
+                    <div class="card">
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; margin-bottom: 15px; color: var(--accent-color);">
+                            3. Visibility</h4>
+                        <p style="font-size: 22px; margin: 0;">Provide dynamic, real-time dashboards and actionable
+                            analytics.</p>
+                    </div>
+                    <div class="card">
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; margin-bottom: 15px; color: var(--accent-color);">
+                            4. Scalability</h4>
+                        <p style="font-size: 22px; margin: 0;">Design a scalable, modular, and maintainable system
+                            architecture.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 5: SYSTEM ARCHITECTURE -->
+            <section style="text-align: left;">
+                <h2>System Architecture</h2>
+                <div class="grid-2">
+                    <div>
+                        <ul style="font-size: 24px;">
+                            <li><strong style="color: var(--primary-blue);">Frontend:</strong> React.js <span
+                                    style="font-size: 18px; color: var(--text-muted);">(Vite, React Router DOM)</span>
+                            </li>
+                            <li style="margin-top: 15px;"><strong style="color: var(--primary-blue);">Backend:</strong>
+                                Node.js with Express.js REST APIs</li>
+                            <li style="margin-top: 15px;"><strong style="color: var(--primary-blue);">Database:</strong>
+                                MongoDB Atlas with Mongoose ODM</li>
+                            <li style="margin-top: 15px;"><strong
+                                    style="color: var(--primary-blue);">Communication:</strong> JSON over HTTP</li>
+                        </ul>
+                        <div class="card card-accent" style="margin-top: 20px; padding: 15px;">
+                            <p style="font-size: 20px; margin: 0; font-weight: 500;">Design Principle: Decoupled
+                                frontend and backend for independent scalability and maintenance.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="architecture-box"
+                            style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                style="margin-bottom: 15px; color: var(--primary-blue);">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                            <span style="font-weight: bold; color: var(--primary-blue); margin-bottom: 15px;">Client
+                                (React)</span>
+                            <span style="font-size: 16px; margin-bottom: 15px;">⬇ JSON HTTP ⬆</span>
+                            <span style="font-weight: bold; color: var(--accent-color); margin-bottom: 15px;">Server API
+                                (Node/Express)</span>
+                            <span style="font-size: 16px; margin-bottom: 15px;">⬇ Mongoose ODM ⬆</span>
+                            <span style="font-weight: bold; color: #10B981;">Database (MongoDB)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 6: BACKEND API IMPLEMENTATION -->
+            <section style="text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+                    <h2 style="margin-bottom: 0;">Backend API Implementation</h2>
+                    <div class="status-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Completed
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+                            Stack</h4>
+                        <div class="card" style="padding: 15px;">
+                            <ul style="font-size: 22px; margin:0;">
+                                <li>Node.js</li>
+                                <li>Express.js</li>
+                                <li>CORS, Dotenv</li>
+                            </ul>
+                        </div>
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 20px;">
+                            Statistics APIs</h4>
+                        <div class="card card-secondary" style="padding: 15px;">
+                            <ul style="font-size: 20px; margin:0;">
+                                <li>Real-time Student count</li>
+                                <li>Active Organizer count</li>
+                                <li>Pending event approvals queue</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+                            Route Segregation</h4>
+                        <div class="card" style="padding: 15px; background-color: #F1F5F9;">
+                            <p style="font-size: 20px; font-family: monospace; margin-bottom: 15px;">
+                                <strong>Auth:</strong> <br /><span style="color: #059669;">POST</span> /api/login
+                            </p>
+                            <p style="font-size: 20px; font-family: monospace; margin-bottom: 15px;">
+                                <strong>Admin:</strong> <br /><span style="color: #2563EB;">GET/PUT</span> /api/admin/*
+                            </p>
+                            <p style="font-size: 20px; font-family: monospace; margin-bottom: 15px;">
+                                <strong>Organizer:</strong> <br /><span style="color: #D97706;">GET/POST</span>
+                                /api/organizer/*
+                            </p>
+                            <p style="font-size: 20px; font-family: monospace; margin-bottom: 15px;">
+                                <strong>Student:</strong> <br /><span style="color: #7C3AED;">GET/POST</span>
+                                /api/student/*
+                            </p>
+                            <p style="font-size: 20px; font-family: monospace; margin-bottom: 0;">
+                                <strong>Events:</strong> <br /><span style="color: #475569;">CRUD</span> /api/events/*
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 7: DATABASE & CRUD OPERATIONS -->
+            <section style="text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+                    <h2 style="margin-bottom: 0;">Database &amp; CRUD Operations</h2>
+                    <div class="status-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Completed
+                    </div>
+                </div>
+
+                <p style="font-size: 22px;"><strong>Technologies:</strong> <span
+                        style="background: #E2E8F0; padding: 4px 10px; border-radius: 4px; font-family: monospace;">MongoDB
+                        Atlas</span> <span
+                        style="background: #E2E8F0; padding: 4px 10px; border-radius: 4px; font-family: monospace;">Mongoose
+                        ODM</span></p>
+
+                <div class="card card-accent" style="margin-top: 20px; padding: 15px;">
+                    <p style="font-size: 22px; margin:0;">Defined rigid schemas for Users (Admin, Organizer, Student)
+                        and Events. Applied indexing on key fields for optimized, high-speed queries.</p>
+                </div>
+
+                <h4 style="font-family: 'Inter', sans-serif; font-size: 22px; margin-top: 30px;">CRUD Implementation
+                    Matrix:</h4>
+                <div class="grid-2" style="gap: 15px; margin-top: 15px;">
+                    <div class="card" style="margin: 0; padding: 15px;">
+                        <strong style="color: var(--accent-color); font-size: 20px;">CREATE (Insert)</strong>
+                        <p style="font-size: 18px; margin: 5px 0 0 0; color: var(--text-muted);">User registration,
+                            Event creation & submissions</p>
+                    </div>
+                    <div class="card" style="margin: 0; padding: 15px;">
+                        <strong style="color: var(--secondary-blue); font-size: 20px;">READ (Find)</strong>
+                        <p style="font-size: 18px; margin: 5px 0 0 0; color: var(--text-muted);">Event catalogs,
+                            Dashboard analytics, Category filtering</p>
+                    </div>
+                    <div class="card" style="margin: 0; padding: 15px;">
+                        <strong style="color: #F59E0B; font-size: 20px;">UPDATE (Modify)</strong>
+                        <p style="font-size: 18px; margin: 5px 0 0 0; color: var(--text-muted);">Event approval status,
+                            Profile updates, Edit capabilities</p>
+                    </div>
+                    <div class="card" style="margin: 0; padding: 15px;">
+                        <strong style="color: #EF4444; font-size: 20px;">DELETE (Remove)</strong>
+                        <p style="font-size: 18px; margin: 5px 0 0 0; color: var(--text-muted);">Event cancellation,
+                            User revocation, Data cleanup</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 8: USER AUTHENTICATION & ROLE MANAGEMENT -->
+            <section style="text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+                    <h2 style="margin-bottom: 0;">Roles &amp; Access Control</h2>
+                    <div class="status-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Completed
+                    </div>
+                </div>
+
+                <p style="font-size: 22px; margin-bottom: 25px;">Strict role-based routing ensures users only access
+                    designated workspaces post-login.</p>
+
+                <div class="grid-3">
+                    <div class="role-card role-admin">
+                        <h4>Admin Server</h4>
+                        <ul style="font-size: 18px; line-height: 1.5;">
+                            <li>Global event approval/rejection</li>
+                            <li>Comprehensive user management</li>
+                            <li>System-wide analytics & trends</li>
+                            <li>Export data as CSV reports</li>
+                        </ul>
+                    </div>
+                    <div class="role-card role-org">
+                        <h4>Organizer Portal</h4>
+                        <ul style="font-size: 18px; line-height: 1.5;">
+                            <li>Draft and publish events</li>
+                            <li>Monitor real-time registrations</li>
+                            <li>Track event-specific metrics</li>
+                            <li>Download participant logs</li>
+                        </ul>
+                    </div>
+                    <div class="role-card role-student">
+                        <h4>Student Client</h4>
+                        <ul style="font-size: 18px; line-height: 1.5;">
+                            <li>Access personalized digital ID</li>
+                            <li>Browse & filter verified events</li>
+                            <li>One-click event registration</li>
+                            <li>View participation history</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 9: FRONTEND–BACKEND INTEGRATION -->
+            <section style="text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px;">
+                    <h2 style="margin-bottom: 0;">Frontend &amp; Integration</h2>
+                    <div class="status-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Completed
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div>
+                        <div class="card">
+                            <h4
+                                style="font-family: 'Inter', sans-serif; font-size: 20px; color: var(--text-muted); text-transform: uppercase;">
+                                Core Technologies</h4>
+                            <ul style="font-size: 24px; margin-top: 15px;">
+                                <li><strong>React.js</strong> User Interface</li>
+                                <li><strong>React Router DOM</strong> Navigation</li>
+                                <li><strong>Fetch API</strong> Network Requests</li>
+                                <li><strong>Context/State</strong> Data Management</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card card-secondary"
+                            style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                            <ul style="font-size: 22px; margin: 0;">
+                                <li style="margin-bottom: 15px;"><strong>Seamless Mapping:</strong> React components
+                                    bound directly to Express API endpoints.</li>
+                                <li style="margin-bottom: 15px;"><strong>Reactivity:</strong> Dynamic dashboards reflect
+                                    database changes in real-time.</li>
+                                <li style="margin-bottom: 15px;"><strong>Security:</strong> Protected route wrappers
+                                    intercept unauthorized page access.</li>
+                                <li><strong>UX Polish:</strong> Implemented skeleton loaders and comprehensive error
+                                    boundaries.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 10: MODULE COMPLETION STATUS -->
+            <section style="text-align: left;">
+                <h2>Module Completion Status</h2>
+
+                <table class="elegant-table">
+                    <thead>
+                        <tr>
+                            <th>System Module</th>
+                            <th>Current Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Authentication & Security Kernel</td>
+                            <td>
+                                <div class="status-cell">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Fully Functional
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Student Engagement Module</td>
+                            <td>
+                                <div class="status-cell">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Fully Functional
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Organizer Management Module</td>
+                            <td>
+                                <div class="status-cell">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Fully Functional
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Admin Oversight & Analytics Module</td>
+                            <td>
+                                <div class="status-cell">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Fully Functional
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div
+                    style="margin-top: 30px; background: linear-gradient(90deg, #0A2540 0%, #0056b3 100%); padding: 20px; border-radius: 8px; text-align: center; color: white;">
+                    <strong style="font-size: 26px; font-weight: 500; font-family: 'Inter', sans-serif;">Core
+                        Development Phase Completion: <span
+                            style="font-size: 32px; font-weight: 700; color: #34D399; margin-left: 10px;">>
+                            80%</span></strong>
+                </div>
+            </section>
+
+            <!-- SLIDE 11: LIVE DEMO WORKFLOW -->
+            <section style="text-align: left;">
+                <h2>System Workflow (Demo)</h2>
+                <div class="card" style="padding: 40px;">
+                    <ol class="workflow-list">
+                        <li><strong>Initiation:</strong> Organizer drafts and submits a new event proposal.</li>
+                        <li><strong>Queuing:</strong> Event registers as 'Pending' in the Admin approval dashboard.</li>
+                        <li><strong>Authorization:</strong> Admin reviews details and executes the 'Approve' action.
+                        </li>
+                        <li><strong>Broadcasting:</strong> Approved event materializes in the Student feed.</li>
+                        <li><strong>Consumption:</strong> Students register; metrics instantly update across all
+                            administrative dashboards via real-time fetch.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- SLIDE 12: ADVANCEMENTS & OPTIMIZATIONS -->
+            <section style="text-align: left;">
+                <h2>Technical Advancements</h2>
+                <div class="grid-2">
+                    <div class="card card-accent">
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; margin-bottom: 15px; color: var(--accent-color);">
+                            Backend Robustness</h4>
+                        <ul style="font-size: 20px; line-height: 1.6;">
+                            <li>Modular architecture utilizing discrete controller logic.</li>
+                            <li>Middleware-based systematic route protection.</li>
+                            <li>Centralized, consistent API error handling & validation.</li>
+                            <li>Schema framework prepared for JWT token integration.</li>
+                        </ul>
+                    </div>
+                    <div class="card card-secondary">
+                        <h4
+                            style="font-family: 'Inter', sans-serif; font-size: 22px; margin-bottom: 15px; color: var(--secondary-blue);">
+                            Frontend & Database</h4>
+                        <ul style="font-size: 20px; line-height: 1.6;">
+                            <li>Highly decoupled, reusable React UI components.</li>
+                            <li>Optimized State management reducing redundant renders.</li>
+                            <li>Performance amplified via MongoDB index optimization on relational queries.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 13: LIMITATIONS & FUTURE SCOPE -->
+            <section style="text-align: left;">
+                <h2>Future Enhancements</h2>
+
+                <div class="grid-2" style="margin-top: 30px;">
+                    <div>
+                        <div
+                            style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display: flex; align-items: center; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                            <div
+                                style="background: #F1F5F9; padding: 10px; border-radius: 6px; margin-right: 15px; color: var(--primary-blue);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                            </div>
+                            <span style="font-size: 20px; font-weight: 500;">JWT Authentication & Password Hashing
+                                security hardening</span>
+                        </div>
+                        <div
+                            style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display: flex; align-items: center; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                            <div
+                                style="background: #F1F5F9; padding: 10px; border-radius: 6px; margin-right: 15px; color: var(--primary-blue);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <span style="font-size: 20px; font-weight: 500;">Automated Email & Notification
+                                triggers</span>
+                        </div>
+                        <div
+                            style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                            <div
+                                style="background: #F1F5F9; padding: 10px; border-radius: 6px; margin-right: 15px; color: var(--primary-blue);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <span style="font-size: 20px; font-weight: 500;">Unit and Integration testing using Jest
+                                validation</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div
+                            style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display: flex; align-items: center; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                            <div
+                                style="background: #F1F5F9; padding: 10px; border-radius: 6px; margin-right: 15px; color: var(--primary-blue);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                    </path>
+                                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                                </svg>
+                            </div>
+                            <span style="font-size: 20px; font-weight: 500;">Live Cloud deployment via Vercel /
+                                Render</span>
+                        </div>
+                        <div
+                            style="background: white; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
+                            <div
+                                style="background: #F1F5F9; padding: 10px; border-radius: 6px; margin-right: 15px; color: var(--primary-blue);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <rect x="7" y="7" width="3" height="3"></rect>
+                                    <rect x="14" y="7" width="3" height="3"></rect>
+                                    <rect x="7" y="14" width="3" height="3"></rect>
+                                    <rect x="14" y="14" width="3" height="3"></rect>
+                                </svg>
+                            </div>
+                            <span style="font-size: 20px; font-weight: 500;">QR Code integration for rapid entry and
+                                attendance logistics</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SLIDE 14: CONCLUSION -->
+            <section style="text-align: left;">
+                <h2>Conclusion</h2>
+                <div class="card" style="padding: 40px; margin-top: 30px; border-left: 8px solid var(--primary-blue);">
+                    <ul style="font-size: 26px; line-height: 2;">
+                        <li><strong style="color: var(--accent-color);">Target Achieved:</strong> Successfully
+                            accomplished Review-II milestones.</li>
+                        <li><strong style="color: var(--accent-color);">Foundation Set:</strong> All core modules
+                            effectively implemented and integrated.</li>
+                        <li><strong style="color: var(--accent-color);">Operational:</strong> The system is stable,
+                            logically scalable, and fully demo-ready.</li>
+                        <li><strong style="color: var(--accent-color);">Trajectory:</strong> Prepared for final security
+                            optimizations, QA testing, and production deployment.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- SLIDE 15: THANK YOU -->
+            <section class="center">
+                <div
+                    style="background: var(--card-bg); padding: 80px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border: 1px solid var(--border-color); display: inline-block;">
+                    <h1 style="font-size: 4em; color: var(--primary-blue); margin-bottom: 20px; border: none;">Thank You
+                    </h1>
+                    <div
+                        style="width: 80px; height: 5px; background: var(--accent-color); margin: 0 auto 30px auto; border-radius: 5px;">
+                    </div>
+                    <p style="font-style: italic; color: var(--text-muted); font-size: 28px;">Questions &amp; Discussion
+                    </p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            controls: true,
+            progress: true,
+            center: true,
+            hash: true,
+            transition: 'slide',
+            width: 1280,
+            height: 720,
+            margin: 0.02,
+            minScale: 0.2,
+            maxScale: 2.0
+        });
+    </script>
+</body>
+
+</html>

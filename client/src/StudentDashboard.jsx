@@ -275,30 +275,7 @@ const StudentDashboard = () => {
                                 </div>
                             </div>
 
-                            <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                                <button
-                                    onClick={() => setIsIdModalOpen(true)}
-                                    style={{
-                                        background: 'white',
-                                        color: '#0f172a',
-                                        border: 'none',
-                                        padding: '12px 24px',
-                                        borderRadius: '12px',
-                                        fontSize: '14px',
-                                        fontWeight: '700',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '8px',
-                                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                                        transition: 'transform 0.2s'
-                                    }}
-                                    onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                    onMouseOut={(e) => e.currentTarget.style.transform = 'none'}
-                                >
-                                    <i className="fa-solid fa-id-card"></i> View Digital ID
-                                </button>
-                            </div>
+
                         </div>
 
                         <div className="stats-grid" style={{ animation: 'fadeInUp 0.6s ease-out', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '24px' }}>

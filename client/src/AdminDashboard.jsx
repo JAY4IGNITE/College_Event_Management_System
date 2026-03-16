@@ -56,6 +56,7 @@ const AdminDashboard = () => {
     const [students, setStudents] = useState([]);
     const [organizers, setOrganizers] = useState([]);
     const [activeTab, setActiveTab] = useState('home');
+    const [isIdModalOpen, setIsIdModalOpen] = useState(false);
 
     // New state for enhanced features
     const [searchTerm, setSearchTerm] = useState('');
@@ -466,7 +467,9 @@ const AdminDashboard = () => {
                         <div
                             className="user-profile"
                             title="Profile"
+                            onClick={() => setIsIdModalOpen(true)}
                             style={{
+                                cursor: 'pointer',
                                 padding: '6px',
                                 paddingRight: '16px',
                                 background: 'white',
@@ -1495,7 +1498,7 @@ const AdminDashboard = () => {
                 )}
             </div>
 
-            {/* User Details Modal */}
+            {/* User Details Modal (Existing logic) */}
             {showUserModal && selectedUser && (
                 <div
                     style={{
@@ -1660,6 +1663,50 @@ const AdminDashboard = () => {
                                 <i className="fa-solid fa-trash-can"></i>
                                 Delete User
                             </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Admin Profile Modal */}
+            {isIdModalOpen && (
+                <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(5px)' }}>
+                    <div className="modal-content" style={{ width: '750px', background: 'white', borderRadius: '40px', padding: '8px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'fadeInUp 0.3s ease-out', display: 'flex' }}>
+
+                        {/* Left Side - Profile Summary */}
+                        <div style={{ width: '280px', borderRadius: '32px', background: 'linear-gradient(135deg, #1e3a8a 0%, var(--primary) 100%)', padding: '40px 30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', textAlign: 'center', boxShadow: '0 10px 40px -10px rgba(37, 99, 235, 0.4)' }}>
+                            <div style={{ width: '110px', height: '110px', borderRadius: '50%', border: '4px solid rgba(255,255,255,0.3)', marginBottom: '20px', overflow: 'hidden', boxShadow: '0 8px 16px rgba(0,0,0,0.2)' }}>
+                                <img src={`https://ui-avatars.com/api/?name=Admin&size=200&background=fff&color=1e3a8a`} alt="Profile" style={{ width: '100%', height: '100%' }} />
+                            </div>
+                            <h2 style={{ fontSize: '24px', fontWeight: '800', margin: '0 0 6px', letterSpacing: '-0.5px' }}>{currentUser.name || 'System Admin'}</h2>
+                            <p style={{ fontSize: '14px', opacity: 0.8, fontWeight: '500', margin: 0 }}>Administrator Profile</p>
+                        </div>
+
+                        {/* Right Side - Details */}
+                        <div style={{ flex: 1, padding: '40px', position: 'relative' }}>
+                            <button onClick={() => setIsIdModalOpen(false)} style={{ position: 'absolute', top: '25px', right: '25px', background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', transition: 'all 0.2s' }}>
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+
+                            <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '25px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '20px', background: 'var(--primary)', borderRadius: '4px', display: 'block' }}></span>
+                                Account Details
+                            </h3>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                                <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Admin ID</label>
+                                    <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155' }}>{currentUser.id || 'ADMIN001'}</div>
+                                </div>
+                                <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Role</label>
+                                    <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155', textTransform: 'capitalize' }}>{currentUser.role || 'Admin'}</div>
+                                </div>
+                                <div style={{ gridColumn: 'span 2', background: 'var(--surface)', padding: '16px', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+                                    <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Email Address</label>
+                                    <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155' }}>{currentUser.email || 'admin@aditya.edu.in'}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
