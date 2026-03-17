@@ -16,7 +16,13 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 // Database Connection
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/collegeEvents')
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/collegeEvents', {
+    serverApi: {
+        version: '1',
+        strict: true,
+        deprecationErrors: true,
+    }
+})
     .then(() => {
         console.log('✅ MongoDB Connected');
         seedAdmin();
