@@ -8,3 +8,10 @@ node_modules/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Presentations & Reports
+*.pptx
+*.ppt
+*.docx
+*.doc
+Presentation.html

@@ -27,6 +27,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/collegeEven
         console.log('✅ MongoDB Connected');
         seedAdmin();
         seedProjectMeta();
+        seedEvents();
     })
     .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
@@ -65,6 +66,92 @@ async function seedProjectMeta() {
         }
     } catch (error) {
         console.error('Error seeding project meta:', error);
+    }
+}
+
+// Seed Sample Events
+async function seedEvents() {
+    if (mongoose.connection.readyState !== 1) return;
+    try {
+        const count = await Event.countDocuments();
+        if (count === 0) {
+            const sampleEvents = [
+                {
+                    title: 'Tech Symposium 2026',
+                    date: '2026-05-15',
+                    time: '10:00 AM',
+                    location: 'Main Auditorium',
+                    description: 'A grand gathering of tech enthusiasts featuring keynote speeches, panel discussions, and project showcases.',
+                    category: 'Technical',
+                    organizerId: 'ORG001',
+                    price: 200,
+                    maxParticipants: 500,
+                    poster: 'https://images.unsplash.com/photo-1540575861501-7ad060e39fe5?q=80&w=1200',
+                    isApproved: true,
+                    status: 'upcoming'
+                },
+                {
+                    title: 'Annual Cultural Fest: Tarang',
+                    date: '2026-06-10',
+                    time: '04:00 PM',
+                    location: 'Open Air Theatre',
+                    description: 'Celebrate the spirit of creativity with music, dance, and drama performances from across the university.',
+                    category: 'Cultural',
+                    organizerId: 'ORG002',
+                    price: 0,
+                    maxParticipants: 1000,
+                    poster: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200',
+                    isApproved: true,
+                    status: 'upcoming'
+                },
+                {
+                    title: 'National Level Hackathon',
+                    date: '2026-07-20',
+                    time: '09:00 AM',
+                    location: 'Innovation Lab',
+                    description: 'A 24-hour coding challenge to solve real-world problems. Great prizes and networking opportunities!',
+                    category: 'Technical',
+                    organizerId: 'ORG001',
+                    price: 150,
+                    maxParticipants: 100,
+                    poster: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200',
+                    isApproved: true,
+                    status: 'upcoming'
+                },
+                {
+                    title: 'Inter-College Cricket Tournament',
+                    date: '2026-08-05',
+                    time: '08:00 AM',
+                    location: 'University Sports Ground',
+                    description: 'Watch the best teams compete for the championship trophy in this thrilling cricket tournament.',
+                    category: 'Sports',
+                    organizerId: 'ORG003',
+                    price: 50,
+                    maxParticipants: 16,
+                    poster: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=1200',
+                    isApproved: true,
+                    status: 'upcoming'
+                },
+                {
+                    title: 'Workshop: Masterclass on AI',
+                    date: '2026-04-25',
+                    time: '02:00 PM',
+                    location: 'Seminar Hall B',
+                    description: 'An intensive workshop on Artificial Intelligence and Machine Learning for beginners and intermediates.',
+                    category: 'Workshops',
+                    organizerId: 'ORG001',
+                    price: 100,
+                    maxParticipants: 50,
+                    poster: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200',
+                    isApproved: true,
+                    status: 'upcoming'
+                }
+            ];
+            await Event.insertMany(sampleEvents);
+            console.log('📅 Sample events seeded successfully');
+        }
+    } catch (error) {
+        console.error('Error seeding events:', error);
     }
 }
 
