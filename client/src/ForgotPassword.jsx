@@ -25,6 +25,14 @@ const ForgotPassword = () => {
 
 
     const handleFindUser = async () => {
+        if (identifier.includes('@')) {
+            const validDomains = ['@gmail.com', '@example.com', '@email.com'];
+            const lowerIdentifier = identifier.toLowerCase();
+            if (!validDomains.some(domain => lowerIdentifier.endsWith(domain))) {
+                alert("Only @gmail.com, @example.com, or @email.com domains are allowed.");
+                return;
+            }
+        }
         try {
             const response = await fetch(`${API_BASE_URL}/api/auth/forgot-password/find`, {
                 method: 'POST',

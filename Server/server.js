@@ -324,10 +324,24 @@ function validatePassword(password) {
     return null;
 }
 
+// Helper: Validate Email Domain
+function validateEmailDomain(email) {
+    if (!email) return "Email is required.";
+    const validDomains = ['@gmail.com', '@example.com', '@email.com'];
+    const lowerEmail = email.toLowerCase();
+    if (!validDomains.some(domain => lowerEmail.endsWith(domain))) {
+        return "Only @gmail.com, @example.com, or @email.com domains are allowed.";
+    }
+    return null;
+}
+
 // Student Signup
 app.post('/api/students/signup', async (req, res) => {
     try {
         const { name, id, email, branch, password, question, answer } = req.body;
+
+        const emailError = validateEmailDomain(email);
+        if (emailError) return res.status(400).json({ message: emailError });
 
         const passwordError = validatePassword(password);
         if (passwordError) return res.status(400).json({ message: passwordError });
@@ -348,6 +362,9 @@ app.post('/api/organizers/signup', async (req, res) => {
     try {
         const { name, id, email, password, question, answer } = req.body;
 
+        const emailError = validateEmailDomain(email);
+        if (emailError) return res.status(400).json({ message: emailError });
+
         const passwordError = validatePassword(password);
         if (passwordError) return res.status(400).json({ message: passwordError });
 
@@ -365,6 +382,13 @@ app.post('/api/organizers/signup', async (req, res) => {
 // Login - Unified (Searches all collections)
 app.post('/api/login', async (req, res) => {
     const { userId, password } = req.body; // Role is optional/ignored for search
+    
+    // Email Validation if input looks like an email
+    if (userId && userId.includes('@')) {
+        const emailError = validateEmailDomain(userId);
+        if (emailError) return res.status(400).json({ message: emailError });
+    }
+
     try {
         // 1. Check Admin
         const admin = await Admin.findOne({ username: userId });
@@ -414,6 +438,12 @@ app.post('/api/login', async (req, res) => {
 // Forgot Password - Find User
 app.post('/api/auth/forgot-password/find', async (req, res) => {
     const { role, identifier } = req.body;
+
+    if (identifier && identifier.includes('@')) {
+        const emailError = validateEmailDomain(identifier);
+        if (emailError) return res.status(400).json({ success: false, message: emailError });
+    }
+
     try {
         let user;
         if (role === 'student') {
