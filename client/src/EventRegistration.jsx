@@ -109,7 +109,8 @@ const EventRegistration = () => {
                 
                 navigate('/student-dashboard');
             } else {
-                alert('Registration failed. Please try again.');
+                const errorData = await response.json();
+                alert(`Registration failed: ${errorData.message || 'Please try again.'}`);
             }
 
         } catch (error) {

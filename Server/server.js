@@ -585,7 +585,27 @@ app.post('/api/events/register', async (req, res) => {
 
         // Check duplicate
         const existingReg = await Registration.findOne({ studentId, eventId });
-        if (existingReg) return res.status(400).json({ message: 'Already registered' });
+        if (existingReg) return res.status(400).json({ message: 'Already registered for this event' });
+
+        // Check for time slot conflict
+        if (event.date && event.time) {
+            // Find all active registrations for this student
+            const activeRegistrations = await Registration.find({ 
+                studentId, 
+                status: { $ne: 'cancelled' } 
+            });
+            const activeEventIds = activeRegistrations.map(r => r.eventId);
+            
+            const conflictingEvent = await Event.findOne({
+                _id: { $in: activeEventIds },
+                date: event.date,
+                time: event.time
+            });
+
+            if (conflictingEvent) {
+                return res.status(400).json({ message: `Time slot conflict: You are already registered for '${conflictingEvent.title}' at this overlapping time slot.` });
+            }
+        }
 
         // Create detailed registration
         const newRegistration = new Registration({
