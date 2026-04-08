@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import CertificateTemplate from './CertificateTemplate';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const API_BASE_URL = ''; // Adjust if needed
 
@@ -24,11 +27,8 @@ const StudentDashboard = () => {
         { id: 3, title: 'Workshop Alert', message: 'AI/ML Workshop starts in 3 days.', time: '2 days ago', icon: 'fa-clock', color: 'var(--warning)' }
     ]);
 
-    // Mock certificates data (since no API endpoint exists yet)
-    const certificates = [
-        // Example structure for future API
-        // { id: 1, eventName: 'Web Development Workshop', date: '2023-11-15', downloadUrl: '#' }
-    ];
+    const [certificates, setCertificates] = useState([]);
+    const [downloadingCert, setDownloadingCert] = useState(null);
 
     const fetchDashboardData = async (userId) => {
         try {
@@ -46,6 +46,11 @@ const StudentDashboard = () => {
             const statsRes = await fetch(`${API_BASE_URL}/api/student/${userId}/stats`);
             const statsData = await statsRes.json();
             setStats(statsData);
+
+            // Fetch certificates
+            const certRes = await fetch(`${API_BASE_URL}/api/students/${userId}/certificates`);
+            const certData = await certRes.json();
+            setCertificates(certData);
 
         } catch (error) {
             console.error('Error fetching student dashboard data:', error);
@@ -98,6 +103,24 @@ const StudentDashboard = () => {
             localStorage.removeItem('currentUser');
             navigate('/');
         }
+    };
+
+    const handleDownloadCertificate = async (cert) => {
+        setDownloadingCert(cert.certificateId);
+        try {
+            const element = document.getElementById(`certificate-node-${cert.certificateId}`);
+            if (element) {
+                const canvas = await html2canvas(element, { scale: 2 });
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jsPDF('l', 'px', [1122, 793]);
+                pdf.addImage(imgData, 'PNG', 0, 0, 1122, 793);
+                pdf.save(`${cert.eventName.replace(/\s+/g, '_')}_Certificate.pdf`);
+            }
+        } catch (error) {
+            console.error('Error downloading cert:', error);
+            alert('Failed to generate PDF. Please try again.');
+        }
+        setDownloadingCert(null);
     };
 
     const filteredEvents = events.filter(event => {
@@ -617,8 +640,35 @@ const StudentDashboard = () => {
                                 <button onClick={() => setActiveTab('events')} className="btn" style={{ width: 'auto', marginTop: '25px', padding: '12px 30px' }}>Browse Events</button>
                             </div>
                         ) : (
-                            <div className="events-grid">
-                                {/* Map certificates here when available */}
+                            <div className="events-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+                                {certificates.map(cert => (
+                                    <div key={cert.certificateId} style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
+                                            <div style={{ width: '50px', height: '50px', background: 'rgba(59, 130, 246, 0.1)', color: 'var(--info)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px' }}>
+                                                <i className="fa-solid fa-award"></i>
+                                            </div>
+                                            <div>
+                                                <h4 style={{ margin: '0 0 4px 0', color: '#1e293b', fontSize: '16px', fontWeight: '700' }}>{cert.eventName}</h4>
+                                                <p style={{ margin: 0, color: '#64748b', fontSize: '12px' }}>Issued: {new Date(cert.issueDate).toLocaleDateString()}</p>
+                                            </div>
+                                        </div>
+                                        <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '20px', background: '#f8fafc', padding: '8px 12px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                                            <strong>ID:</strong> {cert.certificateId}
+                                        </div>
+                                        <button 
+                                            onClick={() => handleDownloadCertificate(cert)}
+                                            disabled={downloadingCert === cert.certificateId}
+                                            style={{ width: '100%', padding: '10px', borderRadius: '8px', border: 'none', background: 'var(--info)', color: 'white', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', opacity: downloadingCert === cert.certificateId ? 0.7 : 1 }}
+                                        >
+                                            {downloadingCert === cert.certificateId ? (
+                                                <><i className="fa-solid fa-circle-notch fa-spin"></i> Generating...</>
+                                            ) : (
+                                                <><i className="fa-solid fa-download"></i> Download PDF</>
+                                            )}
+                                        </button>
+                                        <CertificateTemplate certificate={cert} />
+                                    </div>
+                                ))}
                             </div>
                         )}
                     </div>

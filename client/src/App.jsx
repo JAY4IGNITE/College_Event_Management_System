@@ -9,6 +9,7 @@ import OrganizerSignup from './OrganizerSignup';
 import CreateEvent from './CreateEvent';
 import EventRegistration from './EventRegistration';
 import ForgotPassword from './ForgotPassword';
+import VerifyCertificate from './VerifyCertificate';
 import './index.css';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/create-event" element={<CreateEvent />} />
           <Route path="/event-registration" element={<EventRegistration />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify" element={<VerifyCertificate />} />
         </Routes>
       </div>
     </Router>

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const crypto = require('crypto');
 require('dotenv').config();
 
 const app = express();
@@ -298,6 +299,16 @@ const projectMetaSchema = new mongoose.Schema({
 });
 const ProjectMeta = mongoose.model('ProjectMeta', projectMetaSchema);
 
+const certificateSchema = new mongoose.Schema({
+    certificateId: { type: String, required: true, unique: true },
+    studentId: { type: String, required: true },
+    studentName: { type: String, required: true },
+    eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
+    eventName: { type: String, required: true },
+    issueDate: { type: Date, default: Date.now },
+    issuerName: { type: String, required: true }
+});
+const Certificate = mongoose.model('Certificate', certificateSchema);
 
 // --- Routes ---
 
@@ -635,6 +646,27 @@ app.post('/api/events/register', async (req, res) => {
     }
 });
 
+// Get Student Certificates
+app.get('/api/students/:id/certificates', async (req, res) => {
+    try {
+        const certificates = await Certificate.find({ studentId: req.params.id }).populate('eventId', 'date location category poster');
+        res.json(certificates);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching certificates' });
+    }
+});
+
+// Verify Certificate
+app.get('/api/certificates/verify/:certId', async (req, res) => {
+    try {
+        const certificate = await Certificate.findOne({ certificateId: req.params.certId });
+        if (!certificate) return res.status(404).json({ valid: false, message: 'Certificate not found' });
+        res.json({ valid: true, certificate });
+    } catch (error) {
+        res.status(500).json({ message: 'Error verifying certificate' });
+    }
+});
+
 // Get My Registered Events
 app.get('/api/students/:id/events', async (req, res) => {
     try {
@@ -673,6 +705,26 @@ app.put('/api/organizer/participants/:regId', async (req, res) => {
         const { status } = req.body; // 'attended', 'registered', 'cancelled'
         const reg = await Registration.findByIdAndUpdate(req.params.regId, { status }, { new: true });
         if (!reg) return res.status(404).json({ message: 'Registration not found' });
+
+        if (status === 'attended') {
+            const existingCert = await Certificate.findOne({ studentId: reg.studentId, eventId: reg.eventId });
+            if (!existingCert) {
+                const student = await Student.findOne({ studentId: reg.studentId });
+                const event = await Event.findById(reg.eventId);
+                if (student && event) {
+                    const certId = `CERT-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
+                    await new Certificate({
+                        certificateId: certId,
+                        studentId: reg.studentId,
+                        studentName: student.name,
+                        eventId: event._id,
+                        eventName: event.title,
+                        issuerName: 'Aditya University Group'
+                    }).save();
+                }
+            }
+        }
+
         res.json({ message: 'Status updated', registration: reg });
     } catch (error) {
         res.status(500).json({ message: 'Error updating status' });
