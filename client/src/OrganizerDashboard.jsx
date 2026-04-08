@@ -209,6 +209,8 @@ const OrganizerDashboard = () => {
     const [myEvents, setMyEvents] = useState([]);
     const [activeTab, setActiveTab] = useState('home');
     const [isIdModalOpen, setIsIdModalOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const [isEventModalOpen, setIsEventModalOpen] = useState(false);
 
     useEffect(() => {
         if (!currentUser || currentUser.role !== 'organizer') {
@@ -567,7 +569,7 @@ const OrganizerDashboard = () => {
                                 ) : (
                                     <div className="events-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                         {myEvents.slice(0, 3).map(event => (
-                                            <div className="event-card" key={event._id} style={{ borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '16px', gap: '20px', background: 'var(--surface)', border: '1px solid #f1f5f9', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+                                            <div className="event-card" key={event._id} style={{ borderRadius: '20px', display: 'flex', alignItems: 'center', padding: '16px', gap: '20px', background: 'var(--surface)', border: '1px solid #f1f5f9', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', cursor: 'pointer' }} onClick={() => { setSelectedEvent(event); setIsEventModalOpen(true); }}>
                                                 {event.poster ? (
                                                     <div style={{ width: '80px', height: '80px', borderRadius: '14px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
                                                         <img src={event.poster} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -591,7 +593,7 @@ const OrganizerDashboard = () => {
                                                     </div>
                                                 </div>
                                                 <button
-                                                    onClick={() => setActiveTab('events')}
+                                                    onClick={(e) => { e.stopPropagation(); setActiveTab('events'); }}
                                                     style={{ background: 'white', border: '1px solid var(--border)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.2s', flexShrink: 0 }}
                                                     onMouseOver={(e) => { e.currentTarget.style.color = 'var(--info)'; e.currentTarget.style.borderColor = 'var(--info)'; }}
                                                     onMouseOut={(e) => { e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'var(--border)'; }}
@@ -739,7 +741,7 @@ const OrganizerDashboard = () => {
                                 </div>
                             ) : (
                                 myEvents.map(event => (
-                                    <div className="event-card" key={event._id} style={{ borderRadius: '20px', overflow: 'hidden' }}>
+                                    <div className="event-card" key={event._id} style={{ borderRadius: '20px', overflow: 'hidden', cursor: 'pointer' }} onClick={() => { setSelectedEvent(event); setIsEventModalOpen(true); }}>
                                         <div className="event-image">
                                             <img
                                                 src={event.poster || (
@@ -804,7 +806,7 @@ const OrganizerDashboard = () => {
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '8px' }}>
                                                     <button
-                                                        onClick={() => handleDownloadReport(event._id)}
+                                                        onClick={(e) => { e.stopPropagation(); handleDownloadReport(event._id); }}
                                                         title="Download Participants Report"
                                                         style={{
                                                             background: '#f0f9ff',
@@ -826,7 +828,7 @@ const OrganizerDashboard = () => {
                                                         <i className="fa-solid fa-file-csv"></i> Report
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDeleteEvent(event._id)}
+                                                        onClick={(e) => { e.stopPropagation(); handleDeleteEvent(event._id); }}
                                                         style={{
                                                             background: 'var(--surface-glass)1f2',
                                                             color: '#e11d48',
@@ -967,6 +969,55 @@ const OrganizerDashboard = () => {
                                     <label style={{ display: 'block', fontSize: '11px', fontWeight: '700', color: 'var(--text-light)', textTransform: 'uppercase', marginBottom: '4px' }}>Email Address</label>
                                     <div style={{ fontSize: '15px', fontWeight: '600', color: '#334155' }}>{currentUser.email}</div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {isEventModalOpen && selectedEvent && (
+                <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(5px)' }}>
+                    <div className="modal-content" style={{ width: '600px', maxHeight: '90vh', overflowY: 'auto', background: 'white', borderRadius: '24px', padding: '32px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'fadeInUp 0.3s ease-out', position: 'relative' }}>
+                        <button onClick={() => setIsEventModalOpen(false)} style={{ position: 'absolute', top: '20px', right: '20px', background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', transition: 'all 0.2s' }}>
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+                        
+                        <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '16px', paddingRight: '40px' }}>{selectedEvent.title}</h2>
+                        
+                        {selectedEvent.poster && (
+                            <div style={{ width: '100%', height: '200px', borderRadius: '16px', overflow: 'hidden', marginBottom: '24px' }}>
+                                <img src={selectedEvent.poster} alt={selectedEvent.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </div>
+                        )}
+                        
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+                            <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Category</div>
+                                <div style={{ fontWeight: '600' }}>{selectedEvent.category || 'General'}</div>
+                            </div>
+                            <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Date</div>
+                                <div style={{ fontWeight: '600' }}>{selectedEvent.date}</div>
+                            </div>
+                            <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Location</div>
+                                <div style={{ fontWeight: '600' }}>{selectedEvent.location || 'TBA'}</div>
+                            </div>
+                            <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Status</div>
+                                <div style={{ fontWeight: '600', color: selectedEvent.isApproved ? '#059669' : '#ea580c' }}>{selectedEvent.isApproved ? 'Approved' : 'Pending'}</div>
+                            </div>
+                        </div>
+                        
+                        <div style={{ marginBottom: '24px' }}>
+                            <h3 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '8px' }}>Description</h3>
+                            <p style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-muted)' }}>{selectedEvent.description}</p>
+                        </div>
+                        
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '20px', borderTop: '1px solid #f1f5f9' }}>
+                            <div style={{ fontWeight: '600', color: 'var(--text-main)' }}>
+                                <i className="fa-solid fa-users" style={{ color: 'var(--info)', marginRight: '8px' }}></i>
+                                {selectedEvent.registeredCount || 0} Registered
                             </div>
                         </div>
                     </div>
