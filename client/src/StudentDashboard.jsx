@@ -366,8 +366,36 @@ const StudentDashboard = () => {
                                                         <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}><i className="fa-solid fa-location-dot" style={{ color: 'var(--warning)', fontSize: '10px' }}></i> {event.location || 'TBA'}</span>
                                                     </div>
                                                 </div>
-                                                <div style={{ background: '#ecfdf5', color: '#059669', padding: '6px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: '700', border: '1px solid #d1fae5', whiteSpace: 'nowrap' }}>
-                                                    Registered
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-end' }}>
+                                                    <div style={{ background: '#ecfdf5', color: '#059669', padding: '6px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: '700', border: '1px solid #d1fae5', whiteSpace: 'nowrap' }}>
+                                                        Registered
+                                                    </div>
+                                                    <button 
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            const title = encodeURIComponent(event.title);
+                                                            const details = encodeURIComponent(`You are registered for ${event.title}.\n\nLocation: ${event.location || 'TBA'}\n\nNote: You will receive notifications and reminders before the event starts based on your Google Calendar settings.`);
+                                                            const location = encodeURIComponent(event.location || 'TBA');
+                                                            
+                                                            let d = new Date(event.date);
+                                                            if (isNaN(d.getTime())) d = new Date();
+                                                            const pad = (n) => n < 10 ? '0'+n : n;
+                                                            const yyyy = d.getFullYear();
+                                                            const mm = pad(d.getMonth() + 1);
+                                                            const dd = pad(d.getDate());
+                                                            const start = `${yyyy}${mm}${dd}T100000`;
+                                                            const end = `${yyyy}${mm}${dd}T130000`;
+                                                            const dates = `${start}/${end}`;
+                                                            
+                                                            const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+                                                            window.open(calUrl, '_blank', 'noopener,noreferrer');
+                                                        }}
+                                                        style={{ background: 'white', color: 'var(--text-main)', border: '1px solid var(--border)', padding: '6px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: '600', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}
+                                                        onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--info)'; e.currentTarget.style.color = 'var(--info)'; }}
+                                                        onMouseOut={(e) => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-main)'; }}
+                                                    >
+                                                        <i className="fa-brands fa-google" style={{ color: '#ea4335' }}></i> Add to Calendar
+                                                    </button>
                                                 </div>
                                             </div>
                                         ))}

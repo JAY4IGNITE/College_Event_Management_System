@@ -57,7 +57,38 @@ const EventRegistration = () => {
             });
 
             if (response.ok) {
-                alert(`Registration Confirmed for ${eventDetails.title}! 🎉`);
+                // Generate Google Calendar URL with reminder instructions
+                const title = encodeURIComponent(eventDetails.title);
+                const details = encodeURIComponent(`You are registered for ${eventDetails.title}.\n\nLocation: ${eventDetails.venue}\n\nNote: You will receive notifications and reminders before the event starts based on your Google Calendar settings.`);
+                const location = encodeURIComponent(eventDetails.venue || 'TBA');
+                
+                let d = new Date(eventDetails.date);
+                if (isNaN(d.getTime())) d = new Date(); // fallback
+                const pad = (n) => n < 10 ? '0'+n : n;
+                const yyyy = d.getFullYear();
+                const mm = pad(d.getMonth() + 1);
+                const dd = pad(d.getDate());
+                
+                // Assuming event starts at 10 AM and ends at 1 PM local time
+                const start = `${yyyy}${mm}${dd}T100000`;
+                const end = `${yyyy}${mm}${dd}T130000`;
+                const dates = `${start}/${end}`;
+                
+                // action=TEMPLATE creates a calendar event pre-filled
+                const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+
+                // Prompt user to auto-add to calendar
+                if (window.confirm(`Registration Confirmed for ${eventDetails.title}! 🎉\n\nWould you like to automatically add this to your Google Calendar to receive reminders before the event starts?`)) {
+                    // Use a temporary anchor to reliably open in new tab
+                    const a = document.createElement('a');
+                    a.href = calUrl;
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                }
+                
                 navigate('/student-dashboard');
             } else {
                 alert('Registration failed. Please try again.');
