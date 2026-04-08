@@ -340,7 +340,15 @@ const CreateEvent = () => {
 
                             <div className="form-group">
                                 <label>Time</label>
-                                <input type="time" id="eventTime" required onChange={handleChange} />
+                                <select id="eventTime" required onChange={handleChange} value={eventData.time || ""}>
+                                    <option value="" disabled>Select Time</option>
+                                    {[...Array(24)].map((_, i) => {
+                                        const hour = i.toString().padStart(2, '0');
+                                        const displayHour = i === 0 ? 12 : (i > 12 ? i - 12 : i);
+                                        const ampm = i < 12 ? 'AM' : 'PM';
+                                        return <option key={i} value={`${hour}:00`}>{`${displayHour}:00 ${ampm}`}</option>;
+                                    })}
+                                </select>
                             </div>
 
                             <div className="form-group">
