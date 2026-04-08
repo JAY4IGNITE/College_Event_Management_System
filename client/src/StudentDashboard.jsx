@@ -13,6 +13,7 @@ const StudentDashboard = () => {
     const [registeredEvents, setRegisteredEvents] = useState([]);
     const [stats, setStats] = useState({ registeredCount: 0, attendedCount: 0, certificatesCount: 0 });
     const [searchTerm, setSearchTerm] = useState('');
+    const [sortBy, setSortBy] = useState('date');
     const [isIdModalOpen, setIsIdModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('home');
 
@@ -76,9 +77,23 @@ const StudentDashboard = () => {
         }
     };
 
-    const filteredEvents = events.filter(event =>
-        event.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredEvents = events.filter(event => {
+        const term = searchTerm.toLowerCase();
+        if (!term) return true;
+        const matchesTitle = event.title && event.title.toLowerCase().includes(term);
+        const isCategoryBtn = ['technical', 'cultural', 'sports', 'workshops', 'seminars'].includes(term);
+        const matchesCategory = isCategoryBtn ? event.category?.toLowerCase() === term : false;
+        return matchesTitle || matchesCategory;
+    }).sort((a, b) => {
+        if (sortBy === 'date') {
+            return new Date(a.date || 0) - new Date(b.date || 0);
+        } else if (sortBy === 'priceLowToHigh') {
+            return (a.price || 0) - (b.price || 0);
+        } else if (sortBy === 'priceHighToLow') {
+            return (b.price || 0) - (a.price || 0);
+        }
+        return 0;
+    });
 
     const handleTabChange = (tab) => {
         setActiveTab(tab);
@@ -396,9 +411,23 @@ const StudentDashboard = () => {
                 {activeTab === 'events' && (
                     <div className="events-column" style={{ animation: 'fadeInUp 0.4s ease-out' }}>
                         <div className="section-header" style={{ marginBottom: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
-                                Upcoming Events
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
+                                    Upcoming Events
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <i className="fa-solid fa-arrow-down-a-z" style={{ color: 'var(--text-muted)', fontSize: '14px' }}></i>
+                                    <select 
+                                        value={sortBy} 
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                        style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', background: 'white', color: 'var(--text-main)', fontSize: '13px', fontWeight: '600', outline: 'none', cursor: 'pointer', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}
+                                    >
+                                        <option value="date">Sort by Date</option>
+                                        <option value="priceLowToHigh">Price: Low to High</option>
+                                        <option value="priceHighToLow">Price: High to Low</option>
+                                    </select>
+                                </div>
                             </div>
 
                             {/* Categories Filter Bar */}
