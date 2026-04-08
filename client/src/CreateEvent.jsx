@@ -170,6 +170,24 @@ const CreateEvent = () => {
         }
     }, [currentUser, navigate]);
 
+    useEffect(() => {
+        const handlePopstate = (e) => {
+            e.preventDefault();
+            if (currentUser) {
+                if (currentUser.role === 'admin') navigate('/admin-dashboard', { replace: true });
+                else if (currentUser.role === 'organizer') navigate('/organizer-dashboard', { replace: true });
+                else navigate('/student-dashboard', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
+        };
+
+        window.history.pushState(null, '', window.location.pathname);
+        window.addEventListener('popstate', handlePopstate);
+
+        return () => window.removeEventListener('popstate', handlePopstate);
+    }, [navigate, currentUser]);
+
     const [eventData, setEventData] = useState({
         title: '',
         description: '',

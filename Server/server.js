@@ -28,6 +28,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/collegeEven
         seedAdmin();
         seedProjectMeta();
         seedEvents();
+        seedOrganizerAndEvents();
     })
     .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
@@ -40,7 +41,7 @@ async function seedAdmin() {
         if (!existingAdmin) {
             const newAdmin = new Admin({ username: adminUser, password: adminPass });
             await newAdmin.save();
-            console.log('👑 Admin user created successfully');
+            console.log('Admin user created successfully');
         }
     } catch (error) {
         console.error('Error seeding admin:', error);
@@ -62,7 +63,7 @@ async function seedProjectMeta() {
                 deployedAt: new Date()
             });
             await newMeta.save();
-            console.log('ℹ️  Project Metadata initialized');
+            console.log('Project Metadata initialized');
         }
     } catch (error) {
         console.error('Error seeding project meta:', error);
@@ -152,6 +153,47 @@ async function seedEvents() {
         }
     } catch (error) {
         console.error('Error seeding events:', error);
+    }
+}
+
+// Seed Organizer and Events
+async function seedOrganizerAndEvents() {
+    try {
+        const organizerId = 'org1';
+        let organizer = await Organizer.findOne({ organizerId });
+        if (!organizer) {
+            organizer = new Organizer({
+                name: 'Jane Doe',
+                organizerId: organizerId,
+                email: 'janedoe@example.com',
+                password: 'Password@123',
+                securityQuestion: 'pet',
+                securityAnswer: 'dog'
+            });
+            await organizer.save();
+            console.log('Organizer seeded successfully');
+        }
+
+        const eventsCount = await Event.countDocuments({ organizerId });
+        if (eventsCount < 5) {
+            const eventsToCreate = [
+                { title: 'Tech Innovation Summit 2026', date: '2026-05-15', time: '10:00 AM', location: 'Main Auditorium', category: 'Technology', organizerId, description: 'Annual tech summit showcasing new ideas.', price: 100, maxParticipants: 200 },
+                { title: 'Annual Cultural Fest Night', date: '2026-06-20', time: '05:00 PM', location: 'Open Grounds', category: 'Cultural', organizerId, description: 'A night full of music and dance.', price: 50, maxParticipants: 500 },
+                { title: 'Advanced AI & ML Workshop', date: '2026-07-10', time: '09:00 AM', location: 'CS Lab 3', category: 'Workshop', organizerId, description: 'Hands-on workshop on AI basics.', price: 0, maxParticipants: 50 },
+                { title: 'Inter-College Sports Meet', date: '2026-08-05', time: '08:00 AM', location: 'College Stadium', category: 'Sports', organizerId, description: 'Athletics and team sports tournament.', price: 0, maxParticipants: 300 },
+                { title: '24-Hour Code Hackathon', date: '2026-09-12', time: '08:00 AM', location: 'Innovation Hub', category: 'Hackathon', organizerId, description: 'Build solutions in 24 hours.', price: 20, maxParticipants: 100 },
+            ];
+
+            for (const ev of eventsToCreate) {
+                const existingEvent = await Event.findOne({ title: ev.title });
+                if (!existingEvent) {
+                    await new Event({ ...ev, status: 'upcoming', isApproved: true }).save();
+                }
+            }
+            console.log('5 Events from organizer seeded successfully');
+        }
+    } catch (error) {
+        console.error('Error seeding organizer and events:', error);
     }
 }
 

@@ -78,6 +78,28 @@ const AdminDashboard = () => {
         }
     }, [navigate]);
 
+    useEffect(() => {
+        const handlePopstate = (e) => {
+            e.preventDefault();
+            if (activeTab === 'home') {
+                if (window.confirm("Are you sure you want to log out?")) {
+                    localStorage.removeItem('currentUser');
+                    navigate('/', { replace: true });
+                } else {
+                    window.history.pushState(null, '', window.location.pathname);
+                }
+            } else {
+                setActiveTab('home');
+                window.history.pushState(null, '', window.location.pathname);
+            }
+        };
+
+        window.history.pushState(null, '', window.location.pathname);
+        window.addEventListener('popstate', handlePopstate);
+
+        return () => window.removeEventListener('popstate', handlePopstate);
+    }, [navigate, activeTab]);
+
     const fetchAllData = async () => {
         try {
             // Fetch Stats
@@ -891,8 +913,8 @@ const AdminDashboard = () => {
                                                     event.category === 'Technical' ? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000' :
                                                         event.category === 'Cultural' ? 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000' :
                                                             event.category === 'Sports' ? 'https://images.unsplash.com/photo-1461896756970-d5be867d7395?q=80&w=1000' :
-                                                                event.category === 'Workshops' ? 'https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?q=80&w=1000' :
-                                                                    event.category === 'Seminars' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' :
+                                                                event.category === 'Workshop' ? 'https://images.unsplash.com/photo-1531498860502-236734166953?q=80&w=1000' :
+                                                                    event.category === 'Seminar' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' :
                                                                         'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000'
                                                 )}
                                                 alt={event.title}

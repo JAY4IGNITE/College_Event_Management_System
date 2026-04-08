@@ -43,6 +43,11 @@ const OrganizerSignup = () => {
             return;
         }
 
+        if (strength < 5) {
+            alert("Weak Password: You must meet all password requirements.");
+            return;
+        }
+
         const userData = {
             name: formData.name,
             id: formData.id,
@@ -71,6 +76,32 @@ const OrganizerSignup = () => {
             console.error('Error:', error);
             alert("Server error.");
         }
+    };
+
+    const getStrength = (pass) => {
+        let s = 0;
+        if (pass.length >= 8) s++;
+        if (/[A-Z]/.test(pass)) s++;
+        if (/[a-z]/.test(pass)) s++;
+        if (/\d/.test(pass)) s++;
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(pass)) s++;
+        return s;
+    };
+
+    const strength = getStrength(formData.password);
+
+    const getStrengthColor = (s) => {
+        if (s === 0) return 'var(--text-muted)';
+        if (s <= 2) return '#ef4444';
+        if (s <= 4) return '#eab308';
+        return '#22c55e';
+    };
+
+    const getStrengthLabel = (s) => {
+        if (s === 0) return 'None';
+        if (s <= 2) return 'Weak';
+        if (s <= 4) return 'Good';
+        return 'Strong';
     };
 
     return (
@@ -111,7 +142,28 @@ const OrganizerSignup = () => {
                                 placeholder="Enter password"
                                 required
                                 onChange={handleChange}
+                                style={{
+                                    borderColor: formData.password ? getStrengthColor(strength) : undefined,
+                                    boxShadow: formData.password ? `0 0 10px ${getStrengthColor(strength)}40` : undefined,
+                                    paddingRight: '90px',
+                                    transition: 'all 0.3s ease'
+                                }}
                             />
+                            {formData.password && (
+                                <span style={{
+                                    position: 'absolute',
+                                    right: '40px',
+                                    fontSize: '12px',
+                                    fontWeight: '700',
+                                    color: getStrengthColor(strength),
+                                    pointerEvents: 'none',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    animation: 'fadeIn 0.3s ease'
+                                }}>
+                                    {getStrengthLabel(strength)}
+                                </span>
+                            )}
                             <i
                                 className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
                                 onClick={() => setShowPassword(!showPassword)}
@@ -134,6 +186,12 @@ const OrganizerSignup = () => {
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             ></i>
                         </div>
+                    </div>
+
+                    <div className="form-group" style={{ gridColumn: 'span 2' }}>
+                        <small style={{ color: 'var(--text-muted)', fontSize: '12px', display: 'block', marginTop: '-10px', marginBottom: '10px' }}>
+                            Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.
+                        </small>
                     </div>
 
                     <div className="form-group">

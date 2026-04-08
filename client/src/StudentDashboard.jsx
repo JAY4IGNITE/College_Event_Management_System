@@ -15,6 +15,7 @@ const StudentDashboard = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortBy, setSortBy] = useState('date');
     const [isIdModalOpen, setIsIdModalOpen] = useState(false);
+    const [selectedEventModal, setSelectedEventModal] = useState(null);
     const [activeTab, setActiveTab] = useState('home');
 
     const [notifications] = useState([
@@ -58,6 +59,28 @@ const StudentDashboard = () => {
             fetchDashboardData(currentUser.id);
         }
     }, [currentUser, navigate]);
+
+    useEffect(() => {
+        const handlePopstate = (e) => {
+            e.preventDefault();
+            if (activeTab === 'home') {
+                if (window.confirm("Are you sure you want to log out?")) {
+                    localStorage.removeItem('currentUser');
+                    navigate('/', { replace: true });
+                } else {
+                    window.history.pushState(null, '', window.location.pathname);
+                }
+            } else {
+                setActiveTab('home');
+                window.history.pushState(null, '', window.location.pathname);
+            }
+        };
+
+        window.history.pushState(null, '', window.location.pathname);
+        window.addEventListener('popstate', handlePopstate);
+
+        return () => window.removeEventListener('popstate', handlePopstate);
+    }, [navigate, activeTab]);
 
     const handleRegister = (event) => {
         const query = new URLSearchParams({
@@ -341,7 +364,8 @@ const StudentDashboard = () => {
                                 ) : (
                                     <div className="events-grid" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                         {registeredEvents.slice(0, 3).map(event => (
-                                            <div className="event-card" key={event._id} style={{ borderRadius: '16px', display: 'flex', alignItems: 'center', padding: '14px', gap: '16px', background: 'var(--surface)', border: '1px solid var(--border)', transition: 'all 0.2s' }}
+                                            <div className="event-card" key={event._id} style={{ borderRadius: '16px', display: 'flex', alignItems: 'center', padding: '14px', gap: '16px', background: 'var(--surface)', border: '1px solid var(--border)', transition: 'all 0.2s', cursor: 'pointer' }}
+                                                onClick={() => setSelectedEventModal(event)}
                                                 onMouseOver={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.05)'; e.currentTarget.style.borderColor = 'var(--text-light)'; }}
                                                 onMouseOut={(e) => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = 'var(--border)'; }}
                                             >
@@ -351,8 +375,8 @@ const StudentDashboard = () => {
                                                             event.category === 'Technical' ? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=100' :
                                                                 event.category === 'Cultural' ? 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=100' :
                                                                     event.category === 'Sports' ? 'https://images.unsplash.com/photo-1461896756970-d5be867d7395?q=80&w=100' :
-                                                                        event.category === 'Workshops' ? 'https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?q=80&w=100' :
-                                                                            event.category === 'Seminars' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=100' :
+                                                                        event.category === 'Workshop' ? 'https://st2.depositphotos.com/2801893/6175/v/450/depositphotos_61759515-stock-illustration-workshop-chart.jpg' :
+                                                                            event.category === 'Seminar' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=100' :
                                                                                 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=100'
                                                         )}
                                                         alt=""
@@ -478,7 +502,7 @@ const StudentDashboard = () => {
                                 >
                                     All Events
                                 </button>
-                                {['Technical', 'Cultural', 'Sports', 'Workshops', 'Seminars'].map(cat => (
+                                {['Technical', 'Cultural', 'Sports', 'Workshop', 'Seminar'].map(cat => (
                                     <button
                                         key={cat}
                                         onClick={() => setSearchTerm(cat)}
@@ -499,7 +523,7 @@ const StudentDashboard = () => {
                                             gap: '8px'
                                         }}
                                     >
-                                        <i className={`fa-solid ${cat === 'Technical' ? 'fa-laptop-code' : cat === 'Cultural' ? 'fa-music' : cat === 'Sports' ? 'fa-medal' : cat === 'Workshops' ? 'fa-screwdriver-wrench' : 'fa-chalkboard-user'}`}></i>
+                                        <i className={`fa-solid ${cat === 'Technical' ? 'fa-laptop-code' : cat === 'Cultural' ? 'fa-music' : cat === 'Sports' ? 'fa-medal' : cat === 'Workshop' ? 'fa-screwdriver-wrench' : 'fa-chalkboard-user'}`}></i>
                                         {cat}
                                     </button>
                                 ))}
@@ -514,15 +538,15 @@ const StudentDashboard = () => {
                                 </div>
                             ) : (
                                 filteredEvents.map(event => (
-                                    <div className="event-card" key={event._id} style={{ borderRadius: '20px', overflow: 'hidden' }}>
+                                    <div className="event-card" key={event._id} style={{ borderRadius: '20px', overflow: 'hidden', cursor: 'pointer' }} onClick={() => setSelectedEventModal(event)}>
                                         <div className="event-image">
                                             <img
                                                 src={event.poster || (
                                                     event.category === 'Technical' ? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000' :
                                                         event.category === 'Cultural' ? 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000' :
                                                             event.category === 'Sports' ? 'https://images.unsplash.com/photo-1461896756970-d5be867d7395?q=80&w=1000' :
-                                                                event.category === 'Workshops' ? 'https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?q=80&w=1000' :
-                                                                    event.category === 'Seminars' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' :
+                                                                event.category === 'Workshop' ? 'https://images.unsplash.com/photo-1531498860502-236734166953?q=80&w=1000' :
+                                                                    event.category === 'Seminar' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' :
                                                                         'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000'
                                                 )}
                                                 alt={event.title}
@@ -537,15 +561,33 @@ const StudentDashboard = () => {
                                             <div className="event-info">
                                                 <i className="fa-solid fa-location-dot"></i> {event.location || 'TBA'}
                                             </div>
-                                            <div className="event-description">{event.description}</div>
+                                            <div className="event-description">
+                                                {event.description}
+                                                {event.maxParticipants && (
+                                                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '8px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                        <i className="fa-solid fa-user-group" style={{ color: 'var(--info)' }}></i>
+                                                        {Math.max(event.maxParticipants - event.registeredCount, 0)} spots left (of {event.maxParticipants})
+                                                    </div>
+                                                )}
+                                            </div>
 
-                                            <div className="card-footer">
+                                            <div className="card-footer" onClick={(e) => e.stopPropagation()}>
                                                 <div className={`price ${event.price === 0 ? 'free' : ''}`}>
                                                     {event.price === 0 ? 'Free' : `₹${event.price}`}
                                                 </div>
-                                                <button className="register-btn" onClick={() => handleRegister(event)}>
-                                                    Register Now
-                                                </button>
+                                                {registeredEvents.some(regEvent => regEvent._id === event._id) ? (
+                                                    <button className="register-btn" disabled style={{ background: '#ecfdf5', color: '#059669', border: '1px solid #d1fae5', cursor: 'not-allowed', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                                        <i className="fa-solid fa-check"></i> Registered
+                                                    </button>
+                                                ) : (event.maxParticipants && event.registeredCount >= event.maxParticipants) ? (
+                                                    <button className="register-btn" disabled style={{ background: '#fef2f2', color: '#ef4444', border: '1px solid #fee2e2', cursor: 'not-allowed' }}>
+                                                        House Full
+                                                    </button>
+                                                ) : (
+                                                    <button className="register-btn" onClick={() => handleRegister(event)}>
+                                                        Register Now
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>
@@ -624,6 +666,93 @@ const StudentDashboard = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {selectedEventModal && (
+                <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(5px)' }} onClick={() => setSelectedEventModal(null)}>
+                    <div className="modal-content" style={{ width: '800px', maxWidth: '90vw', maxHeight: '90vh', background: 'white', borderRadius: '30px', padding: '0', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'fadeInUp 0.3s ease-out', display: 'flex', flexDirection: 'column', overflow: 'hidden' }} onClick={(e) => e.stopPropagation()}>
+
+                        <div style={{ position: 'relative', height: '250px', flexShrink: 0 }}>
+                            <img src={selectedEventModal.poster || (selectedEventModal.category === 'Technical' ? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000' : selectedEventModal.category === 'Cultural' ? 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000' : selectedEventModal.category === 'Sports' ? 'https://images.unsplash.com/photo-1461896756970-d5be867d7395?q=80&w=1000' : selectedEventModal.category === 'Workshop' ? 'https://images.unsplash.com/photo-1531498860502-236734166953?q=80&w=1000' : selectedEventModal.category === 'Seminar' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' : 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000')} alt={selectedEventModal.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }}></div>
+
+                            <button onClick={() => setSelectedEventModal(null)} style={{ position: 'absolute', top: '20px', right: '20px', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.3)', width: '40px', height: '40px', borderRadius: '50%', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', transition: 'all 0.2s' }}
+                                onMouseOver={(e) => { e.currentTarget.style.background = 'white'; e.currentTarget.style.color = '#334155' }}
+                                onMouseOut={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = 'white' }}>
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+
+                            <div style={{ position: 'absolute', bottom: '20px', left: '30px', color: 'white' }}>
+                                <span style={{ background: 'var(--primary)', padding: '6px 14px', borderRadius: '30px', fontSize: '12px', fontWeight: '700', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '10px', display: 'inline-block' }}>{selectedEventModal.category}</span>
+                                <h2 style={{ fontSize: '32px', margin: '0', fontWeight: '800', lineHeight: '1.2' }}>{selectedEventModal.title}</h2>
+                            </div>
+                        </div>
+
+                        <div style={{ padding: '30px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px', flex: 1 }}>
+                            <div style={{ display: 'flex', gap: '15px', borderBottom: '1px solid var(--border)', paddingBottom: '20px', flexWrap: 'wrap' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', fontSize: '15px', minWidth: '150px' }}>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--info)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}><i className="fa-regular fa-calendar"></i></div>
+                                    <div>
+                                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Date</div>
+                                        <div style={{ fontWeight: '600' }}>{selectedEventModal.date}</div>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', fontSize: '15px', minWidth: '150px' }}>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--warning)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}><i className="fa-solid fa-location-dot"></i></div>
+                                    <div>
+                                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Location</div>
+                                        <div style={{ fontWeight: '600' }}>{selectedEventModal.location || 'TBA'}</div>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', fontSize: '15px', minWidth: '150px' }}>
+                                    <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: 'var(--success)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}><i className="fa-solid fa-tag"></i></div>
+                                    <div>
+                                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Price</div>
+                                        <div style={{ fontWeight: '600' }}>{selectedEventModal.price === 0 ? 'Free' : `₹${selectedEventModal.price}`}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '10px', color: 'var(--text-main)' }}>About the Event</h3>
+                                <p style={{ color: 'var(--text-muted)', lineHeight: '1.7', margin: 0 }}>{selectedEventModal.description}</p>
+                            </div>
+
+                            <div style={{ background: '#f8fafc', padding: '20px', borderRadius: '16px', border: '1px solid var(--border)' }}>
+                                <h3 style={{ fontSize: '16px', fontWeight: '700', marginBottom: '15px', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    <i className="fa-solid fa-clipboard-list" style={{ color: 'var(--info)' }}></i> Details & Rules
+                                </h3>
+                                <ul style={{ margin: 0, paddingLeft: '20px', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '8px', lineHeight: '1.6' }}>
+                                    <li>Pre-registration is mandatory for all participants.</li>
+                                    <li>Please bring your digital ID card to the venue for verification.</li>
+                                    {selectedEventModal.category === 'Technical' && <li>Laptops may be required. Please check specific session requirements.</li>}
+                                    {selectedEventModal.category === 'Sports' && <li>Proper sports attire and appropriate footwear are strictly required.</li>}
+                                    {selectedEventModal.category === 'Cultural' && <li>Participants must report to the venue at least 30 minutes before the event starts.</li>}
+                                    <li>Management reserves the right to make changes to the schedule.</li>
+                                    {selectedEventModal.maxParticipants && <li>Limited seats available: {Math.max(selectedEventModal.maxParticipants - selectedEventModal.registeredCount, 0)} spots remaining.</li>}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div style={{ padding: '20px 30px', background: '#f8fafc', borderTop: '1px solid var(--border)', display: 'flex', justifyContent: 'flex-end', gap: '15px', alignItems: 'center' }}>
+                            <button onClick={() => setSelectedEventModal(null)} style={{ padding: '12px 24px', background: 'transparent', color: 'var(--text-muted)', border: 'none', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s', borderRadius: '12px' }} onMouseOver={(e) => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#334155' }} onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-muted)' }}>Cancel</button>
+                            {registeredEvents.some(regEvent => regEvent._id === selectedEventModal._id) ? (
+                                <button className="register-btn" disabled style={{ padding: '12px 30px', background: '#ecfdf5', color: '#059669', border: '1px solid #d1fae5', cursor: 'not-allowed', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '15px', borderRadius: '12px' }}>
+                                    <i className="fa-solid fa-check"></i> Already Registered
+                                </button>
+                            ) : (selectedEventModal.maxParticipants && selectedEventModal.registeredCount >= selectedEventModal.maxParticipants) ? (
+                                <button className="register-btn" disabled style={{ padding: '12px 30px', background: '#fef2f2', color: '#ef4444', border: '1px solid #fee2e2', cursor: 'not-allowed', fontSize: '15px', borderRadius: '12px' }}>
+                                    House Full
+                                </button>
+                            ) : (
+                                <button className="register-btn" onClick={() => handleRegister(selectedEventModal)} style={{ padding: '12px 30px', background: 'var(--primary)', color: 'white', border: 'none', fontWeight: '600', cursor: 'pointer', borderRadius: '12px', boxShadow: '0 4px 15px rgba(37, 99, 235, 0.3)', transition: 'all 0.2s', fontSize: '15px' }} onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(37, 99, 235, 0.4)' }} onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 15px rgba(37, 99, 235, 0.3)' }}>
+                                    Register for Event
+                                </button>
+                            )}
+                        </div>
+
                     </div>
                 </div>
             )}

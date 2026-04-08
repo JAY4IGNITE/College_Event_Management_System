@@ -110,6 +110,83 @@ const styles = `
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+
+    .admin-table {
+        width: 100%;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        border: 1px solid #f1f5f9;
+        border-collapse: collapse;
+    }
+    
+    .admin-table thead {
+        background: var(--surface);
+    }
+    
+    .admin-table th {
+        padding: 16px 20px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .admin-table td {
+        padding: 16px 20px;
+        border-top: 1px solid #f1f5f9;
+        font-size: 14px;
+        color: #334155;
+    }
+    
+    .admin-table tbody tr {
+        transition: background 0.2s;
+    }
+    
+    .admin-table tbody tr:hover {
+        background: var(--surface);
+    }
+    
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 100px;
+        font-size: 11px;
+        font-weight: 700;
+        display: inline-block;
+    }
+    
+    .status-approved {
+        background: #ecfdf5;
+        color: #059669;
+        border: 1px solid #d1fae5;
+    }
+    
+    .status-pending {
+        background: var(--surface-glass)7ed;
+        color: #ea580c;
+        border: 1px solid #ffedd5;
+    }
+    
+    .btn {
+        background: linear-gradient(135deg, var(--info) 0%, var(--primary) 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+    }
 `;
 
 // Inject styles
@@ -140,6 +217,28 @@ const OrganizerDashboard = () => {
             fetchDashboardData(currentUser.id);
         }
     }, [currentUser, navigate]);
+
+    useEffect(() => {
+        const handlePopstate = (e) => {
+            e.preventDefault();
+            if (activeTab === 'home') {
+                if (window.confirm("Are you sure you want to log out?")) {
+                    localStorage.removeItem('currentUser');
+                    navigate('/', { replace: true });
+                } else {
+                    window.history.pushState(null, '', window.location.pathname);
+                }
+            } else {
+                setActiveTab('home');
+                window.history.pushState(null, '', window.location.pathname);
+            }
+        };
+
+        window.history.pushState(null, '', window.location.pathname);
+        window.addEventListener('popstate', handlePopstate);
+
+        return () => window.removeEventListener('popstate', handlePopstate);
+    }, [navigate, activeTab]);
 
     const fetchDashboardData = async (userId) => {
         try {
@@ -240,7 +339,7 @@ const OrganizerDashboard = () => {
                         <i className="fa-regular fa-calendar-days" style={{ fontSize: '13px' }}></i> My Events
                     </button>
                     <button
-                        onClick={() => navigate('/analytics')}
+                        onClick={() => handleTabChange('analytics')}
                         style={{
                             background: activeTab === 'analytics' ? '#EFF6FF' : 'transparent',
                             color: activeTab === 'analytics' ? 'var(--primary)' : 'var(--text-muted)',
@@ -647,8 +746,8 @@ const OrganizerDashboard = () => {
                                                     event.category === 'Technical' ? 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1000' :
                                                         event.category === 'Cultural' ? 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000' :
                                                             event.category === 'Sports' ? 'https://images.unsplash.com/photo-1461896756970-d5be867d7395?q=80&w=1000' :
-                                                                event.category === 'Workshops' ? 'https://images.unsplash.com/photo-1540317580384-e5d43616b9aa?q=80&w=1000' :
-                                                                    event.category === 'Seminars' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' :
+                                                                event.category === 'Workshop' ? 'https://images.unsplash.com/photo-1531498860502-236734166953?q=80&w=1000' :
+                                                                    event.category === 'Seminar' ? 'https://images.unsplash.com/photo-1475721027461-90adbe67623a?q=80&w=1000' :
                                                                         'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000'
                                                 )}
                                                 alt={event.title}
@@ -757,6 +856,77 @@ const OrganizerDashboard = () => {
                     </div>
                 )}
 
+                {activeTab === 'analytics' && (
+                    <div style={{ animation: 'fadeInUp 0.4s ease-out' }}>
+                        <div className="portfolio-header" style={{
+                            marginBottom: '32px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            background: 'white',
+                            padding: '24px 30px',
+                            borderRadius: '24px',
+                            border: '1px solid #f1f5f9',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.02)'
+                        }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                                <div style={{ width: '45px', height: '45px', background: '#eff6ff', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--info)' }}>
+                                    <i className="fa-solid fa-chart-pie" style={{ fontSize: '20px' }}></i>
+                                </div>
+                                <div>
+                                    <h2 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--text-main)', margin: 0 }}>Event Reporting & Analytics</h2>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: '4px 0 0' }}>Generate and download participant reports for your hosted events.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="section-header" id="reports" style={{ marginBottom: '24px' }}>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '24px', background: 'var(--info)', borderRadius: '4px', display: 'block' }}></span>
+                                Participation Reports
+                            </div>
+                        </div>
+
+                        <table className="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Event Title</th>
+                                    <th>Date</th>
+                                    <th>Total Registered</th>
+                                    <th>Status</th>
+                                    <th>Report</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {myEvents.length === 0 ? (
+                                    <tr><td colSpan="5" style={{ textAlign: 'center' }}>No events found</td></tr>
+                                ) : (
+                                    myEvents.map(event => (
+                                        <tr key={event._id}>
+                                            <td>{event.title}</td>
+                                            <td>{event.date}</td>
+                                            <td>{event.registeredCount || 0} Students</td>
+                                            <td>
+                                                <span className={`status-badge ${event.isApproved ? 'status-approved' : 'status-pending'}`}>
+                                                    {event.isApproved ? 'Approved' : 'Pending'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button
+                                                    className="btn"
+                                                    style={{ width: 'auto', padding: '5px 15px', marginTop: 0, fontSize: '13px' }}
+                                                    onClick={() => handleDownloadReport(event._id)}
+                                                >
+                                                    Download CSV
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
 
             </div>
 

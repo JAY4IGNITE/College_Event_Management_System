@@ -72,7 +72,7 @@ const Login = () => {
                     <p className="subtitle" style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: '500', marginTop: '0' }}>Welcome, please enter your login credentials.</p>
                 </div>
 
-                <form onSubmit={handleLogin}>
+                <div onKeyDown={(e) => { if (e.key === 'Enter') handleLogin(e); }}>
                     <div className="input-wrapper">
                         <input
                             type="text"
@@ -86,12 +86,14 @@ const Login = () => {
 
                     <div className="input-wrapper" style={{ marginBottom: '10px' }}>
                         <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
+                            type="text"
+                            name={`pass_${Date.now()}`}
+                            autoComplete="new-password"
+                            placeholder="Current Password"
                             className={errorMsg ? 'input-error' : ''}
                             value={password}
                             onChange={(e) => { setPassword(e.target.value); setErrorMsg(''); }}
-                            style={{ paddingRight: '40px' }}
+                            style={{ paddingRight: '40px', WebkitTextSecurity: showPassword ? 'none' : 'disc' }}
                         />
                         <i className="fa-solid fa-lock input-icon"></i>
                         <i
@@ -119,10 +121,10 @@ const Login = () => {
                         </div>
                     )}
 
-                    <button type="submit" className="btn" disabled={isLoggingIn} style={{ opacity: isLoggingIn ? 0.8 : 1 }}>
+                    <button type="button" onClick={handleLogin} className="btn" disabled={isLoggingIn} style={{ opacity: isLoggingIn ? 0.8 : 1 }}>
                         {isLoggingIn ? <span><i className="fa-solid fa-circle-notch fa-spin"></i> Signing In...</span> : 'Sign In'}
                     </button>
-                </form>
+                </div>
 
                 <div className="signup-area">
                     <p style={{ color: 'var(--text-muted)', fontSize: '14px' }}>Don't have an account?</p>

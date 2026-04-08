@@ -7,7 +7,6 @@ import AdminDashboard from './AdminDashboard';
 import StudentSignup from './StudentSignup';
 import OrganizerSignup from './OrganizerSignup';
 import CreateEvent from './CreateEvent';
-import Analytics from './Analytics';
 import EventRegistration from './EventRegistration';
 import ForgotPassword from './ForgotPassword';
 import './index.css';
@@ -33,7 +32,6 @@ function App() {
           <Route path="/student-signup" element={<StudentSignup />} />
           <Route path="/organizer-signup" element={<OrganizerSignup />} />
           <Route path="/create-event" element={<CreateEvent />} />
-          <Route path="/analytics" element={<Analytics />} />
           <Route path="/event-registration" element={<EventRegistration />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>

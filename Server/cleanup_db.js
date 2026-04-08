@@ -21,7 +21,7 @@ const cleanDatabases = async () => {
             }
         }
 
-        console.log('🎉 Cleanup complete!');
+        console.log('Cleanup complete!');
         process.exit(0);
     } catch (err) {
         console.error('❌ Error during cleanup:', err);

@@ -35,22 +35,6 @@ const StudentSignup = () => {
     };
 
 
-    const validatePassword = (password) => {
-        const minLength = 8;
-        const hasUpperCase = /[A-Z]/.test(password);
-        const hasLowerCase = /[a-z]/.test(password);
-        const hasNumbers = /\d/.test(password);
-        const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-        if (password.length < minLength) return "min 8 chars";
-        if (!hasUpperCase) return "min 1 uppercase letter";
-        if (!hasLowerCase) return "min 1 lowercase letter";
-        if (!hasNumbers) return "min 1 number";
-        if (!hasSpecialChar) return "min 1 special char";
-
-        return "";
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -59,9 +43,8 @@ const StudentSignup = () => {
             return;
         }
 
-        const strengthError = validatePassword(formData.password);
-        if (strengthError) {
-            alert("Weak Password: " + strengthError);
+        if (strength < 5) {
+            alert("Weak Password: You must meet all password requirements.");
             return;
         }
 
@@ -93,6 +76,32 @@ const StudentSignup = () => {
             console.error('Error:', error);
             alert("Server error. Ensure backend is running.");
         }
+    };
+
+    const getStrength = (pass) => {
+        let s = 0;
+        if (pass.length >= 8) s++;
+        if (/[A-Z]/.test(pass)) s++;
+        if (/[a-z]/.test(pass)) s++;
+        if (/\d/.test(pass)) s++;
+        if (/[!@#$%^&*(),.?":{}|<>]/.test(pass)) s++;
+        return s;
+    };
+
+    const strength = getStrength(formData.password);
+
+    const getStrengthColor = (s) => {
+        if (s === 0) return 'var(--text-muted)';
+        if (s <= 2) return '#ef4444';
+        if (s <= 4) return '#eab308';
+        return '#22c55e';
+    };
+
+    const getStrengthLabel = (s) => {
+        if (s === 0) return 'None';
+        if (s <= 2) return 'Weak';
+        if (s <= 4) return 'Good';
+        return 'Strong';
     };
 
     return (
@@ -142,7 +151,28 @@ const StudentSignup = () => {
                                 placeholder="Enter password"
                                 required
                                 onChange={handleChange}
+                                style={{
+                                    borderColor: formData.password ? getStrengthColor(strength) : undefined,
+                                    boxShadow: formData.password ? `0 0 10px ${getStrengthColor(strength)}40` : undefined,
+                                    paddingRight: '90px',
+                                    transition: 'all 0.3s ease'
+                                }}
                             />
+                            {formData.password && (
+                                <span style={{
+                                    position: 'absolute',
+                                    right: '40px',
+                                    fontSize: '12px',
+                                    fontWeight: '700',
+                                    color: getStrengthColor(strength),
+                                    pointerEvents: 'none',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    animation: 'fadeIn 0.3s ease'
+                                }}>
+                                    {getStrengthLabel(strength)}
+                                </span>
+                            )}
                             <i
                                 className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}
                                 onClick={() => setShowPassword(!showPassword)}
