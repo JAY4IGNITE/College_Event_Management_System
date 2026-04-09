@@ -211,6 +211,9 @@ const OrganizerDashboard = () => {
     const [isIdModalOpen, setIsIdModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+    const [participants, setParticipants] = useState([]);
+    const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
+    const [updatingStatus, setUpdatingStatus] = useState(null);
 
     useEffect(() => {
         if (!currentUser || currentUser.role !== 'organizer') {
@@ -287,6 +290,42 @@ const OrganizerDashboard = () => {
     const handleDownloadReport = (eventId) => {
         if (!eventId) return;
         window.location.href = `${API_BASE_URL}/api/organizer/export/${eventId}`;
+    };
+
+    const fetchParticipants = async (eventId) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/organizer/events/${eventId}/participants`);
+            const data = await res.json();
+            setParticipants(data);
+        } catch (error) {
+            console.error('Error fetching participants:', error);
+        }
+    };
+
+    const handleManageParticipants = (event) => {
+        setSelectedEvent(event);
+        fetchParticipants(event._id);
+        setIsParticipantsModalOpen(true);
+    };
+
+    const handleUpdateStatus = async (regId, status) => {
+        setUpdatingStatus(regId);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/organizer/participants/${regId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status })
+            });
+            if (res.ok) {
+                setParticipants(prev => prev.map(p => p._id === regId ? { ...p, status } : p));
+                if (status === 'attended') {
+                    alert('Certificate issued successfully!');
+                }
+            }
+        } catch (error) {
+            console.error('Error updating status:', error);
+        }
+        setUpdatingStatus(null);
     };
 
     if (!currentUser) return null;
@@ -806,6 +845,28 @@ const OrganizerDashboard = () => {
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '8px' }}>
                                                     <button
+                                                        onClick={(e) => { e.stopPropagation(); handleManageParticipants(event); }}
+                                                        title="Manage Participants & Give Certificates"
+                                                        style={{
+                                                            background: '#ecfdf5',
+                                                            color: '#059669',
+                                                            border: 'none',
+                                                            padding: '10px 16px',
+                                                            borderRadius: '10px',
+                                                            fontSize: '13px',
+                                                            fontWeight: '700',
+                                                            cursor: 'pointer',
+                                                            transition: 'all 0.2s',
+                                                            display: 'flex',
+                                                            alignItems: 'center',
+                                                            gap: '8px'
+                                                        }}
+                                                        onMouseOver={(e) => e.currentTarget.style.background = '#d1fae5'}
+                                                        onMouseOut={(e) => e.currentTarget.style.background = '#ecfdf5'}
+                                                    >
+                                                        <i className="fa-solid fa-award"></i> Give Certificates
+                                                    </button>
+                                                    <button
                                                         onClick={(e) => { e.stopPropagation(); handleDownloadReport(event._id); }}
                                                         title="Download Participants Report"
                                                         style={{
@@ -1019,6 +1080,70 @@ const OrganizerDashboard = () => {
                                 <i className="fa-solid fa-users" style={{ color: 'var(--info)', marginRight: '8px' }}></i>
                                 {selectedEvent.registeredCount || 0} Registered
                             </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {isParticipantsModalOpen && selectedEvent && (
+                <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(5px)' }}>
+                    <div className="modal-content" style={{ width: '900px', maxHeight: '90vh', background: 'white', borderRadius: '24px', padding: '32px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'fadeInUp 0.3s ease-out', position: 'relative', display: 'flex', flexDirection: 'column' }}>
+                        <button onClick={() => setIsParticipantsModalOpen(false)} style={{ position: 'absolute', top: '20px', right: '20px', background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', transition: 'all 0.2s' }}>
+                            <i className="fa-solid fa-xmark"></i>
+                        </button>
+                        
+                        <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '8px' }}>Manage Participants</h2>
+                        <p style={{ color: 'var(--text-muted)', marginBottom: '24px', fontSize: '14px' }}>Event: <span style={{ fontWeight: '700', color: 'var(--info)' }}>{selectedEvent.title}</span></p>
+
+                        <div style={{ overflowX: 'auto', flex: 1 }}>
+                            <table className="admin-table" style={{ borderRadius: '12px' }}>
+                                <thead>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Student ID</th>
+                                        <th>Branch</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {participants.length === 0 ? (
+                                        <tr><td colSpan="5" style={{ textAlign: 'center', padding: '40px' }}>No participants registered yet</td></tr>
+                                    ) : (
+                                        participants.map(p => (
+                                            <tr key={p._id}>
+                                                <td>
+                                                    <div style={{ fontWeight: '700', color: 'var(--text-main)' }}>{p.studentName}</div>
+                                                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{p.studentEmail}</div>
+                                                </td>
+                                                <td>{p.studentId}</td>
+                                                <td>{p.studentBranch}</td>
+                                                <td>
+                                                    <span className={`status-badge ${p.status === 'attended' ? 'status-approved' : p.status === 'registered' ? 'status-pending' : ''}`}>
+                                                        {p.status.toUpperCase()}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    {p.status !== 'attended' && (
+                                                        <button 
+                                                            className="btn"
+                                                            disabled={updatingStatus === p._id}
+                                                            onClick={() => handleUpdateStatus(p._id, 'attended')}
+                                                            style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', opacity: updatingStatus === p._id ? 0.7 : 1 }}
+                                                        >
+                                                            {updatingStatus === p._id ? 'Updating...' : 'Give Certificate'}
+                                                        </button>
+                                                    )}
+                                                    {p.status === 'attended' && (
+                                                        <span style={{ color: 'var(--success)', fontWeight: '700', fontSize: '13px' }}>
+                                                            <i className="fa-solid fa-circle-check"></i> Certificate Given
+                                                        </span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
