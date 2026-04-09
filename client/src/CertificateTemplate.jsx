@@ -3,125 +3,199 @@ import React from 'react';
 const CertificateTemplate = ({ certificate }) => {
     if (!certificate) return null;
 
+    // We can use the organizer's signature if passed via the certificate object, or fallback safely
+    const coordinatorSignature = certificate.coordinatorSignature || null; // Will be empty until uploaded
+    const hodSignature = certificate.hodSignature || null;
+
     return (
         <div 
             id={`certificate-node-${certificate.certificateId}`}
             style={{
                 width: '1122px', 
                 height: '793px',
-                padding: '40px',
                 position: 'fixed',
                 top: '-9999px',
                 left: '-9999px',
                 background: '#ffffff',
                 color: '#333',
-                fontFamily: "'Inter', sans-serif",
+                fontFamily: "'Inter', Arial, sans-serif",
                 boxSizing: 'border-box'
             }}
         >
-            {/* Outer Premium Border */}
+            {/* Outer Blue Border */}
             <div style={{
                 position: 'relative',
-                border: '14px solid #1e293b', /* Deep navy/slate border */
+                border: '25px solid #004c99', /* Strong Aditya Blue */
                 height: '100%',
-                padding: '12px',
                 boxSizing: 'border-box',
-                background: 'linear-gradient(135deg, #ffffff 0%, #fdfbf7 100%)',
-                boxShadow: 'inset 0 0 0 4px #d4af37' /* Golden inner line */
+                background: '#ffffff'
             }}>
-                {/* Inner Delicate Border */}
+                {/* Gray Corner Block - Top Left */}
+                <div style={{ position: 'absolute', top: '0', left: '0', width: '0', height: '0', borderTop: '70px solid #e2e8f0', borderRight: '70px solid transparent' }}></div>
+                <div style={{ position: 'absolute', top: '0', left: '0', width: '70px', height: '14px', background: '#e2e8f0' }}></div>
+                <div style={{ position: 'absolute', top: '0', left: '0', height: '70px', width: '14px', background: '#e2e8f0' }}></div>
+                
+                {/* Gray Corner Block - Top Right */}
+                <div style={{ position: 'absolute', top: '0', right: '0', width: '0', height: '0', borderTop: '70px solid #e2e8f0', borderLeft: '70px solid transparent' }}></div>
+                <div style={{ position: 'absolute', top: '0', right: '0', width: '70px', height: '14px', background: '#e2e8f0' }}></div>
+                <div style={{ position: 'absolute', top: '0', right: '0', height: '70px', width: '14px', background: '#e2e8f0' }}></div>
+
+                {/* Gray Corner Block - Bottom Left */}
+                <div style={{ position: 'absolute', bottom: '0', left: '0', width: '0', height: '0', borderBottom: '70px solid #e2e8f0', borderRight: '70px solid transparent' }}></div>
+                <div style={{ position: 'absolute', bottom: '0', left: '0', width: '70px', height: '14px', background: '#e2e8f0' }}></div>
+                <div style={{ position: 'absolute', bottom: '0', left: '0', height: '70px', width: '14px', background: '#e2e8f0' }}></div>
+
+                {/* Gray Corner Block - Bottom Right */}
+                <div style={{ position: 'absolute', bottom: '0', right: '0', width: '0', height: '0', borderBottom: '70px solid #e2e8f0', borderLeft: '70px solid transparent' }}></div>
+                <div style={{ position: 'absolute', bottom: '0', right: '0', width: '70px', height: '14px', background: '#e2e8f0' }}></div>
+                <div style={{ position: 'absolute', bottom: '0', right: '0', height: '70px', width: '14px', background: '#e2e8f0' }}></div>
+
+
+                {/* Main Content Container */}
                 <div style={{
-                    border: '1px solid #d4af37',
-                    height: '100%',
-                    padding: '45px 50px',
+                    padding: '40px 60px',
                     textAlign: 'center',
                     boxSizing: 'border-box',
                     position: 'relative',
-                    background: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23d4af37\' fill-opacity=\'0.04\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+                    height: '100%',
+                    zIndex: 2
                 }}>
                     
-                    {/* Elegant Corner Accents */}
-                    <div style={{ position: 'absolute', top: '-6px', left: '-6px', width: '60px', height: '60px', borderTop: '4px solid #d4af37', borderLeft: '4px solid #d4af37' }}></div>
-                    <div style={{ position: 'absolute', top: '-6px', right: '-6px', width: '60px', height: '60px', borderTop: '4px solid #d4af37', borderRight: '4px solid #d4af37' }}></div>
-                    <div style={{ position: 'absolute', bottom: '-6px', left: '-6px', width: '60px', height: '60px', borderBottom: '4px solid #d4af37', borderLeft: '4px solid #d4af37' }}></div>
-                    <div style={{ position: 'absolute', bottom: '-6px', right: '-6px', width: '60px', height: '60px', borderBottom: '4px solid #d4af37', borderRight: '4px solid #d4af37' }}></div>
-
-                    {/* Logo Section */}
-                    <div style={{ marginBottom: '25px', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                        <img src="/aditya.jpg" alt="Aditya University Logo" style={{ height: '110px', mixBlendMode: 'multiply' }} />
-                        <div style={{ marginTop: '15px', color: '#d4af37', fontSize: '14px', letterSpacing: '4px', textTransform: 'uppercase', fontWeight: 'bold' }}>Excellence in Education</div>
+                    {/* Header Section */}
+                    <div style={{ marginBottom: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {/* Assuming the logo has "ADITYA UNIVERSITY" text as seen in your template */}
+                        <img src="/aditya.jpg" alt="Aditya University" style={{ height: '80px', mixBlendMode: 'multiply' }} />
                     </div>
+
+                    <p style={{ fontSize: '15px', color: '#475569', margin: '15px 0 20px', fontWeight: '500' }}>
+                        Aditya Nagar, ADB Road, Surampalem-533 437, Kakinada Dist, A.P. India.
+                    </p>
 
                     <h1 style={{ 
-                        fontSize: '48px', 
-                        color: '#1e293b', 
-                        margin: '10px 0 25px', 
-                        fontFamily: "'Playfair Display', Georgia, serif", 
-                        textTransform: 'uppercase', 
-                        letterSpacing: '8px' 
-                    }}>
-                        Certificate of Completion
-                    </h1>
-
-                    <div style={{ margin: 'auto', width: '80px', height: '3px', background: '#d4af37', marginBottom: '35px' }}></div>
-
-                    <p style={{ fontSize: '22px', fontStyle: 'italic', color: '#64748b', marginBottom: '20px', fontFamily: "Georgia, serif" }}>
-                        This is proudly presented to
-                    </p>
-                    
-                    <h2 style={{ 
-                        fontSize: '56px', 
-                        color: '#c2410c', /* A beautiful warm terracotta/brand red accent */
-                        margin: '15px 0', 
+                        fontSize: '66px', 
+                        color: '#d95a1a', /* Orange/Rust color matching image */
+                        margin: '10px 0 30px', 
                         fontFamily: "'Dancing Script', cursive, serif", 
                         fontWeight: '700',
-                        lineHeight: '1.2'
+                        letterSpacing: '1px'
                     }}>
-                        {certificate.studentName}
-                    </h2>
+                        Certificate of Participation
+                    </h1>
 
-                    <p style={{ fontSize: '20px', color: '#475569', marginTop: '20px', maxWidth: '85%', margin: '20px auto 0', lineHeight: '1.6', fontFamily: "Georgia, serif" }}>
-                        for successfully participating and demonstrating excellence in the event 
-                    </p>
-
-                    <h3 style={{ 
-                        fontSize: '34px', 
-                        color: '#1e293b', 
-                        marginTop: '25px', 
-                        fontFamily: "'Playfair Display', Georgia, serif",
-                        fontWeight: '800' 
+                    {/* Formatted Paragraph Layout */}
+                    <div style={{ 
+                        fontSize: '22px', 
+                        lineHeight: '2.4', 
+                        textAlign: 'left', 
+                        marginTop: '35px', 
+                        color: '#1e293b',
+                        fontFamily: "Arial, sans-serif"
                     }}>
-                        {certificate.eventName}
-                    </h3>
+                        {/* Line 1 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '20px' }}>
+                            <span style={{ whiteSpace: 'nowrap', marginRight: '15px' }}>This Certificate is presented to</span>
+                            <span style={{ 
+                                flex: 1, 
+                                borderBottom: '2px solid #64748b', 
+                                textAlign: 'center', 
+                                color: '#d95a1a', 
+                                fontWeight: 'bold', 
+                                paddingBottom: '2px',
+                                textTransform: 'uppercase'
+                            }}>
+                                {certificate.studentName}
+                            </span>
+                        </div>
 
-                    {/* Footer Section (Signatures & Dates) */}
-                    <div style={{ position: 'absolute', bottom: '60px', left: '60px', textAlign: 'left', width: '220px' }}>
-                        <p style={{ fontSize: '18px', fontWeight: 'bold', color: '#1e293b', borderBottom: '1px solid #cbd5e1', paddingBottom: '8px', marginBottom: '10px', fontFamily: "'Playfair Display', Georgia, serif" }}>
-                            {new Date(certificate.issueDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                        </p>
-                        <p style={{ fontSize: '12px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>Date of Issue</p>
-                    </div>
+                        {/* Line 2 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '20px' }}>
+                            <span style={{ whiteSpace: 'nowrap', marginRight: '15px' }}>Bearing Roll number</span>
+                            <span style={{ 
+                                width: '380px', 
+                                borderBottom: '2px solid #64748b', 
+                                textAlign: 'center', 
+                                color: '#d95a1a', 
+                                fontWeight: 'bold', 
+                                paddingBottom: '2px',
+                                textTransform: 'uppercase'
+                            }}>
+                                {certificate.studentId}
+                            </span>
+                            <span style={{ whiteSpace: 'nowrap', marginLeft: '15px' }}>in recognition of their active participation</span>
+                        </div>
 
-                    {/* Badge/Seal middle bottom */}
-                    <div style={{ position: 'absolute', bottom: '40px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                         <div style={{ width: '85px', height: '85px', borderRadius: '50%', border: '3px solid #d4af37', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'radial-gradient(circle, #fff 0%, #fef3c7 100%)', boxShadow: '0 4px 15px rgba(212,175,55,0.2)' }}>
-                            <i className="fa-solid fa-award" style={{ fontSize: '42px', color: '#d4af37' }}></i>
-                         </div>
-                         <div style={{ marginTop: '18px', fontSize: '11px', color: '#94a3b8', fontWeight: '600', letterSpacing: '1px', fontFamily: "'Inter', sans-serif" }}>
-                            VERIFIED AUTHENTIC - ID: {certificate.certificateId}
+                        {/* Line 3 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-end', marginBottom: '20px' }}>
+                            <span style={{ whiteSpace: 'nowrap', marginRight: '15px' }}>in the</span>
+                            <span style={{ 
+                                flex: 1, 
+                                borderBottom: '2px solid #64748b', 
+                                textAlign: 'center', 
+                                color: '#d95a1a', 
+                                fontWeight: 'bold', 
+                                paddingBottom: '2px',
+                                textTransform: 'uppercase'
+                            }}>
+                                {certificate.eventName}
+                            </span>
+                            <span style={{ whiteSpace: 'nowrap', marginLeft: '15px' }}>organized by</span>
+                        </div>
+
+                        {/* Line 4 */}
+                        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                            <span style={{ whiteSpace: 'nowrap', marginRight: '15px' }}>the Department of Computer Science and Engineering on</span>
+                            <span style={{ 
+                                width: '250px', 
+                                borderBottom: '2px solid #64748b', 
+                                textAlign: 'center', 
+                                color: '#004c99', 
+                                fontWeight: 'bold', 
+                                paddingBottom: '2px'
+                            }}>
+                                {new Date(certificate.issueDate).toLocaleDateString('en-GB').replace(/\//g, '-')}
+                            </span>
                         </div>
                     </div>
 
-                    <div style={{ position: 'absolute', bottom: '60px', right: '60px', textAlign: 'center', width: '220px' }}>
-                        <p style={{ fontSize: '28px', fontWeight: '400', fontFamily: "'Dancing Script', cursive", color: '#1e293b', borderBottom: '1px solid #cbd5e1', paddingBottom: '8px', margin: '0 0 10px', lineHeight: '0.8' }}>
-                            {certificate.issuerName}
-                        </p>
-                        <p style={{ fontSize: '12px', color: '#64748b', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>Authorized Signatory</p>
-                    </div>
+                    {/* Footer / Signatures Section */}
+                    <div style={{ 
+                        position: 'absolute', 
+                        bottom: '40px', 
+                        left: '60px', 
+                        right: '60px', 
+                        display: 'flex', 
+                        justifyContent: 'space-between', 
+                        alignItems: 'flex-end' 
+                    }}>
+                        
+                        {/* Coordinator Signature */}
+                        <div style={{ textAlign: 'center', minWidth: '220px' }}>
+                            {coordinatorSignature ? (
+                                <img src={coordinatorSignature} alt="Coordinator Signature" style={{ height: '60px', marginBottom: '5px' }} />
+                            ) : (
+                                <div style={{ height: '60px', marginBottom: '5px' }}></div> /* Empty space placeholder for extracted signature */
+                            )}
+                            <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#004c99', margin: '0 0 5px' }}>{certificate.issuerName}</p>
+                            <p style={{ fontSize: '16px', color: '#d95a1a', margin: '0', fontWeight: '600' }}>Coordinator</p>
+                        </div>
 
-                    {/* Verification Link */}
-                    <div style={{ position: 'absolute', bottom: '-45px', left: '0', width: '100%', textAlign: 'center', fontSize: '12px', color: '#94a3b8', fontWeight: '500' }}>
-                        Verify this certificate online at: <span style={{color: '#d4af37'}}>{window.location.host}/verify?cert_id={certificate.certificateId}</span>
+                        {/* Certificate Verify Text */}
+                        <div style={{ textAlign: 'center', opacity: 0.6 }}>
+                            <p style={{ fontSize: '11px', margin: 0 }}>Certificate ID: {certificate.certificateId}</p>
+                            <p style={{ fontSize: '11px', margin: 0 }}>Verify at: {window.location.host}/verify?cert_id={certificate.certificateId}</p>
+                        </div>
+
+                        {/* HOD Signature */}
+                        <div style={{ textAlign: 'center', minWidth: '220px' }}>
+                            {hodSignature ? (
+                                <img src={hodSignature} alt="HOD Signature" style={{ height: '60px', marginBottom: '5px' }} />
+                            ) : (
+                                <div style={{ height: '60px', marginBottom: '5px' }}></div> 
+                            )}
+                            <p style={{ fontSize: '20px', fontWeight: 'bold', color: '#004c99', margin: '0 0 5px' }}>Dr. T. Sudha Rani</p>
+                            <p style={{ fontSize: '16px', color: '#d95a1a', margin: '0', fontWeight: '600' }}>Head of the Department</p>
+                        </div>
+
                     </div>
 
                 </div>
