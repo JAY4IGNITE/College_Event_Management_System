@@ -237,7 +237,9 @@ const eventSchema = new mongoose.Schema({
     rules: { type: String },
     deadline: { type: Date },
     status: { type: String, enum: ['upcoming', 'ongoing', 'completed'], default: 'upcoming' },
-    isApproved: { type: Boolean, default: false }
+    isApproved: { type: Boolean, default: false },
+    isTeamEvent: { type: Boolean, default: false },
+    maxTeamSize: { type: Number, default: 1 }
 });
 const Event = mongoose.model('Event', eventSchema);
 

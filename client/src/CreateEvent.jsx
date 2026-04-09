@@ -200,11 +200,13 @@ const CreateEvent = () => {
         image: '',
         maxParticipants: '',
         price: '',
-        paymentType: 'free'
+        paymentType: 'free',
+        isTeamEvent: false,
+        maxTeamSize: 2
     });
 
     const handleChange = (e) => {
-        const { id, value } = e.target;
+        const { id, value, type, checked } = e.target;
         const keyMap = {
             'eventTitle': 'title',
             'eventDescription': 'description',
@@ -217,11 +219,14 @@ const CreateEvent = () => {
             'eventImage': 'image',
             'eventMaxParticipants': 'maxParticipants',
             'eventPrice': 'price',
-            'paymentType': 'paymentType'
+            'paymentType': 'paymentType',
+            'isTeamEvent': 'isTeamEvent',
+            'eventMaxTeamSize': 'maxTeamSize'
         };
         const key = keyMap[id];
         if (key) {
-            setEventData(prev => ({ ...prev, [key]: value }));
+            const val = type === 'checkbox' ? checked : value;
+            setEventData(prev => ({ ...prev, [key]: val }));
         }
     };
 
@@ -256,6 +261,8 @@ const CreateEvent = () => {
             poster: eventData.image,
             price: parseInt(eventData.price) || 0,
             maxParticipants: eventData.maxParticipants ? parseInt(eventData.maxParticipants) : null,
+            isTeamEvent: eventData.isTeamEvent,
+            maxTeamSize: eventData.isTeamEvent ? (parseInt(eventData.maxTeamSize) || 2) : 1,
             organizerId: currentUser.id
         };
 
@@ -404,9 +411,38 @@ const CreateEvent = () => {
                                 </select>
                             </div>
 
-                            <div className="form-group">
-                                <label>Max Participants</label>
-                                <input type="number" id="eventMaxParticipants" placeholder="Leave empty for unlimited" min="1" onChange={handleChange} />
+                             <div className="form-group">
+                                 <label>Max Participants</label>
+                                 <input type="number" id="eventMaxParticipants" placeholder="Leave empty for unlimited" min="1" onChange={handleChange} />
+                             </div>
+
+                            <div className="form-group" style={{ gridColumn: 'span 2', background: 'var(--surface)', padding: '20px', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '20px', border: '1px solid var(--border)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                                    <input 
+                                        type="checkbox" 
+                                        id="isTeamEvent" 
+                                        checked={eventData.isTeamEvent} 
+                                        onChange={handleChange}
+                                        style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                    />
+                                    <label htmlFor="isTeamEvent" style={{ margin: 0, cursor: 'pointer', fontSize: '15px', fontWeight: '700' }}>This is a Team-based Event</label>
+                                </div>
+                                
+                                {eventData.isTeamEvent && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', animation: 'fadeIn 0.3s ease' }}>
+                                        <div style={{ width: '1px', height: '30px', background: 'var(--border)' }}></div>
+                                        <label htmlFor="eventMaxTeamSize" style={{ margin: 0, fontSize: '14px', fontWeight: '600' }}>Max Team Size:</label>
+                                        <input 
+                                            type="number" 
+                                            id="eventMaxTeamSize" 
+                                            value={eventData.maxTeamSize} 
+                                            onChange={handleChange} 
+                                            min="2" 
+                                            max="10"
+                                            style={{ width: '80px', padding: '8px' }}
+                                        />
+                                    </div>
+                                )}
                             </div>
 
                             <div className="form-group">

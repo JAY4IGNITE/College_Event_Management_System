@@ -1065,6 +1065,10 @@ const OrganizerDashboard = () => {
                                 <div style={{ fontWeight: '600' }}>{selectedEvent.location || 'TBA'}</div>
                             </div>
                             <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Participation</div>
+                                <div style={{ fontWeight: '600' }}>{selectedEvent.isTeamEvent ? `Team (Max ${selectedEvent.maxTeamSize})` : 'Individual'}</div>
+                            </div>
+                            <div style={{ background: 'var(--surface)', padding: '16px', borderRadius: '12px' }}>
                                 <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Status</div>
                                 <div style={{ fontWeight: '600', color: selectedEvent.isApproved ? '#059669' : '#ea580c' }}>{selectedEvent.isApproved ? 'Approved' : 'Pending'}</div>
                             </div>
