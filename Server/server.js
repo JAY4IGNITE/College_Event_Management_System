@@ -339,12 +339,14 @@ function validatePassword(password) {
 }
 
 // Helper: Validate Email Domain
-function validateEmailDomain(email) {
+function validateEmailDomain(email, allowedDomains = ['@adityauniversity.in', '@gmail.com']) {
     if (!email) return "Email is required.";
-    const validDomains = ['@adityauniversity.in'];
     const lowerEmail = email.toLowerCase();
-    if (!validDomains.some(domain => lowerEmail.endsWith(domain))) {
-        return "Only @adityauniversity.in domain is allowed.";
+    if (!allowedDomains.some(domain => lowerEmail.endsWith(domain))) {
+        if (allowedDomains.length === 1) {
+            return `Only ${allowedDomains[0]} domain is allowed.`;
+        }
+        return `Only ${allowedDomains.join(' or ')} domains are allowed.`;
     }
     return null;
 }
@@ -354,7 +356,7 @@ app.post('/api/students/signup', async (req, res) => {
     try {
         const { name, id, email, branch, password, question, answer } = req.body;
 
-        const emailError = validateEmailDomain(email);
+        const emailError = validateEmailDomain(email, ['@adityauniversity.in']);
         if (emailError) return res.status(400).json({ message: emailError });
 
         const passwordError = validatePassword(password);
@@ -380,7 +382,7 @@ app.post('/api/organizers/signup', async (req, res) => {
     try {
         const { name, id, email, password, question, answer } = req.body;
 
-        const emailError = validateEmailDomain(email);
+        const emailError = validateEmailDomain(email, ['@adityauniversity.in', '@gmail.com']);
         if (emailError) return res.status(400).json({ message: emailError });
 
         const passwordError = validatePassword(password);
@@ -462,7 +464,8 @@ app.post('/api/auth/forgot-password/find', async (req, res) => {
     const { role, identifier } = req.body;
 
     if (identifier && identifier.includes('@')) {
-        const emailError = validateEmailDomain(identifier);
+        const allowedDomains = role === 'student' ? ['@adityauniversity.in'] : ['@adityauniversity.in', '@gmail.com'];
+        const emailError = validateEmailDomain(identifier, allowedDomains);
         if (emailError) return res.status(400).json({ success: false, message: emailError });
     }
 

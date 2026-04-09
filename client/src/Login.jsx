@@ -23,10 +23,10 @@ const Login = () => {
         }
 
         if (userId.includes('@')) {
-            const validDomains = ['@adityauniversity.in'];
+            const validDomains = ['@adityauniversity.in', '@gmail.com'];
             const lowerUserId = userId.toLowerCase();
             if (!validDomains.some(domain => lowerUserId.endsWith(domain))) {
-                setErrorMsg('Only @adityauniversity.in domain is allowed.');
+                setErrorMsg('Only @adityauniversity.in or @gmail.com domains are allowed.');
                 return;
             }
         }

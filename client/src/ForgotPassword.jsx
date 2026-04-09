@@ -26,10 +26,14 @@ const ForgotPassword = () => {
 
     const handleFindUser = async () => {
         if (identifier.includes('@')) {
-            const validDomains = ['@adityauniversity.in'];
+            const validDomains = role === 'student' ? ['@adityauniversity.in'] : ['@adityauniversity.in', '@gmail.com'];
             const lowerIdentifier = identifier.toLowerCase();
             if (!validDomains.some(domain => lowerIdentifier.endsWith(domain))) {
-                alert("Only @adityauniversity.in domain is allowed.");
+                if (role === 'student') {
+                    alert("Only @adityauniversity.in domain is allowed for students.");
+                } else {
+                    alert("Only @adityauniversity.in or @gmail.com domains are allowed for organizers.");
+                }
                 return;
             }
         }
