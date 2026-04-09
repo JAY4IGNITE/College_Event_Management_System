@@ -360,8 +360,12 @@ app.post('/api/students/signup', async (req, res) => {
         const passwordError = validatePassword(password);
         if (passwordError) return res.status(400).json({ message: passwordError });
 
+        // Check across both students and organizers to prevent collisions
         const existingStudent = await Student.findOne({ $or: [{ studentId: id }, { email }] });
-        if (existingStudent) return res.status(400).json({ message: 'Student ID or Email already exists!' });
+        const existingOrganizer = await Organizer.findOne({ $or: [{ organizerId: id }, { email }] });
+        if (existingStudent || existingOrganizer) {
+            return res.status(400).json({ message: 'ID or Email is already registered on the platform!' });
+        }
 
         const newStudent = new Student({ name, studentId: id, email, branch, password, securityQuestion: question, securityAnswer: answer });
         await newStudent.save();
@@ -382,8 +386,12 @@ app.post('/api/organizers/signup', async (req, res) => {
         const passwordError = validatePassword(password);
         if (passwordError) return res.status(400).json({ message: passwordError });
 
+        // Check across both students and organizers to prevent collisions
+        const existingStudent = await Student.findOne({ $or: [{ studentId: id }, { email }] });
         const existingOrganizer = await Organizer.findOne({ $or: [{ organizerId: id }, { email }] });
-        if (existingOrganizer) return res.status(400).json({ message: 'Organizer ID or Email already exists!' });
+        if (existingStudent || existingOrganizer) {
+            return res.status(400).json({ message: 'ID or Email is already registered on the platform!' });
+        }
 
         const newOrganizer = new Organizer({ name, organizerId: id, email, password, securityQuestion: question, securityAnswer: answer });
         await newOrganizer.save();
