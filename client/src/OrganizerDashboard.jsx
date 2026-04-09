@@ -207,6 +207,7 @@ const OrganizerDashboard = () => {
     });
     const [stats, setStats] = useState({ totalEvents: 0, totalRegistrations: 0 });
     const [myEvents, setMyEvents] = useState([]);
+    const [certificates, setCertificates] = useState([]);
     const [activeTab, setActiveTab] = useState('home');
     const [isIdModalOpen, setIsIdModalOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -254,10 +255,14 @@ const OrganizerDashboard = () => {
                 totalRegistrations: statsData.totalRegistrations || 0
             });
 
-            const eventsRes = await fetch(`${API_BASE_URL}/api/admin/events/all`);
-            const allEvents = await eventsRes.json();
-            const organizerEvents = allEvents.filter(event => event.organizerId === userId);
+            const eventsRes = await fetch(`${API_BASE_URL}/api/events?organizerId=${userId}`);
+            const organizerEvents = await eventsRes.json();
             setMyEvents(organizerEvents);
+
+            // Fetch Issued Certificates
+            const certsRes = await fetch(`${API_BASE_URL}/api/organizers/${userId}/certificates`);
+            const certsData = await certsRes.json();
+            setCertificates(certsData);
 
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
@@ -397,6 +402,25 @@ const OrganizerDashboard = () => {
                         }}
                     >
                         <i className="fa-solid fa-chart-line" style={{ fontSize: '13px' }}></i> Analytics
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('certificates')}
+                        style={{
+                            background: activeTab === 'certificates' ? '#EFF6FF' : 'transparent',
+                            color: activeTab === 'certificates' ? 'var(--primary)' : 'var(--text-muted)',
+                            padding: '10px 24px',
+                            borderRadius: '100px',
+                            fontSize: '14px',
+                            fontWeight: '600',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            border: 'none',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        }}
+                    >
+                        <i className="fa-solid fa-award" style={{ fontSize: '13px' }}></i> Certificates
                     </button>
 
                 </div>
@@ -988,6 +1012,65 @@ const OrganizerDashboard = () => {
                                 )}
                             </tbody>
                         </table>
+                    </div>
+                )}
+
+                {activeTab === 'certificates' && (
+                    <div style={{ animation: 'fadeInUp 0.4s ease-out' }}>
+                        <div className="section-header" style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div className="section-title" style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <span style={{ width: '4px', height: '24px', background: 'var(--success)', borderRadius: '4px', display: 'block' }}></span>
+                                Issued Certificates
+                            </div>
+                            <div style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
+                                Total Issued: <span style={{ fontWeight: '700', color: 'var(--text-main)' }}>{certificates.length}</span>
+                            </div>
+                        </div>
+
+                        {certificates.length === 0 ? (
+                            <div style={{ textAlign: 'center', padding: '60px', background: 'white', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
+                                <div style={{ width: '80px', height: '80px', background: 'var(--surface)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: 'var(--warning)', fontSize: '32px' }}>
+                                    <i className="fa-solid fa-award"></i>
+                                </div>
+                                <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', marginBottom: '8px' }}>No Certificates Issued Yet</h3>
+                                <p style={{ color: 'var(--text-muted)', fontSize: '14px', maxWidth: '300px', margin: '0 auto' }}>To issue certificates, go to your events and mark participants as "Attended".</p>
+                            </div>
+                        ) : (
+                            <table className="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Certificate ID</th>
+                                        <th>Student</th>
+                                        <th>Event Name</th>
+                                        <th>Issue Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {certificates.map(cert => (
+                                        <tr key={cert._id}>
+                                            <td style={{ fontWeight: '700', color: 'var(--info)' }}>{cert.certificateId}</td>
+                                            <td>
+                                                <div style={{ fontWeight: '600' }}>{cert.studentName}</div>
+                                                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{cert.studentId}</div>
+                                            </td>
+                                            <td>{cert.eventName}</td>
+                                            <td>{new Date(cert.issueDate).toLocaleDateString()}</td>
+                                            <td>
+                                                <a 
+                                                    href={`/verify?cert_id=${cert.certificateId}`} 
+                                                    target="_blank" 
+                                                    rel="noopener noreferrer"
+                                                    style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', textDecoration: 'none', fontWeight: '600', fontSize: '13px' }}
+                                                >
+                                                    <i className="fa-solid fa-up-right-from-square" style={{ fontSize: '10px' }}></i> Verify
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
                     </div>
                 )}
 

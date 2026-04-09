@@ -257,6 +257,17 @@ const registrationSchema = new mongoose.Schema({
 });
 const Registration = mongoose.model('Registration', registrationSchema);
 
+const certificateSchema = new mongoose.Schema({
+    certificateId: { type: String, required: true, unique: true },
+    studentId: { type: String, required: true },
+    studentName: { type: String, required: true },
+    eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
+    eventName: { type: String, required: true },
+    issueDate: { type: Date, default: Date.now },
+    issuerName: { type: String, required: true }
+});
+const Certificate = mongoose.model('Certificate', certificateSchema);
+
 const adminSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true }
@@ -871,14 +882,49 @@ app.get('/api/student/:id/stats', async (req, res) => {
     try {
         const studentId = req.params.id;
         const registrations = await Registration.find({ studentId });
+        const certificatesCount = await Certificate.countDocuments({ studentId });
 
         const registeredCount = registrations.length;
         const attendedCount = registrations.filter(r => r.status === 'attended').length;
-        const certificatesCount = 0; // Placeholder
 
         res.json({ registeredCount, attendedCount, certificatesCount });
     } catch (error) {
         res.status(500).json({ message: 'Error fetching student stats' });
+    }
+});
+
+// Student: Get Certificates
+app.get('/api/students/:id/certificates', async (req, res) => {
+    try {
+        const studentId = req.params.id;
+        const certificates = await Certificate.find({ studentId });
+        res.json(certificates);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching certificates' });
+    }
+});
+
+// Organizer: Get All Issued Certificates
+app.get('/api/organizers/:id/certificates', async (req, res) => {
+    try {
+        const organizerId = req.params.id;
+        const events = await Event.find({ organizerId });
+        const eventIds = events.map(e => e._id);
+        const certificates = await Certificate.find({ eventId: { $in: eventIds } }).sort({ issueDate: -1 });
+        res.json(certificates);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching organizer certificates' });
+    }
+});
+
+// Public: Verify Certificate
+app.get('/api/certificates/verify/:certId', async (req, res) => {
+    try {
+        const certificate = await Certificate.findOne({ certificateId: req.params.certId });
+        if (!certificate) return res.status(404).json({ message: 'Certificate not found' });
+        res.json(certificate);
+    } catch (error) {
+        res.status(500).json({ message: 'Error verifying certificate' });
     }
 });
 
