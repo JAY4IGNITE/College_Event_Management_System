@@ -900,23 +900,22 @@ const OrganizerDashboard = () => {
 
                                             <div className="event-description" style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: '1.6', height: '42px', marginBottom: '20px' }}>{event.description}</div>
 
-                                            <div className="card-footer" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                                    <div style={{ display: 'flex', fontSize: '13px', color: 'var(--text-main)', fontWeight: '700', alignItems: 'center', gap: '6px' }}>
-                                                        <i className="fa-solid fa-users" style={{ color: 'var(--info)' }}></i>
-                                                        {event.registeredCount || 0}
-                                                        <span style={{ fontWeight: '500', color: 'var(--text-light)' }}>Registered</span>
+                                            <div className="card-footer" style={{ borderTop: '1px solid #f1f5f9', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                                                <div style={{ display: 'flex', fontSize: '14px', color: 'var(--text-main)', fontWeight: '700', alignItems: 'center', gap: '8px' }}>
+                                                    <div style={{ background: '#eff6ff', color: 'var(--info)', width: '32px', height: '32px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <i className="fa-solid fa-users"></i>
                                                     </div>
+                                                    {event.registeredCount || 0} <span style={{ fontWeight: '500', color: 'var(--text-muted)' }}>Students Registered</span>
                                                 </div>
-                                                <div style={{ display: 'flex', gap: '8px' }}>
+                                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: '8px' }}>
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); handleManageParticipants(event); }}
                                                         title="Manage Participants & Give Certificates"
                                                         style={{
-                                                            background: '#ecfdf5',
-                                                            color: '#059669',
+                                                            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                            color: 'white',
                                                             border: 'none',
-                                                            padding: '10px 16px',
+                                                            padding: '10px 12px',
                                                             borderRadius: '10px',
                                                             fontSize: '13px',
                                                             fontWeight: '700',
@@ -924,12 +923,14 @@ const OrganizerDashboard = () => {
                                                             transition: 'all 0.2s',
                                                             display: 'flex',
                                                             alignItems: 'center',
-                                                            gap: '8px'
+                                                            justifyContent: 'center',
+                                                            gap: '8px',
+                                                            boxShadow: '0 4px 12px rgba(16, 185, 129, 0.2)'
                                                         }}
-                                                        onMouseOver={(e) => e.currentTarget.style.background = '#d1fae5'}
-                                                        onMouseOut={(e) => e.currentTarget.style.background = '#ecfdf5'}
+                                                        onMouseOver={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 15px rgba(16, 185, 129, 0.3)'; }}
+                                                        onMouseOut={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.2)'; }}
                                                     >
-                                                        <i className="fa-solid fa-award"></i> Give Certificates
+                                                        <i className="fa-solid fa-award"></i> Certificates
                                                     </button>
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); handleDownloadReport(event._id); }}
@@ -937,8 +938,8 @@ const OrganizerDashboard = () => {
                                                         style={{
                                                             background: '#f0f9ff',
                                                             color: '#0369a1',
-                                                            border: 'none',
-                                                            padding: '10px 16px',
+                                                            border: '1px solid #bae6fd',
+                                                            padding: '10px 12px',
                                                             borderRadius: '10px',
                                                             fontSize: '13px',
                                                             fontWeight: '700',
@@ -946,33 +947,36 @@ const OrganizerDashboard = () => {
                                                             transition: 'all 0.2s',
                                                             display: 'flex',
                                                             alignItems: 'center',
+                                                            justifyContent: 'center',
                                                             gap: '8px'
                                                         }}
-                                                        onMouseOver={(e) => e.currentTarget.style.background = '#e0f2fe'}
-                                                        onMouseOut={(e) => e.currentTarget.style.background = '#f0f9ff'}
+                                                        onMouseOver={(e) => { e.currentTarget.style.background = '#e0f2fe'; }}
+                                                        onMouseOut={(e) => { e.currentTarget.style.background = '#f0f9ff'; }}
                                                     >
                                                         <i className="fa-solid fa-file-csv"></i> Report
                                                     </button>
                                                     <button
                                                         onClick={(e) => { e.stopPropagation(); handleDeleteEvent(event._id); }}
+                                                        title="Delete Event"
                                                         style={{
-                                                            background: 'var(--surface-glass)1f2',
+                                                            background: '#fff1f2',
                                                             color: '#e11d48',
-                                                            border: 'none',
-                                                            padding: '10px 16px',
+                                                            border: '1px solid #fecdd3',
+                                                            padding: '10px',
+                                                            width: '40px',
                                                             borderRadius: '10px',
-                                                            fontSize: '13px',
+                                                            fontSize: '14px',
                                                             fontWeight: '700',
                                                             cursor: 'pointer',
                                                             transition: 'all 0.2s',
                                                             display: 'flex',
                                                             alignItems: 'center',
-                                                            gap: '8px'
+                                                            justifyContent: 'center',
                                                         }}
-                                                        onMouseOver={(e) => e.currentTarget.style.background = '#ffe4e6'}
-                                                        onMouseOut={(e) => e.currentTarget.style.background = 'var(--surface-glass)1f2'}
+                                                        onMouseOver={(e) => { e.currentTarget.style.background = '#ffe4e6'; }}
+                                                        onMouseOut={(e) => { e.currentTarget.style.background = '#fff1f2'; }}
                                                     >
-                                                        <i className="fa-regular fa-trash-can"></i> Delete
+                                                        <i className="fa-regular fa-trash-can"></i>
                                                     </button>
                                                 </div>
                                             </div>
