@@ -530,6 +530,14 @@ app.get('/api/events', async (req, res) => {
 app.post('/api/events', async (req, res) => {
     try {
         const eventData = req.body;
+
+        // Backend Date Validation
+        const eventDate = new Date(eventData.date);
+        const deadline = new Date(eventData.deadline);
+        if (deadline > eventDate) {
+            return res.status(400).json({ message: 'Registration deadline cannot be after the event date.' });
+        }
+
         eventData.isApproved = false; // Require admin approval
         eventData.status = 'upcoming';
 

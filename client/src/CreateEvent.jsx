@@ -228,6 +228,22 @@ const CreateEvent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Date Validation
+        const eventDateObj = new Date(eventData.date);
+        const deadlineDateObj = new Date(eventData.deadline);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (eventDateObj < today) {
+            alert('Event date cannot be in the past.');
+            return;
+        }
+
+        if (deadlineDateObj > eventDateObj) {
+            alert('Registration deadline must be on or before the event date.');
+            return;
+        }
+
         const payload = {
             title: eventData.title,
             description: eventData.description,
@@ -335,6 +351,7 @@ const CreateEvent = () => {
                                     onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }}
                                     required
                                     onChange={handleChange}
+                                    min={new Date().toISOString().split('T')[0]}
                                 />
                             </div>
 
@@ -356,11 +373,18 @@ const CreateEvent = () => {
                                 <input
                                     type="text"
                                     id="eventDeadline"
-                                    placeholder="DD-MM-YY"
+                                    placeholder={!eventData.date ? "Select event date first" : "DD-MM-YY"}
                                     onFocus={(e) => (e.target.type = 'date')}
                                     onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }}
                                     required
                                     onChange={handleChange}
+                                    max={eventData.date}
+                                    disabled={!eventData.date}
+                                    title={!eventData.date ? "Please select the event date first" : "Deadline must be on or before the event date"}
+                                    style={{
+                                        cursor: !eventData.date ? 'not-allowed' : 'text',
+                                        opacity: !eventData.date ? 0.6 : 1
+                                    }}
                                 />
                             </div>
 
