@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const crypto = require('crypto');
 require('dotenv').config();
+const { sendEventPublishedEmail } = require('./utils/emailService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -571,10 +572,19 @@ app.put('/api/admin/events/:id/status', async (req, res) => {
         const event = await Event.findById(req.params.id);
         if (!event) return res.status(404).json({ message: 'Event not found' });
 
+        const wasApproved = event.isApproved;
+
         if (isApproved !== undefined) event.isApproved = isApproved;
         if (status) event.status = status;
 
         await event.save();
+
+        // Phase 1 MVP: Trigger email when event transitions to approved
+        if (isApproved === true && !wasApproved) {
+            const students = await Student.find({}, 'name email').lean();
+            sendEventPublishedEmail(event, students).catch(console.error);
+        }
+
         res.json({ message: 'Event status updated', event });
     } catch (error) {
         res.status(500).json({ message: 'Error updating event status' });
