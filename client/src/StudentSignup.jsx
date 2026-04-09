@@ -44,10 +44,10 @@ const StudentSignup = () => {
         }
 
         if (formData.email) {
-            const validDomains = ['@gmail.com', '@example.com', '@email.com'];
+            const validDomains = ['@adityauniversity.in', '@gmail.com'];
             const lowerEmail = formData.email.toLowerCase();
             if (!validDomains.some(domain => lowerEmail.endsWith(domain))) {
-                alert("Only @gmail.com, @example.com, or @email.com domains are allowed.");
+                alert("Only @adityauniversity.in or @gmail.com domains are allowed.");
                 return;
             }
         }

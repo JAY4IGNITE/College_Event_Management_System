@@ -166,7 +166,7 @@ async function seedOrganizerAndEvents() {
             organizer = new Organizer({
                 name: 'Jane Doe',
                 organizerId: organizerId,
-                email: 'janedoe@example.com',
+                email: 'janedoe@adityauniversity.in',
                 password: 'Password@123',
                 securityQuestion: 'pet',
                 securityAnswer: 'dog'
@@ -338,10 +338,10 @@ function validatePassword(password) {
 // Helper: Validate Email Domain
 function validateEmailDomain(email) {
     if (!email) return "Email is required.";
-    const validDomains = ['@gmail.com', '@example.com', '@email.com'];
+    const validDomains = ['@adityauniversity.in', '@gmail.com'];
     const lowerEmail = email.toLowerCase();
     if (!validDomains.some(domain => lowerEmail.endsWith(domain))) {
-        return "Only @gmail.com, @example.com, or @email.com domains are allowed.";
+        return "Only @adityauniversity.in or @gmail.com domains are allowed.";
     }
     return null;
 }
