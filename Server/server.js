@@ -29,8 +29,8 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/collegeEven
         console.log('✅ MongoDB Connected');
         seedAdmin();
         seedProjectMeta();
-        seedEvents();
-        seedOrganizerAndEvents();
+        // seedEvents(); // Disabled per user request
+        // seedOrganizerAndEvents(); // Disabled per user request
     })
     .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
