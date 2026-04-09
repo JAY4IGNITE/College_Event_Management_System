@@ -341,10 +341,10 @@ function validatePassword(password) {
 // Helper: Validate Email Domain
 function validateEmailDomain(email) {
     if (!email) return "Email is required.";
-    const validDomains = ['@adityauniversity.in', '@gmail.com'];
+    const validDomains = ['@adityauniversity.in'];
     const lowerEmail = email.toLowerCase();
     if (!validDomains.some(domain => lowerEmail.endsWith(domain))) {
-        return "Only @adityauniversity.in or @gmail.com domains are allowed.";
+        return "Only @adityauniversity.in domain is allowed.";
     }
     return null;
 }

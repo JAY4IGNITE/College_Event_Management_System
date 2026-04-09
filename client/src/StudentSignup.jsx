@@ -44,10 +44,10 @@ const StudentSignup = () => {
         }
 
         if (formData.email) {
-            const validDomains = ['@adityauniversity.in', '@gmail.com'];
+            const validDomains = ['@adityauniversity.in'];
             const lowerEmail = formData.email.toLowerCase();
             if (!validDomains.some(domain => lowerEmail.endsWith(domain))) {
-                alert("Only @adityauniversity.in or @gmail.com domains are allowed.");
+                alert("Only @adityauniversity.in domain is allowed.");
                 return;
             }
         }
@@ -148,7 +148,7 @@ const StudentSignup = () => {
 
                     <div className="form-group">
                         <label>Email Address</label>
-                        <input type="email" id="studentEmail" placeholder="student@college.edu" required onChange={handleChange} />
+                        <input type="email" id="studentEmail" placeholder="student@adityauniversity.in" required onChange={handleChange} />
                     </div>
 
                     <div className="form-group">
