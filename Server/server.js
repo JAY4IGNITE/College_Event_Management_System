@@ -312,17 +312,6 @@ const projectMetaSchema = new mongoose.Schema({
 });
 const ProjectMeta = mongoose.model('ProjectMeta', projectMetaSchema);
 
-const certificateSchema = new mongoose.Schema({
-    certificateId: { type: String, required: true, unique: true },
-    studentId: { type: String, required: true },
-    studentName: { type: String, required: true },
-    eventId: { type: mongoose.Schema.Types.ObjectId, ref: 'Event', required: true },
-    eventName: { type: String, required: true },
-    issueDate: { type: Date, default: Date.now },
-    issuerName: { type: String, required: true }
-});
-const Certificate = mongoose.model('Certificate', certificateSchema);
-
 // --- Routes ---
 
 // Root route handled by * catch-all above
