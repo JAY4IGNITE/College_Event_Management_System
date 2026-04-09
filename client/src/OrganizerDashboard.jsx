@@ -215,6 +215,8 @@ const OrganizerDashboard = () => {
     const [participants, setParticipants] = useState([]);
     const [isParticipantsModalOpen, setIsParticipantsModalOpen] = useState(false);
     const [updatingStatus, setUpdatingStatus] = useState(null);
+    const [selectedParticipants, setSelectedParticipants] = useState([]);
+    const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
     useEffect(() => {
         if (!currentUser || currentUser.role !== 'organizer') {
@@ -310,7 +312,46 @@ const OrganizerDashboard = () => {
     const handleManageParticipants = (event) => {
         setSelectedEvent(event);
         fetchParticipants(event._id);
+        setSelectedParticipants([]);
         setIsParticipantsModalOpen(true);
+    };
+
+    const handleToggleParticipant = (regId) => {
+        setSelectedParticipants(prev =>
+            prev.includes(regId) ? prev.filter(id => id !== regId) : [...prev, regId]
+        );
+    };
+
+    const handleSelectAll = () => {
+        const eligible = participants.filter(p => p.status !== 'attended').map(p => p._id);
+        if (selectedParticipants.length === eligible.length) {
+            setSelectedParticipants([]);
+        } else {
+            setSelectedParticipants(eligible);
+        }
+    };
+
+    const handleBulkGiveCertificate = async () => {
+        if (selectedParticipants.length === 0) return;
+        if (!window.confirm(`Issue certificates to ${selectedParticipants.length} selected participant(s)?`)) return;
+        setIsBulkUpdating(true);
+        let successCount = 0;
+        for (const regId of selectedParticipants) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/organizer/participants/${regId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: 'attended' })
+                });
+                if (res.ok) {
+                    setParticipants(prev => prev.map(p => p._id === regId ? { ...p, status: 'attended' } : p));
+                    successCount++;
+                }
+            } catch (e) { console.error(e); }
+        }
+        setSelectedParticipants([]);
+        setIsBulkUpdating(false);
+        alert(`Certificates issued to ${successCount} participant(s) successfully!`);
     };
 
     const handleUpdateStatus = async (regId, status) => {
@@ -1172,65 +1213,170 @@ const OrganizerDashboard = () => {
                 </div>
             )}
             {isParticipantsModalOpen && selectedEvent && (
-                <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(5px)' }}>
-                    <div className="modal-content" style={{ width: '900px', maxHeight: '90vh', background: 'white', borderRadius: '24px', padding: '32px', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)', animation: 'fadeInUp 0.3s ease-out', position: 'relative', display: 'flex', flexDirection: 'column' }}>
-                        <button onClick={() => setIsParticipantsModalOpen(false)} style={{ position: 'absolute', top: '20px', right: '20px', background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', transition: 'all 0.2s' }}>
-                            <i className="fa-solid fa-xmark"></i>
-                        </button>
-                        
-                        <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text-main)', marginBottom: '8px' }}>Manage Participants</h2>
-                        <p style={{ color: 'var(--text-muted)', marginBottom: '24px', fontSize: '14px' }}>Event: <span style={{ fontWeight: '700', color: 'var(--info)' }}>{selectedEvent.title}</span></p>
+                <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(8px)' }}>
+                    <div style={{ width: '960px', maxWidth: '95vw', maxHeight: '92vh', background: 'white', borderRadius: '28px', boxShadow: '0 30px 60px -15px rgba(0,0,0,0.3)', animation: 'fadeInUp 0.3s ease-out', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
 
-                        <div style={{ overflowX: 'auto', flex: 1 }}>
-                            <table className="admin-table" style={{ borderRadius: '12px' }}>
-                                <thead>
-                                    <tr>
-                                        <th>Student Name</th>
-                                        <th>Student ID</th>
-                                        <th>Branch</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {participants.length === 0 ? (
-                                        <tr><td colSpan="5" style={{ textAlign: 'center', padding: '40px' }}>No participants registered yet</td></tr>
-                                    ) : (
-                                        participants.map(p => (
-                                            <tr key={p._id}>
-                                                <td>
-                                                    <div style={{ fontWeight: '700', color: 'var(--text-main)' }}>{p.studentName}</div>
-                                                    <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{p.studentEmail}</div>
+                        {/* Modal Header */}
+                        <div style={{ padding: '28px 32px 20px', borderBottom: '1px solid #f1f5f9', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexShrink: 0 }}>
+                            <div>
+                                <h2 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--text-main)', margin: '0 0 4px' }}>Manage Participants</h2>
+                                <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>
+                                    <span style={{ fontWeight: '700', color: 'var(--info)' }}>{selectedEvent.title}</span>
+                                    &nbsp;·&nbsp; {participants.length} registered
+                                    &nbsp;·&nbsp; {participants.filter(p => p.status === 'attended').length} attended
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => { setIsParticipantsModalOpen(false); setSelectedParticipants([]); }}
+                                style={{ background: '#f1f5f9', border: 'none', width: '36px', height: '36px', borderRadius: '50%', color: 'var(--text-muted)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0, transition: 'all 0.2s' }}
+                                onMouseOver={e => { e.currentTarget.style.background = '#e2e8f0'; e.currentTarget.style.color = '#334155'; }}
+                                onMouseOut={e => { e.currentTarget.style.background = '#f1f5f9'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+                            >
+                                <i className="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        {/* Scrollable Table */}
+                        <div style={{ overflowY: 'auto', flex: 1, padding: '0 16px' }}>
+                            {participants.length === 0 ? (
+                                <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+                                    <i className="fa-solid fa-users-slash" style={{ fontSize: '40px', color: 'var(--text-light)', marginBottom: '16px' }}></i>
+                                    <p style={{ color: 'var(--text-muted)', fontWeight: '600' }}>No participants registered yet.</p>
+                                </div>
+                            ) : (
+                                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                    <thead>
+                                        <tr style={{ position: 'sticky', top: 0, background: 'white', zIndex: 1 }}>
+                                            <th style={{ padding: '14px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '2px solid #f1f5f9', width: '44px' }}>
+                                                <input
+                                                    type="checkbox"
+                                                    title="Select all eligible"
+                                                    style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--info)' }}
+                                                    checked={participants.filter(p => p.status !== 'attended').length > 0 && selectedParticipants.length === participants.filter(p => p.status !== 'attended').length}
+                                                    onChange={handleSelectAll}
+                                                />
+                                            </th>
+                                            <th style={{ padding: '14px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '2px solid #f1f5f9' }}>Student</th>
+                                            <th style={{ padding: '14px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '2px solid #f1f5f9' }}>Student ID</th>
+                                            <th style={{ padding: '14px 16px', textAlign: 'left', fontSize: '12px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '2px solid #f1f5f9' }}>Branch</th>
+                                            <th style={{ padding: '14px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '2px solid #f1f5f9' }}>Status</th>
+                                            <th style={{ padding: '14px 16px', textAlign: 'center', fontSize: '12px', fontWeight: '700', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', borderBottom: '2px solid #f1f5f9' }}>Certificate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {participants.map((p, idx) => (
+                                            <tr key={p._id} style={{ background: selectedParticipants.includes(p._id) ? '#f0fdf4' : idx % 2 === 0 ? 'white' : '#fafafa', transition: 'background 0.15s' }}>
+                                                <td style={{ padding: '14px 16px', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle' }}>
+                                                    {p.status !== 'attended' ? (
+                                                        <input
+                                                            type="checkbox"
+                                                            style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: 'var(--info)' }}
+                                                            checked={selectedParticipants.includes(p._id)}
+                                                            onChange={() => handleToggleParticipant(p._id)}
+                                                        />
+                                                    ) : (
+                                                        <i className="fa-solid fa-circle-check" style={{ color: 'var(--success)', fontSize: '18px', display: 'block', textAlign: 'center' }}></i>
+                                                    )}
                                                 </td>
-                                                <td>{p.studentId}</td>
-                                                <td>{p.studentBranch}</td>
-                                                <td>
-                                                    <span className={`status-badge ${p.status === 'attended' ? 'status-approved' : p.status === 'registered' ? 'status-pending' : ''}`}>
+                                                <td style={{ padding: '14px 16px', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                                        <img
+                                                            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(p.studentName)}&background=6366f1&color=fff&size=64`}
+                                                            alt=""
+                                                            style={{ width: '36px', height: '36px', borderRadius: '50%', flexShrink: 0 }}
+                                                        />
+                                                        <div>
+                                                            <div style={{ fontWeight: '700', fontSize: '14px', color: 'var(--text-main)' }}>{p.studentName}</div>
+                                                            <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{p.studentEmail || '—'}</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td style={{ padding: '14px 16px', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle', fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'monospace', fontWeight: '600' }}>{p.studentId}</td>
+                                                <td style={{ padding: '14px 16px', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle', fontSize: '13px', color: 'var(--text-muted)' }}>{p.studentBranch || '—'}</td>
+                                                <td style={{ padding: '14px 16px', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle', textAlign: 'center' }}>
+                                                    <span style={{
+                                                        display: 'inline-flex', alignItems: 'center', gap: '5px',
+                                                        padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: '700',
+                                                        background: p.status === 'attended' ? '#ecfdf5' : '#eff6ff',
+                                                        color: p.status === 'attended' ? '#059669' : '#2563eb',
+                                                        border: `1px solid ${p.status === 'attended' ? '#d1fae5' : '#bfdbfe'}`
+                                                    }}>
+                                                        <i className={`fa-solid ${p.status === 'attended' ? 'fa-check' : 'fa-clock'}`} style={{ fontSize: '9px' }}></i>
                                                         {p.status.toUpperCase()}
                                                     </span>
                                                 </td>
-                                                <td>
-                                                    {p.status !== 'attended' && (
-                                                        <button 
-                                                            className="btn"
+                                                <td style={{ padding: '14px 16px', borderBottom: '1px solid #f1f5f9', verticalAlign: 'middle', textAlign: 'center' }}>
+                                                    {p.status !== 'attended' ? (
+                                                        <button
                                                             disabled={updatingStatus === p._id}
                                                             onClick={() => handleUpdateStatus(p._id, 'attended')}
-                                                            style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', opacity: updatingStatus === p._id ? 0.7 : 1 }}
+                                                            style={{
+                                                                background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                                                color: 'white', border: 'none',
+                                                                padding: '8px 16px', borderRadius: '10px',
+                                                                fontSize: '12px', fontWeight: '700',
+                                                                cursor: updatingStatus === p._id ? 'not-allowed' : 'pointer',
+                                                                opacity: updatingStatus === p._id ? 0.6 : 1,
+                                                                display: 'inline-flex', alignItems: 'center', gap: '6px',
+                                                                transition: 'all 0.2s', whiteSpace: 'nowrap'
+                                                            }}
+                                                            onMouseOver={e => { if (updatingStatus !== p._id) e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                                                            onMouseOut={e => { e.currentTarget.style.transform = 'none'; }}
                                                         >
-                                                            {updatingStatus === p._id ? 'Updating...' : 'Give Certificate'}
+                                                            {updatingStatus === p._id
+                                                                ? <><i className="fa-solid fa-circle-notch fa-spin"></i> Issuing...</>
+                                                                : <><i className="fa-solid fa-award"></i> Give Certificate</>}
                                                         </button>
-                                                    )}
-                                                    {p.status === 'attended' && (
-                                                        <span style={{ color: 'var(--success)', fontWeight: '700', fontSize: '13px' }}>
-                                                            <i className="fa-solid fa-circle-check"></i> Certificate Given
+                                                    ) : (
+                                                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#059669', fontWeight: '700', fontSize: '13px' }}>
+                                                            <i className="fa-solid fa-circle-check"></i> Issued
                                                         </span>
                                                     )}
                                                 </td>
                                             </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
+
+                        {/* Footer Action Bar */}
+                        <div style={{ padding: '16px 32px', borderTop: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: selectedParticipants.length > 0 ? '#f0fdf4' : 'white', transition: 'background 0.3s' }}>
+                            <div style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: '600' }}>
+                                {selectedParticipants.length > 0
+                                    ? <span style={{ color: '#059669' }}><i className="fa-solid fa-check-square" style={{ marginRight: '6px' }}></i>{selectedParticipants.length} selected</span>
+                                    : <span>Select participants to issue certificates in bulk.</span>}
+                            </div>
+                            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                                {participants.filter(p => p.status !== 'attended').length > 0 && (
+                                    <button
+                                        onClick={handleSelectAll}
+                                        style={{ background: 'none', border: '1px solid var(--border)', color: 'var(--text-muted)', padding: '8px 18px', borderRadius: '10px', fontSize: '13px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }}
+                                        onMouseOver={e => { e.currentTarget.style.borderColor = 'var(--info)'; e.currentTarget.style.color = 'var(--info)'; }}
+                                        onMouseOut={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-muted)'; }}
+                                    >
+                                        {selectedParticipants.length === participants.filter(p => p.status !== 'attended').length ? 'Deselect All' : 'Select All'}
+                                    </button>
+                                )}
+                                <button
+                                    onClick={handleBulkGiveCertificate}
+                                    disabled={selectedParticipants.length === 0 || isBulkUpdating}
+                                    style={{
+                                        background: selectedParticipants.length === 0 ? '#e2e8f0' : 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                                        color: selectedParticipants.length === 0 ? 'var(--text-muted)' : 'white',
+                                        border: 'none', padding: '10px 24px', borderRadius: '12px',
+                                        fontSize: '14px', fontWeight: '700',
+                                        cursor: selectedParticipants.length === 0 ? 'not-allowed' : 'pointer',
+                                        display: 'inline-flex', alignItems: 'center', gap: '8px',
+                                        boxShadow: selectedParticipants.length > 0 ? '0 4px 12px rgba(16,185,129,0.3)' : 'none',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    {isBulkUpdating
+                                        ? <><i className="fa-solid fa-circle-notch fa-spin"></i> Issuing...</>
+                                        : <><i className="fa-solid fa-award"></i> Give Certificate{selectedParticipants.length > 1 ? ` (${selectedParticipants.length})` : ''}</>}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
